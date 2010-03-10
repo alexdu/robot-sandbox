@@ -39,12 +39,12 @@ def load_robot_link(file, name):
 	
 
 
-load_robot_link('viper-model-hi/base.stl', 'Robot Base')
-load_robot_link('viper-model-hi/link1.stl', 'Robot Link 1')
-load_robot_link('viper-model-hi/link2.stl', 'Robot Link 2')
-load_robot_link('viper-model-hi/link3.stl', 'Robot Link 3')
-load_robot_link('viper-model-hi/link4.stl', 'Robot Link 4')
-load_robot_link('viper-model-hi/link5.stl', 'Robot Link 5-6')
+load_robot_link('6dof-robot-model/base.stl', 'Robot Base')
+load_robot_link('6dof-robot-model/link1.stl', 'Robot Link 1')
+load_robot_link('6dof-robot-model/link2.stl', 'Robot Link 2')
+load_robot_link('6dof-robot-model/link3.stl', 'Robot Link 3')
+load_robot_link('6dof-robot-model/link4.stl', 'Robot Link 4')
+load_robot_link('6dof-robot-model/link56.stl', 'Robot Link 5-6')
 
 
 base = worldObject("Robot Base")
@@ -165,7 +165,7 @@ eventmanager.connect(STEP_FRAME, tick)
 
 
 prop = ODEContactProperties(bounce = 0, mu = 10000, soft_erp=0.2, soft_cfm=0.001)
-ode = ODEDynamics(gravity=9.81*100, substeps=10, cfm=1E-5, erp=0.2, defaultcontactproperties = prop)\
+ode = ODEDynamics(gravity=9.81*100, substeps=30, cfm=1E-5, erp=0.2, defaultcontactproperties = prop)\
                #show_contacts=1, contactmarkersize=1, contactnormalsize=100)
 # category bits:
 # 1 = robot (se ciocneste de piese)

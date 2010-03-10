@@ -51,5 +51,6 @@ RZ(45)
 
 MOVE(HERE() * RX(45))
 
+PARAMETER("HAND.TIME", 1)
 
 

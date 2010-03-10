@@ -1,5 +1,5 @@
 #!/bin/sh
 
-sim-files
+cd sim-files
 python main.py
 

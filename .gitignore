@@ -1,0 +1,7 @@
+*.[oa]
+*~
+*.log
+build/
+dist/
+*.pyc
+

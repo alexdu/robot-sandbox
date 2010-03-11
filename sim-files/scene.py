@@ -25,6 +25,7 @@ ipshell = IPShellEmbed(args, banner="\r\nV+ simulation console ready.")
 class MyThread ( threading.Thread ):
     def run(self):	
         ipshell() 
+        os.abort()
         raise SystemExit
 
 def load_robot_link(file, name):

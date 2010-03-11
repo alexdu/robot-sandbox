@@ -1,2 +1,2 @@
 @color F0
-@sim-files\dist\main.exe
+@sim-files\dist\startup.exe

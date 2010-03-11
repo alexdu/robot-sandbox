@@ -1,4 +1,4 @@
-#       win32/main.py
+#       win32/startup.py
 #       
 #       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>
 #       
@@ -20,19 +20,22 @@
 
 # "Bootloader" for windows binary release
 
-import sys
-import os
-
-[path,file] = os.path.split(os.path.realpath(sys.argv[0]))
-#print path
-#print file
-
-basepath = os.path.normpath(os.path.join(path, ".."))
-sys.path.append(basepath)
-os.chdir(basepath)
+print "win32 'bootloader' startup..."
 
 import numpy.lib.io   # bug in py2exe?!
 
-import main
+import os
+import sys
+path = os.path.abspath(sys.argv[0])
+[path,file] = os.path.split(path)
+basepath = os.path.normpath(os.path.join(path, ".."))
+os.chdir(basepath)
+
+
+import IPython.ipapi
+print "creating IPython session..."
+IPython.ipapi.make_session()
+ip = IPython.ipapi.get()
+ip.magic("%run main.py")
 
 

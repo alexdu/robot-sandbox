@@ -25,7 +25,7 @@ setup(
     description='Robot Arm Simulator with Rigid Body Dynamics',
     author='Alex Dumitrache and contributors',
 
-    console=['win32/main.py'],
+    console=['win32/startup.py'],
     #~ data_files = data_files,
     options = 
     {

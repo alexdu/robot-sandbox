@@ -17,13 +17,39 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-#from IPython.Shell import IPShellEmbed
 
 print "robot-sandbox (development version) starting..."
 print " "
+
+
+
 import sys
 import os
-#print sys.path
+
+print "cwd: ", os.getcwd()
+(path,file) = os.path.split(os.getcwd())
+#print path
+#print file
+
+if file != 'sim-files':
+    print "abs path: ", os.path.abspath(__file__)
+    [basepath,file] = os.path.split(os.path.abspath(__file__))
+    libpath = os.path.join(basepath, "dist", "library.zip")
+    print "base folder:", basepath
+    print "library zip:", libpath
+    os.chdir(basepath)
+    (path,file) = os.path.split(os.getcwd())
+    if file == 'sim-files':
+        print "path is ok"
+    else:
+        print "WARNING: working folder is not 'sim-files'"
+else:
+    print "path is OK"    
+#raise SystemExit
+
+
+
+
 
 from vplus import *
 

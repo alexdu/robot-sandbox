@@ -16,6 +16,10 @@ Programele robot se afla in robot-programs.
 Nu este necesar sa aveti Python instalat pentru a modifica sursele.
 In folderul sim-files/dist este inclus Python 2.5 impreuna cu bibliotecile necesare.
 
+Daca aveti deja Python instalat (impreuna cu bibliotecile):
+
+python sim-files\main.py   # porneste programul cu Python-ul instalat pe calculator
+robot-sandbox.cmd          # porneste cu Python 2.5 inclus in "dist" 
 
 
 LINUX:

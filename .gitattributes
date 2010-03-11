@@ -1,4 +1,7 @@
 *.sh -crlf
-
+*.enc -crlf
+*.tcl -crlf
+*tcl* -crlf
+*.msg -crlf
 
 

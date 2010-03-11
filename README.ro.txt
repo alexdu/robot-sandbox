@@ -2,27 +2,11 @@ robot-sandbox
 
 Simulator pentru brate robotice articulate
 
+Aceasta versiune (lite) este doar pentru cei care au deja instalat 
+Python si bibliotecile necesare. 
 
-INSTALARE:
+Pentru versiunea "unzip and run" descarcati ramura MASTER.
 
-
-WINDOWS: 
-
-unzip and run :)
-
-Se pot modifica sursele din sim-files/*.py
-Programele robot se afla in robot-programs.
-
-Nu este necesar sa aveti Python instalat pentru a modifica sursele.
-In folderul sim-files/dist este inclus Python 2.5 impreuna cu bibliotecile necesare.
-
-Daca aveti deja Python instalat (impreuna cu bibliotecile):
-
-python sim-files\main.py   # porneste programul cu Python-ul instalat pe calculator
-robot-sandbox.cmd          # porneste cu Python 2.5 inclus in "dist" 
-
-
-LINUX:
 
 Se instaleaza mediul de dezvoltare si bibliotecile de mai jos:
 - Python 2.5 sau 2.6 

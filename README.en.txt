@@ -5,11 +5,19 @@ Based on V+ language
 
 INSTALL:
 
-Binary release (Windows): unzip and run :)
 
-Windows source:
+WINDOWS:
 
-- Python 2.5
+unzip and run :)
+
+
+
+
+LINUX:
+
+Requirements:
+
+- Python 2.5/2.6
 - ipython
 - cgkit
 - ODE (0.10+ preferred)
@@ -19,5 +27,9 @@ Windows source:
 - PyProtocols (from source, pyhon setup.py --without-speedups install)
 - pyreadline
 
+Running:
+
+cd sim-files
+python main.py
 
 

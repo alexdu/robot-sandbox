@@ -346,7 +346,7 @@ def PARAMETER(param_name, value):
     RobotSim.param[param_name] = value
 
 
-safe = PPOINT(0,-90,90,0,0,0)
+safe = PPOINT(0,-90,180,0,0,0)
 
 
 import IPython.ipapi

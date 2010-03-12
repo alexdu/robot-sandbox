@@ -220,15 +220,18 @@ def SPEED(spd, flags=0):
            nici MMPS, nici IPS = procente din viteza maxima
     """
     if (flags & MONITOR) and not (flags & ALWAYS) and not (flags & MMPS) and not (flags & IPS):
-        RobotSim.speed_monitor = spd
+        RobotSim.speed_monitor = max(0, min(spd, 100))
         return
         
     if flags & MMPS:
         unit = "MMPS"
+        spd = max(0, min(spd, RobotSim.max_cartesian_speed))
     elif flags & IPS:
         unit = "IPS"
+        spd = max(0, min(spd, RobotSim.max_cartesian_speed/25.4))
     else:
         unit = "%"
+        spd = max(0, min(spd, 100))
         
     if flags & ALWAYS:
         RobotSim.speed_always = spd

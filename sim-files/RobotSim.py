@@ -22,6 +22,7 @@ import numpy
 from numpy import matrix, mat
 from vplus import *
 from math import pi
+from geom import *
 import threading
 import cgkit
 
@@ -43,13 +44,17 @@ sw_power = False
 param = dict()
 param["HAND.TIME"] = 0.5
 
-speed_monitor = 50
-speed_always = 100
+speed_monitor = 25.0
+speed_always = 100.0
 speed_always_unit = "%"
-speed_next_motion = 100
+speed_next_motion = 100.0
 speed_next_motion_unit = "%"
 
-fps = 30
+
+max_joint_speed = [328.0, 300.0, 375.0, 375.0, 375.0, 600.0]
+max_cartesian_speed = 2000.0
+
+fps = 30.0
 
 tool_trans = NULL
 
@@ -62,61 +67,6 @@ sig_close = False
 arm_trajectory_index = 0
 arm_trajectory = []
 
-
-
-def rotx(ang):
-    c = COS(ang)
-    s = SIN(ang)
-    return mat([[1,  0,  0], \
-                [0,  c, -s], \
-                [0,  s,  c]])
-
-def roty(ang):
-    c = COS(ang)
-    s = SIN(ang)
-    return mat([[ c, 0,  s], \
-                [ 0, 1,  0], \
-                [-s, 0,  c]])
-
-def rotz(ang):
-    c = COS(ang)
-    s = SIN(ang)
-    return mat([[c, -s,  0], \
-                [s,  c,  0], \
-                [0,  0,  1]])
-
-def omorot(r):
-    z31 = mat(numpy.zeros((3,1)))
-    z13 = mat(numpy.zeros((1,3)))
-
-    return numpy.bmat([[r,      z31],\
-                       [z13, mat(1)]])
-
-
-def omotrans(x,y,z):
-    return mat([[1, 0, 0, x],\
-                [0, 1, 0, y],\
-                [0, 0, 1, z],\
-                [0, 0, 0, 1]])
-
-
-def decompose(T):
-    [x,y,z] = T[0:3, 3].flatten().tolist()[0]
-    
-    yaw   = ATAN2(T[1,2],T[0,2]);
-    pitch = ATAN2(SQRT((T[2,0])**2 + (T[2,1])**2), T[2,2]);
-    roll  = ATAN2(T[2,1],-T[2,0]);
-
-
-    if ABS(pitch) < 1E-4:
-        yaw = 0
-        roll = ATAN2(T[1,0],T[0,0])
-
-    if ABS(ABS(pitch) - 180) < 1E-4:
-        yaw = 0;
-        roll = ATAN2(T[1,0],-T[0,0]);
-
-    return (x, y, z, yaw, pitch, roll)
     
 def DK(J):
     """Cinematica directa
@@ -204,10 +154,30 @@ def IK(loc):
             J[6] = J[6] + 180;
 
     except ValueError:
-        print "IK: Out of range (no solution)."
+        print "IK: no solution."
         return PPOINT(currentJointPos)
 
-    return PPOINT(J)
+    if not all(numpy.isfinite(J)):
+        print "IK: no solution."
+        return PPOINT(currentJointPos)
+
+    # Joint limits:
+    lim_min = [-170, -190, -29, -190, -120, -360]
+    lim_max = [ 170,   45, 256,  190,  120,  360]
+
+    ok = True
+    for i in range(0,5):
+        if J[i] < lim_min[i]:
+            print "Joint %d: lower limit exceeded." % i
+            ok = False
+        if J[i] > lim_max[i]:
+            print "Joint %d: upper limit exceeded." % i
+            ok = False
+    if not ok:
+        return PPOINT(currentJointPos)
+    else:
+        return PPOINT(J)
+
     
 def ActuateGripper():
     global sig_open, sig_close
@@ -258,11 +228,9 @@ def ctraj(jdest):
         p1 = DK(currentJointPos)
         p2 = DK(destJointPos)
 
-        # Viteza de 100% o consider 1000 mm / secunda
-    
         d = DISTANCE(p1,p2)
-        time = d / 1000 / (speed_next_motion/100.0) / (speed_monitor/100.0)
-        steps = 1 + round(time * fps)
+        time = d / max_cartesian_speed / (speed_next_motion/100.0) / (speed_monitor/100.0)
+        steps = 2 + round(time * fps)
         arm_trajectory_index = 0
         for t in numpy.linspace(0,1,steps):
             p = lin_interp(p1,p2,t)
@@ -275,7 +243,6 @@ def jtraj(jdest):
     # Calculeaza traiectoria robotului pentru miscari in linie dreapta (MOVES)
     # Rezultatul este memorat pe articulatii, in arm_trajectory
 
-    # Viteza de 100% o consider 180 deg / secunda
 
     global arm_trajectory, startJointPos, destJointPos
     
@@ -287,13 +254,10 @@ def jtraj(jdest):
         ja = mat(currentJointPos)
         jb = mat(destJointPos)
         dif = ja - jb
-        maxrot = abs(dif).max()
-        time = maxrot / 180.0 / (speed_next_motion/100.0) / (speed_monitor/100.0)
-        steps = 1 + round(time * fps)
-        #print steps
+        maxrot = abs(dif / mat(max_joint_speed)).max()
+        time = maxrot / (speed_next_motion/100.0) / (speed_monitor/100.0)
+        steps = 2 + round(time * fps)
         
-        #from IPython.Shell import IPShellEmbed; ipshell = IPShellEmbed(); ipshell()
-
         arm_trajectory_index = 0
         for t in numpy.linspace(0,1,steps):
             j = ja * (1-t) + jb * t

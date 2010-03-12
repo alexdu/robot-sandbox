@@ -60,21 +60,21 @@ def omotrans(x,y,z):
                 [0, 0, 0, 1]])
 
 
-def decompose(T):
-    [x,y,z] = T[0:3, 3].flatten().tolist()[0]
+def decompose(M):
+    [x,y,z] = M[0:3, 3].flatten().tolist()[0]
     
-    yaw   = math.atan2(T[1,2],T[0,2]);
-    pitch = math.atan2(math.sqrt((T[2,0])**2 + (T[2,1])**2), T[2,2]);
-    roll  = math.atan2(T[2,1],-T[2,0]);
+    yaw   = math.atan2(M[1,2],M[0,2]);
+    pitch = math.atan2(math.sqrt((M[2,0])**2 + (M[2,1])**2), M[2,2]);
+    roll  = math.atan2(M[2,1],-M[2,0]);
 
 
     if abs(pitch) < 1E-4:
         yaw = 0
-        roll = math.atan2(T[1,0],T[0,0])
+        roll = math.atan2(M[1,0],M[0,0])
 
     if abs(abs(pitch) - pi) < 1E-4:
         yaw = 0;
-        roll = math.atan2(T[1,0],-T[0,0]);
+        roll = math.atan2(M[1,0],-M[0,0]);
 
     
     return (x, y, z, yaw*180/pi, pitch*180/pi, roll*180/pi)

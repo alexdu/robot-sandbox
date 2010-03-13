@@ -28,6 +28,7 @@ import os
 
 print "cwd: ", os.getcwd()
 (path,file) = os.path.split(os.getcwd())
+
 #print path
 #print file
 
@@ -45,6 +46,7 @@ if file != 'sim-files':
         print "WARNING: working folder is not 'sim-files'"
 else:
     print "path is OK"    
+    basepath = os.getcwd()
 #raise SystemExit
 
 
@@ -52,8 +54,11 @@ else:
 
 
 from vplus import *
+import vplus
 
-#editor = os.path.join(dir, "notepad2", "Notepad2.exe")
+vplus._editor = os.path.join(basepath, "notepad2", "Notepad2.exe")
+if not os.path.exists(vplus._editor):
+    vplus._editor = "notepad.exe"
 
 
 

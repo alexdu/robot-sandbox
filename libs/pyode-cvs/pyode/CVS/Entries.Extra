@@ -1,0 +1,13 @@
+/.cvsignore////*///
+/AUTHORS////*///
+/ChangeLog////*///
+/INSTALL////*///
+/LICENSE////*///
+/LICENSE-BSD////*///
+/MANIFEST.in////*///
+/README////*///
+/setup.py////*///
+D/examples///////
+D/src///////
+D/tests///////
+D/xode///////

@@ -1,0 +1,61 @@
+Index: body.pyx
+===================================================================
+RCS file: /cvsroot/pyode/pyode/src/body.pyx,v
+retrieving revision 1.7
+diff -u -r1.7 body.pyx
+--- body.pyx	24 Dec 2008 03:33:56 -0000	1.7
++++ body.pyx	12 Mar 2010 07:12:18 -0000
+@@ -578,3 +578,34 @@
+         Return True if the body is influenced by the world's gravity.
+         """
+         return dBodyGetGravityMode(self.bid)
++
++
++    def setDynamic(self):
++        """setKinematic()
++
++        Reset the kinematic state of the body (change it back to 
++        dynamic body, which is the default)
++        """
++        dBodySetDynamic(self.bid)
++        
++    def setKinematic(self):
++        """setKinematic()
++
++        Set the kinematic state of the body (change it into a kinematic body)
++        
++        Kinematic bodies behave as if they had infinite mass. This means they don't react 
++        to any force (gravity, constraints or user-supplied); they simply follow 
++        velocity to reach the next position. [from ODE wiki]
++        """
++        dBodySetKinematic(self.bid)
++        
++    def isKinematic(self):
++        """isKinematic() -> bool
++
++        Return True if the body is kinematic (not influenced by other forces).
++        
++        Kinematic bodies behave as if they had infinite mass. This means they don't react 
++        to any force (gravity, constraints or user-supplied); they simply follow 
++        velocity to reach the next position. [from ODE wiki]
++        """
++        return dBodyIsKinematic(self.bid)
+Index: declarations.pyx
+===================================================================
+RCS file: /cvsroot/pyode/pyode/src/declarations.pyx,v
+retrieving revision 1.23
+diff -u -r1.23 declarations.pyx
+--- declarations.pyx	20 Feb 2009 00:05:34 -0000	1.23
++++ declarations.pyx	12 Mar 2010 07:15:10 -0000
+@@ -211,6 +211,10 @@
+     void dBodySetGravityMode (dBodyID b, int mode)
+     int dBodyGetGravityMode (dBodyID b)
+ 
++    void dBodySetDynamic (dBodyID)
++    void dBodySetKinematic (dBodyID)
++    int dBodyIsKinematic (dBodyID)
++
+     # Joints
+     dJointID dJointCreateBall (dWorldID, dJointGroupID)
+     dJointID dJointCreateHinge (dWorldID, dJointGroupID)
+

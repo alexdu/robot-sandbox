@@ -31,6 +31,7 @@ setup(
     {
         "py2exe": 
         { 
+            "includes": ["main"],
             "excludes": ["wx", "matplotlib"],
             "dll_excludes": ["wintab32.dll", "MSVCP90.dll", 
                             "libgtk-win32-2.0-0.dll",

@@ -3,7 +3,17 @@ robot-sandbox
 Robot arm simulator with rigid body dynamics
 Based on V+ language
 
-This version is only for users who already have Python installed.
+INSTALL:
+
+
+WINDOWS:
+
+unzip and run :)
+
+
+
+
+LINUX:
 
 Requirements:
 

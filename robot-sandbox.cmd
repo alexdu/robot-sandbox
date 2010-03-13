@@ -1,3 +1,2 @@
 @color F0
-@python sim-files\main.py
-
+@sim-files\dist\startup.exe

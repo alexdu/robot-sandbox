@@ -26,6 +26,11 @@ from geom import *
 import threading
 import cgkit
 
+class IKError(Exception):
+    pass
+
+    
+
 currentJointPos = [0,-90,180,0,0,0]
 
 lefty = True
@@ -40,9 +45,12 @@ destJointPos = currentJointPos      # unde ma opresc
 #intermedJointPos = currentJointPos  # punctul intermediar (pt MOVE-uri fara BREAK)
         
 #interp_mode_straight_line = False
-sw_power = False
 param = dict()
 param["HAND.TIME"] = 0.5
+
+switch = dict()
+switch["POWER"] = True
+
 
 speed_monitor = 25.0
 speed_always = 100.0
@@ -90,7 +98,6 @@ def DK(J):
     Tdk = TRANS(HTM = T0 * T10 * T21 * T32 * T43 * T54 * T65 * Txz * tool_trans.HTM);
     return Tdk
 
-    
     
 def IK(loc):
     """Cinematica directa
@@ -154,27 +161,20 @@ def IK(loc):
             J[6] = J[6] + 180;
 
     except ValueError:
-        print "IK: no solution."
-        return PPOINT(currentJointPos)
+        raise IKError, "No solution."
 
     if not all(numpy.isfinite(J)):
-        print "IK: no solution."
-        return PPOINT(currentJointPos)
+        raise IKError, "No solution."
 
     # Joint limits:
     lim_min = [-170, -190, -29, -190, -120, -360]
     lim_max = [ 170,   45, 256,  190,  120,  360]
 
-    ok = True
     for i in range(0,5):
         if J[i] < lim_min[i]:
-            print "Joint %d: lower limit exceeded." % i
-            ok = False
+            raise IKError, "Joint %d: lower limit exceeded." % i
         if J[i] > lim_max[i]:
-            print "Joint %d: upper limit exceeded." % i
-            ok = False
-    if not ok:
-        return PPOINT(currentJointPos)
+            raise IKError, "Joint %d: upper limit exceeded." % i
     else:
         return PPOINT(J)
 

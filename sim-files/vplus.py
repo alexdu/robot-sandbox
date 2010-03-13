@@ -26,6 +26,8 @@ from geom import *
 import math
 import numpy
 import time
+import os
+import re
 numpy.set_printoptions(precision=2, suppress=True)
 
 PI = pi
@@ -348,14 +350,115 @@ def DEPARTS(h):
 def PARAMETER(param_name, value):
     RobotSim.param[param_name] = value
 
+def TOOL(t = None):
+    if t != None:
+        RobotSim.tool_trans = t
+    return RobotSim.tool_trans
 
 safe = PPOINT(0,-90,180,0,0,0)
 
+
+
+
+
+
+# comenzi monitor
+############################################
 
 import IPython.ipapi
 def EXECUTE(prog):
     ip = IPython.ipapi.get()
     ip.ex("from vplus import *")
     ip.magic("%%bg _ip.magic('%%run -i ../robot-programs/%s.py')" % prog)
-def EXEC(prog):
+
+def _CM_EXEC(self, prog):
     EXECUTE(prog)
+
+def _CM_HERE(self, var):
+    #IPShellEmbed()()
+    ip = IPython.ipapi.get()
+    
+    reSingleVar = """
+        ^
+        [a-z]?        # start with lowercase letter
+        [a-z0-9_]*    # may contain letter, digit or underscore
+        $
+        """
+    rePPoint = """
+        ^
+        \#                    # start with #
+        ([a-z]?[a-z0-9_]*)    # following variable name
+        $
+        """
+    reBaseTransform = """
+        ^
+        ([^:]*)    # base (expression)
+        :                     # colon operator
+        ([a-z]?[a-z0-9_]*)    # variable
+        $
+        """
+    
+    mSingleVar = re.match(reSingleVar, var, re.VERBOSE)
+    mPPoint = re.match(rePPoint, var, re.VERBOSE)
+    mBaseTransform = re.match(reBaseTransform, var, re.VERBOSE)
+    
+    if mSingleVar:
+        cmd = var + " = HERE()"
+    elif mPPoint:
+        var = mPPoint.groups()[0]
+        cmd = var + " = PHERE()"
+    elif mBaseTransform:
+        bs = mBaseTransform.groups()[0]
+        var = mBaseTransform.groups()[1]
+        cmd = var + " = INVERSE(" + bs + ") * HERE()"
+    else:
+        print "here (monitor command): syntax error"
+        return
+
+    print "(debug) " + cmd
+    ip.runlines(cmd)
+    ip.runlines(var)
+
+
+    
+    
+def _CM_STATUS(self, var):
+    print "Monitor speed: ", RobotSim.speed_monitor
+    print "Program speed (ALWAYS): ", RobotSim.speed_always
+    print "Program speed for next motion: ", RobotSim.speed_next_motion
+
+def _CM_TOOL(self, var):
+    ip = IPython.ipapi.get()
+    ip.runlines("TOOL(" + var + ")")
+
+
+def _CM_PARAM(self, var):
+    if len(var) == 0:
+        print RobotSim.param
+    else:
+        m = re.match("^([^=]+)=([^=]+)$", var)
+        if m:
+            name = m.groups()[0]
+            value = m.groups()[1]
+            RobotSim.param[name.upper().strip()] = eval(value)
+        else:
+            print "parameter (monitor command): syntax error"
+        
+
+def _CM_ENABLE(self, var):
+    RobotSim.switch[var.upper()] = True
+
+def _CM_DISABLE(self, var):
+    RobotSim.switch[var.upper()] = False
+
+def _CM_SWITCH(self, var):
+    if len(var) == 0:
+        print RobotSim.switch
+    else:
+        print RobotSim.switch[var.upper()]
+
+def _CM_CALIBRATE(self, var):
+    print "Simulated robots do not need calibration :)"
+
+def _CM_SEE(self, var):
+    os.system(_editor + " ../robot-programs/%s.py" % var)

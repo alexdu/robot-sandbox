@@ -15,7 +15,7 @@ def pick_place(pick,place):
     APPRO(place, 100)
     BREAK()
     SPEED(30)
-    MOVE(place)
+    APPRO(place, 1)
     OPENI()
     SPEED(30)
     DEPART(100)
@@ -33,7 +33,7 @@ def stiva():
     BREAK()    
     
     for i in 1 |TO| 5:
-        p = worldObject("Box%d"%i).pos
+        p = worldObject("Box%d"%i).pos * 1000
         pick = TRANS(p[0],p[1],100,0,180,90)
     
         place = SHIFT(st_bottom, 0, 0, h * (i-1))

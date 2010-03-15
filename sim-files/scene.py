@@ -218,11 +218,7 @@ RobotSim.pauseTick = False
 def tick():
     if int(scene._timer.frame) == 1:
         programspath = os.path.normpath(os.path.join(os.getcwd(), "..", "robot-programs"))
-        #print "Current folder: " + programspath
-        #print ""
         os.chdir(programspath)
-
-    #print int(scene._timer.frame)
 
     if int(scene._timer.frame) |MOD| 10 == 1:
         jobs._status_new()

@@ -644,13 +644,18 @@ def _CM_ENV(self, prog):
 
     Initializes the work environment for the robot.
     """
+    if not re.match("^.*\.env$", prog):
+        prog = prog + ".env" 
+        
+    print "setting work environment (%s)..." % prog
+    print " "
+    
+    ip = IPython.ipapi.get()
+    ip.runlines("resetBoxes()")
+
     RobotSim.pauseTick = True
     try:
-        time.sleep(0.1)
-        ip = IPython.ipapi.get()
-        ip.runlines("resetBoxes()")
-        if not re.match("^.*\.env$", prog):
-            prog = prog + ".env" 
+        time.sleep(0.2)
         f = open(prog)
         r = f.read()
         f.close()

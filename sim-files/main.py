@@ -41,7 +41,8 @@ if file != 'sim-files':
     os.chdir(basepath)
     (path,file) = os.path.split(os.getcwd())
     if file == 'sim-files':
-        print "path is ok"
+        pass
+        #print "path is ok"
     else:
         print "WARNING: working folder is not 'sim-files'"
 else:

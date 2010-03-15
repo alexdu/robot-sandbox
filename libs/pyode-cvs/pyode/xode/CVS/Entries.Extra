@@ -1,9 +1,0 @@
-/.cvsignore////*///
-/__init__.py////*///
-/body.py////*///
-/errors.py////*///
-/geom.py////*///
-/joint.py////*///
-/node.py////*///
-/parser.py////*///
-/transform.py////*///

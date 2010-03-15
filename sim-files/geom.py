@@ -78,4 +78,3 @@ def decompose(M):
 
     
     return (x, y, z, yaw*180/pi, pitch*180/pi, roll*180/pi)
-    

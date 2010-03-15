@@ -1,2 +1,3 @@
 @color F0
-@sim-files\dist\startup.exe
+@title robot-sandbox console
+@sim-files\dist\robot-sandbox.exe

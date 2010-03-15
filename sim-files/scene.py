@@ -258,7 +258,7 @@ eventmanager.connect(STEP_FRAME, tick)
     
 
 
-prop = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.5, soft_cfm=1E-4)
+prop = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.1, soft_cfm=1E-4)
 odeSim = ODEDynamics(gravity=9.81/5, substeps=10, cfm=1E-3, erp=0.5, defaultcontactproperties = prop,
                show_contacts=0, contactmarkersize=1E-3, contactnormalsize=0.1)
 # category bits:
@@ -272,15 +272,15 @@ odeSim = ODEDynamics(gravity=9.81/5, substeps=10, cfm=1E-3, erp=0.5, defaultcont
 floorPlane = Plane()
 floorPlane.pos = (0,0,-50E-3)
 
-odeSim.add(floor, categorybits=2, collidebits=6)
-odeSim.add(floorPlane, categorybits=2, collidebits=6)
+odeSim.add(floor, categorybits=2, collidebits=4)
+odeSim.add(floorPlane, categorybits=2, collidebits=4)
 odeSim.add(base,  categorybits=1, collidebits=0)
-odeSim.add(link1,  categorybits=1, collidebits=6)
-odeSim.add(link2,  categorybits=1, collidebits=6)
-odeSim.add(link3,  categorybits=1, collidebits=6)
-odeSim.add(link4,  categorybits=1, collidebits=6)
-odeSim.add(link5,  categorybits=1, collidebits=6)
-odeSim.add(link6,  categorybits=1, collidebits=6)
+odeSim.add(link1,  categorybits=1, collidebits=4)
+odeSim.add(link2,  categorybits=1, collidebits=4)
+odeSim.add(link3,  categorybits=1, collidebits=4)
+odeSim.add(link4,  categorybits=1, collidebits=4)
+odeSim.add(link5,  categorybits=1, collidebits=4)
+odeSim.add(link6,  categorybits=1, collidebits=4)
 odeSim.add(gripper,  categorybits=1, collidebits=6)
 odeSim.add(finger1,  categorybits=1, collidebits=6)
 odeSim.add(finger2,  categorybits=1, collidebits=6)
@@ -293,20 +293,31 @@ for i in range(20):
     b.mass = 1E-2
     b.pos = (0.5, 0.5, -0.01)
     boxes.append(b)
-    odeSim.add(b, categorybits=4, collidebits=7)
+    odeSim.add(b, categorybits=4, collidebits=0)
     odeSim.createBodyManipulator(b).odebody.setKinematic()
 
 def resetBoxes():
-    for b in boxes:
-        mb = odeSim.createBodyManipulator(b)
-        mb.odebody.setKinematic()
-        b.mass = 1E-2
-        mb.setPos((0.5, 0.5, -0.01))
-        mb.setRot(mat3(1).toList())
-        b.lx = 100E-3
-        b.ly = 30E-3
-        b.lz = 15E-3
+    RobotSim.pauseTick = True
+    try:
+        time.sleep(0.1)
     
+        for b in boxes:
+            mb = odeSim.createBodyManipulator(b)
+            mb.odebody.setKinematic()
+            b.mass = 1E-2
+            mb.setPos((0.5, 0.5, -0.01))
+            mb.setRot(mat3(1).toList())
+            b.lx = 100E-3
+            b.ly = 30E-3
+            b.lz = 15E-3
+            mb.odebody.disable()
+            for ob in odeSim.bodies:
+                if ob.odebody == mb.odebody:
+                    ob.odegeoms[0].setCollideBits(0)
+                    ob.odegeoms[0].getGeom().setCollideBits(0)
+            
+    finally:
+        RobotSim.pauseTick = False
 
 base.setOffsetTransform(mat4(1))
 link1.setOffsetTransform(mat4(1))
@@ -401,6 +412,7 @@ def setSizePosRot(box, size, pos, rot):
     mb.setPos(pos)
     mb.setRot(rot)
     mb.odebody.setDynamic()
+    mb.odebody.enable()
     mb.setLinearVel((0,0,0))
     mb.setAngularVel((0,0,0))
     
@@ -408,6 +420,8 @@ def setSizePosRot(box, size, pos, rot):
     for b in odeSim.bodies:
         if b.odebody == mb.odebody:
             b.odegeoms[0].getGeom().setLengths(size)
+            b.odegeoms[0].setCollideBits(7)
+            b.odegeoms[0].getGeom().setCollideBits(7)
 
 
 

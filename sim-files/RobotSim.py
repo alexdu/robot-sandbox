@@ -203,7 +203,11 @@ def lin_interp(A,B,t):
     b = cgkit.cgtypes.mat4(B.HTM.flatten().tolist()[0])
     qa = cgkit.cgtypes.quat(a)
     qb = cgkit.cgtypes.quat(b)
-    qi = cgkit.cgtypes.slerp(t, qa, qb)
+    qdif = qa.inverse() * qb
+    aa = qdif.toAngleAxis()
+    
+    qdifi = cgkit.cgtypes.quat(aa[0] * t, aa[1])
+    qi = qa * qdifi
     
     (pa,cucu,bau) = a.decompose()
     (pb,cucu,bau) = b.decompose()
@@ -219,7 +223,7 @@ def ctraj(jdest):
     # Calculeaza traiectoria robotului pentru miscari in linie dreapta (MOVES)
     # Rezultatul este memorat pe articulatii, in arm_trajectory
     global arm_trajectory, startJointPos, destJointPos
-
+    
     lock = threading.Lock()
     lock.acquire()
     try:

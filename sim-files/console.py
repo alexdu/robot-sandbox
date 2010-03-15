@@ -31,10 +31,11 @@ from IPython.Shell import IPShellEmbed
 from vplus import *
 import vplus
 
+
 # acum sunt in folderul cu sursele (src, sim-files)
-dir = os.getcwd()
-args = ['-pi1','. ','-po','=> ', '-colors', 'LightBG', '-xmode', 'Plain']
-ipshell = IPShellEmbed(args, banner="\r\nV+ simulation console ready.")
+_dir = os.getcwd()
+_args = ['-pi1','. ','-po','=> ', '-colors', 'LightBG', '-xmode', 'Plain']
+_ipshell = IPShellEmbed(_args, banner="\r\nType 'mc' to see a list of monitor commands.\r\n\r\nV+ simulation console ready.")
 
 
 
@@ -55,8 +56,16 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("cal", vplus._CM_CALIBRATE)
         IPython.ipapi.get().expose_magic("calibrate", vplus._CM_CALIBRATE)
         IPython.ipapi.get().expose_magic("see", vplus._CM_SEE)
-        ipshell() 
+        IPython.ipapi.get().expose_magic("speed", vplus._CM_SPEED)
+        IPython.ipapi.get().expose_magic("listl", vplus._CM_LISTL)
+        IPython.ipapi.get().expose_magic("listr", vplus._CM_LISTR)
+        IPython.ipapi.get().expose_magic("lists", vplus._CM_LISTS)
+        IPython.ipapi.get().expose_magic("mc", vplus._CM_MC)
+        IPython.ipapi.get().expose_magic("cm", vplus._CM_MC)
+        IPython.ipapi.get().expose_magic("env", vplus._CM_ENV)
+        _ipshell() 
         os.abort()
         raise SystemExit
 
+ConsoleThread().start()
 

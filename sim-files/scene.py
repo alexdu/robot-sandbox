@@ -1,5 +1,6 @@
 #       scene.py#       #       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>#       #       This program is free software; you can redistribute it and/or modify#       it under the terms of the GNU General Public License as published by#       the Free Software Foundation; either version 2 of the License, or#       (at your option) any later version.#       #       This program is distributed in the hope that it will be useful,#       but WITHOUT ANY WARRANTY; without even the implied warranty of#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the#       GNU General Public License for more details.#       #       You should have received a copy of the GNU General Public License#       along with this program; if not, write to the Free Software#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,#       MA 02110-1301, USA.
 
+from __future__ import division
 import math
 import random
 import threading
@@ -10,8 +11,6 @@ import sys
 import os
 import RobotSim
 import ode
-
-import console        
         
         
 
@@ -91,7 +90,7 @@ def changePose(m, P):
         oldPos = m.body.pos
         (pos,b,c) = P.decompose()
         dt = 1/RobotSim.fps
-        vel = (pos - oldPos) / dt
+        vel = (pos - oldPos).__div__(dt)
         m.setLinearVel(vel)
         
         oldRot = m.body.rot
@@ -164,7 +163,7 @@ def changeRobotPos(J):
 
 
 def setGripperForces(open, close):
-    gripForce = 100
+    gripForce = 10
     slider_finger1.motorfmax = gripForce
     slider_finger2.motorfmax = gripForce
     slider_finger1.fudgefactor = 0
@@ -177,17 +176,19 @@ def setGripperForces(open, close):
         slider_finger1.histop = 40E-3
         slider_finger2.lostop = -40E-3
     if close:
-        slider_finger1.motorvel = 0
-        slider_finger1.motorfmax = gripForce * 2
+        slider_finger1.motorvel = -0.5
+        slider_finger1.motorfmax = gripForce
 
-        slider_finger2.motorvel = 0.1
+        slider_finger2.motorvel = 0.5
         slider_finger2.motorfmax = gripForce
         
         pos = abs(slider_finger2.position)
         pos = min(pos, 40E-3)
         pos = max(pos, 10E-3)
-        slider_finger1.histop = pos
-        slider_finger1.lostop = pos
+        slider_finger1.histop = pos + 0.1E-3
+        slider_finger1.lostop = pos - 5E-3
+        slider_finger2.histop = -pos + 5E-3
+        slider_finger2.lostop = -pos - 0.1E-3
         
         #slider_finger2.lostop = -pos-0.01E-3
         
@@ -212,14 +213,34 @@ def setGripperForces(open, close):
     #~ M["finger2"].setAngularVel((0,0,0))
     #~ 
 
+RobotSim.pauseTick = False
+
 def tick():
+    if int(scene._timer.frame) == 1:
+        programspath = os.path.normpath(os.path.join(os.getcwd(), "..", "robot-programs"))
+        #print "Current folder: " + programspath
+        #print ""
+        os.chdir(programspath)
+
+    #print int(scene._timer.frame)
+
+    if int(scene._timer.frame) |MOD| 10 == 1:
+        jobs._status_new()
+        if len(jobs.jobs_comp) > 0:
+            jobs.flush_finished()
+        
+
+
+    while RobotSim.pauseTick:
+        time.sleep(0.1)
+
     lock = threading.Lock()
     lock.acquire()
     try:
         #print RobotSim.currentJointPos
-        changeRobotPos(RobotSim.currentJointPos)
         setGripperForces(RobotSim.sig_open, RobotSim.sig_close)
         
+        changeRobotPos(RobotSim.currentJointPos)
         enforceSpeedLimit(50) # ca sa nu crape ODE
 
         # avans la urmatorul punct pe traiectorie
@@ -234,12 +255,12 @@ def tick():
     
 eventmanager.connect(STEP_FRAME, tick) 
 
+    
 
 
-
-prop = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.2, soft_cfm=1E-3)
-odeSim = ODEDynamics(gravity=9.81/5, substeps=1, cfm=1E-3, erp=0.2, defaultcontactproperties = prop,
-               show_contacts=1, contactmarkersize=1E-3, contactnormalsize=0.1)
+prop = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.5, soft_cfm=1E-4)
+odeSim = ODEDynamics(gravity=9.81/5, substeps=10, cfm=1E-3, erp=0.5, defaultcontactproperties = prop,
+               show_contacts=0, contactmarkersize=1E-3, contactnormalsize=0.1)
 # category bits:
 # 1 = robot (se ciocneste de piese)
 # 2 = floor (se ciocneste de piese)
@@ -265,14 +286,26 @@ odeSim.add(finger1,  categorybits=1, collidebits=6)
 odeSim.add(finger2,  categorybits=1, collidebits=6)
 
 
+
 boxes = []
-for i in range(5):
+for i in range(20):
     b = Box("Box1", lx=100E-3,ly=30E-3,lz=15E-3,material=GLMaterial(diffuse=(random.uniform(0,1), random.uniform(0,0.5), random.uniform(0,1))))
     b.mass = 1E-2
-    b.pos = (0.3 - i * 120E-3, 0.4, 0.1)
+    b.pos = (0.5, 0.5, -0.01)
     boxes.append(b)
     odeSim.add(b, categorybits=4, collidebits=7)
-    
+    odeSim.createBodyManipulator(b).odebody.setKinematic()
+
+def resetBoxes():
+    for b in boxes:
+        mb = odeSim.createBodyManipulator(b)
+        mb.odebody.setKinematic()
+        b.mass = 1E-2
+        mb.setPos((0.5, 0.5, -0.01))
+        mb.setRot(mat3(1).toList())
+        b.lx = 100E-3
+        b.ly = 30E-3
+        b.lz = 15E-3
     
 
 base.setOffsetTransform(mat4(1))
@@ -322,17 +355,6 @@ odeSim.add(slider_finger2)
 
 
 
-def randomizeBoxes():
-    for b in boxes:
-        mb = odeSim.createBodyManipulator(b)
-        r = random.uniform(400E-3, 600E-3)
-        a = random.uniform(0, 360E-3)
-        x = r * COS(a)
-        y = r * SIN(a)
-        mb.setPos((x,y,20E-3))
-        mb.setRot(mat3(1).toList())
-
-#randomizeBoxes()
 
 def stdevBoxes():
     x = numpy.zeros(len(boxes))
@@ -364,12 +386,39 @@ def pickBox(i):
     MOVE(safe)
 
 
-#def EXEC(prog):
-#    execfile("robot-programs/%s.py"%prog)
+
+# pentru env
+
+def setSizePosRot(box, size, pos, rot):
+    mb = odeSim.createBodyManipulator(box)
+    box.lx = size[0]
+    box.ly = size[1]
+    box.lz = size[2]
+    mb.body.geom.lx = box.lx
+    mb.body.geom.ly = box.ly
+    mb.body.geom.lz = box.lz
+    
+    mb.setPos(pos)
+    mb.setRot(rot)
+    mb.odebody.setDynamic()
+    mb.setLinearVel((0,0,0))
+    mb.setAngularVel((0,0,0))
+    
+
+    for b in odeSim.bodies:
+        if b.odebody == mb.odebody:
+            b.odegeoms[0].getGeom().setLengths(size)
 
 
-# Obiecte care vor fi disponibile programelor robot
-vplus.worldObject = worldObject
 
 
-console.ConsoleThread().start()
+
+
+
+
+execfile("console.py")
+
+
+
+
+

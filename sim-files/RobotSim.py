@@ -51,7 +51,7 @@ param["HAND.TIME"] = 0.5
 switch = dict()
 switch["POWER"] = True
 
-
+global speed_monitor, speed_always, speed_next_motion
 speed_monitor = 25.0
 speed_always = 100.0
 speed_always_unit = "%"

@@ -1,44 +1,50 @@
-Cateva comenzi posibile:
-
-randomizeBoxes() 
-EXEC("stiva")
-
-
-randomizeBoxes() 
-EXEC("palet")
 
 Programele se afla in "robot-programs"
 
-SPEED(10,MONITOR)
-SPEED(100,ALWAYS)
-SPEED(30)
+Cateva comenzi posibile:
 
-# definire punct de precizie
-p = PPOINT(0,-90,180,0,0,0)
-MOVE(p)
+mc                     # monitor-commands (un fel de help)
+env pal                # initializeaza mediul de lucru
+exec paletizare        # ruleaza un program robot
+exec pal_back
+speed 50               # seteaza viteza monitor
+status                 # afiseaza vitezele si programul care ruleaza
+see paletizare         # editeaza un program robot
 
-# definire transformare
-a = TRANS(300,0,300,0,180,0)
-MOVE(a)
+Taste scurtatura in consola: TAB, sageata sus.
 
 OPENI()
 CLOSEI()
 
 
-pickBox(1)
-pickBox(2) ... pana la 5
 listWorld()
 
-a = HERE()   # invatare punct (transformare)
-b = PHERE()  # invatare punct de precizie
+here a     # invatare punct (transformare)
+MOVE(a)
+
+bs = RZ(45)
+here bs:a  # invatare punct intr-un sistem de coordonate local
+MOVE(bs*a)
+
+here #b    # invatare punct de precizie
+MOVE(b)  
+
+
+t = TRANS(0,0,100)
+tool t
+tool 
+tool TRANS(0,0,100)
+tool RZ(45)
+
 
 APPRO(a,100)
 MOVES(a)
 DEPARTS(100)
 
+
 # operatii cu transformari
 b = SHIFT(a, 10, 20, 30)
-c = a * RZ(45)     # compunere
+c = a * RZ(45)            # compunere
 d = a * TRANS(10, 20, 30)
 e = TRANS(10, 20, 30) * a
 DISTANCE(a,b)
@@ -51,6 +57,6 @@ RZ(45)
 
 MOVE(HERE() * RX(45))
 
-PARAMETER("HAND.TIME", 1)
+
 
 

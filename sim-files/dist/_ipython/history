@@ -1,13 +1,1000 @@
-quit()
-Quit()
-Quit
-import ipy_system_conf
-quit()
-import ipy_system_conf
-quit()
-Quit
-2+2
-Quit
-EXEC("stiva")
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
 randomizeBoxes()
-EXEC("stiva")
+exec stiva
+see stiva
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+randomizeBoxes()
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+randomizeBoxes()
+exec stiva
+see stiva
+exec stiva
+RobotSim.speed_next_motion
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+randomizeBoxes()
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+randomizeBoxes()
+exec stiva
+see stiva
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+randomizeBoxes()
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+ls
+pwd
+ls
+exec stiva
+ls
+pwd
+ls
+exec stiva
+jobs
+exec stiva
+see palet
+exec stiva
+randomizeBoxes()
+exec stiva
+see stiva
+exec stiva
+RobotSim.speed_next_motion
+exec stiva
+&
+&ls
+ls&
+%bg ls
+jobs
+jobs.jobs_run
+jobs.jobs_all
+jobs.jobs_all.update
+jobs.jobs_all.update()
+jobs.jobs_all.values()
+j = jobs.jobs_all[0]
+j
+j.status
+j.traceback()
+exec stiva
+randomizeBoxes()
+exec stiva
+j.stat_running
+j.stat_completed
+j.stat_running
+j.stat_running_c
+j.stat_dead
+j.stat_code
+help j.stat_code
+help j
+j.isAlive()
+exec stiva
+status
+jobs
+jobs.jobs_all
+exec stiva
+status
+exec stiva
+status
+exec stiva
+status
+exec stiva
+status
+exec stiva
+status
+see notepad
+ls
+see stiva
+status
+see stiva
+ls
+dir
+ls
+see palet
+randomizeBoxes()
+exec palet
+exec stiva
+see stiva
+exec stiva
+status
+randomizeBoxes()
+exec stiva
+status
+exec stiva
+status
+exec stiva
+jobs.status
+jobs.status()
+jobs._status_new()
+exec stiva
+speed 100
+status
+exec stiva
+status
+exec stiva
+help jobs.flush_finished
+help jobs._status_new
+help jobs.jobs_run
+help jobs.result
+jobs.result(0)
+status
+print jobs.result(0)
+print jobs.result(1)
+jobs.remove(0)
+j = jobs.jobs_all[0]
+j
+j.num
+j.isDaemon
+j.isDaemon()
+j.join()
+j._Thread__stop
+help j._Thread__stop
+randomizeBoxes()
+exec stiva
+jobs.remove(j)
+j
+jobs
+jobs[0]
+jobs.remove(j)
+jobs.remove(jobs[0])
+exec stiva
+help jobs
+jobs?
+jobs
+jobs.remove(jobs[0])
+jobs
+status
+exec stiva
+j._Thread__stopp
+j._Thread__stop
+j._Thread__stop()
+j._Thread__stopped
+exec stiva
+run -i random.env
+boxes
+run -i random.env
+b = worldObject("Box1")
+help b.removeChild
+help odeSim.removeSlot
+odeSim.bodies.remove(b)
+b
+odeSim.bodies.remove(boxes[0])
+boxes[0]
+odeSim.bodies[0]
+odeSim.bodies[1]
+odeSim.bodies
+mb = odeSim.createBodyManipulator(b)
+odeSim.bodies.remove(mb.odebody)
+mb.odebody
+odeSim.bodies[1]
+b = odeSim.bodies[1]
+b = odeSim.bodies[1].odebody
+b
+b.__repr__
+b = odeSim.bodies[1].odegeoms
+b = odeSim.bodies[1].initial_pos
+help ode.add
+help odeSim.add
+b = odeSim.bodies.remove("Box1")
+b = odeSim.bodies
+b
+b = odeSim.bodies[1]
+b.__module__
+b.__doc__
+b.odebody
+print b.odebody
+b = odeSim.bodies[0]
+print b.odebody
+print b.odegeoms
+print b.odegeoms[0]
+print b.odegeoms[0]._id
+print b.odegeoms[0]._id()
+print b.odegeoms[0].getInfo()
+print b.odegeoms[0].getBody()
+print b.obj
+print b.obj.name
+b = odeSim.bodies[1]
+print b.obj.name
+b = odeSim.bodies[4]
+print b.obj.name
+b = odeSim.bodies[7]
+print b.obj.name
+b = odeSim.bodies[10]
+print b.obj.name
+b = odeSim.bodies[11]
+print b.obj.name
+b = odeSim.bodies[13]
+print b.obj.name
+b.odebody
+odeSim.body_dict
+odeSim.bodies.remove(odeSim.bodies[13])
+exec stiva
+boxes
+del boxes
+boxes[1]
+boxes[1].geom
+odeSim.bodies[13]
+odeSim.bodies[13].odebody
+b = odeSim.bodies[13].odebody
+b
+b.disable
+b.disable()
+exec stiva
+env pal
+listl
+do appro st, 200
+APPRO(st,200)
+OPENI()
+APPRO(st,210)
+APPRO(st,150)
+APPRO(st,160)
+11*15
+APPRO(st,165)
+CLOSEI()
+DEPARTS(100)
+APPRO(pal, 100)
+env pal
+APPRO(st,165)
+MOVE(safe)
+OPENI()
+env pal
+APPRO(st,165)
+CLOSEI()
+DEPARTS(100)
+APPRO(pal, 100)
+APPRO(pal, 10)
+pal = RZ(30) * TRANS(150,-200,0) * RZ(-30) * TRANS(350,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(150,-200,0) * RZ(30) * TRANS(350,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(-150,-200,0) * RZ(30) * TRANS(350,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(150,200,0) * RZ(30) * TRANS(350,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(150,200,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(150,200,0) * RZ(30) * TRANS(400,-100,150,0,180,30)
+APPRO(pal, 10)
+env pal
+pal = RZ(-30) * TRANS(100,150,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+env pal
+OPENI()
+APPRO(st,200)
+APPRO(st,165)
+CLOSEI()
+DEPARTS(100)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(100,150,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(100,-150,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(-100,-150,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(-100,-140,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(-80,-150,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+pal = RZ(-30) * TRANS(80,-150,0) * RZ(30) * TRANS(450,-100,150,0,180,30)
+APPRO(pal, 10)
+env pal
+APPRO(pal, 10)
+env pal
+APPRO(pal, 10)
+env pal
+APPRO(pal, 10)
+a = TRANS(450,-100,150,0,180,30)
+APPRO(a, 10)
+env pal
+APPRO(a, 10)
+APPRO(pal, 10)
+env pal
+APPRO(pal, 10)
+APPRO(RZ(-30)*TRANS(100,0,0)*RZ(30)*pal, 10)
+APPRO(RZ(-30)*TRANS(0,100,0)*RZ(30)*pal, 10)
+APPRO(RZ(-30)*TRANS(0,200,0)*RZ(30)*pal, 10)
+env pal
+see stiva
+exec pal
+see stiva
+see pal
+exec pal
+see pal
+st
+SHIFT(st,0,0,1)
+exec pal
+see pal
+pal
+see pal
+exec paletizare
+mb = odeSim.createBodyManipulator(worldObject("Box1"))
+mb
+odeSim.bodies[13]
+b = odeSim.bodies[13]
+b.odegeoms
+b.odegeoms[0]
+g = b.odegeoms[0]
+g.setGeom
+help g.setGeom
+gb = ode.GeomBox
+gb = ode.GeomBox()
+gb
+g
+g.getBody()
+g.getInfo
+g.getInfo()
+g.getCollideBits
+g.getCollideBits()
+g.getAABB
+g.getAABB()
+g.getGeom()
+mb
+mb.body
+mb.body.geom
+mb.body.geom.lx
+env pal
+exec paletizare
+env pal
+g = odeSim.bodies[24].odegeoms[0].getGeom()
+g.getPosition()
+g.getLengths()
+odeSim.bodies[24].odebody.getPosition()
+g
+g.setLengths((0.2,0.3,0.05))
+exec paletizare
+env pal
+exec paletizare
+env pal
+exec paletizare
+env pal
+exec paletizare
+env pal
+exec paletizare
+see paletizare
+exec paletizare
+env pal
+exec paletizare
+see paletizare
+exec paletizare
+env pal
+exec paletizare
+1 |TO| 5
+5 |TO| 1
+see pal_back.py
+see pal_back
+env pal
+exec paletizare
+exec pal_back
+env pal
+exec pal_back
+exec paletizare
+exec pal_back
+env twostacks
+env pal
+env twostacks
+env pal
+exec paletizare
+exec pal_back.py
+exec pal_back
+env pal
+exec paletizare
+env pal
+exec paletizare
+exec pal_back
+exec paletizare
+exec pal_back
+MOVE(safe)
+env pal
+APPRO(a,100)
+APPRO(st,100)
+MOVE(safe)
+env pal
+exec paletizare
+env pal
+exec paletizare
+env pal
+exec paletizare
+exec pal_back.py
+env pal
+exec paletizare
+env pal
+exec paletizare
+exec pal_back.py

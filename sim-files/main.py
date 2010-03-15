@@ -56,6 +56,7 @@ else:
 from vplus import *
 import vplus
 
+
 vplus._editor = os.path.join(basepath, "notepad2", "Notepad2.exe")
 if not os.path.exists(vplus._editor):
     vplus._editor = "notepad.exe"

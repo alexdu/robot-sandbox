@@ -20,6 +20,7 @@
 
 # Programele robot au acces la toate functiile si variabilele definite aici
 
+from __future__ import division
 from numpy import matrix, mat
 from math import pi
 from geom import *
@@ -121,7 +122,12 @@ class infix:
     
 MOD = infix(lambda x,y: numpy.mod(x,y))
 
-TO = infix(lambda x,y: range(x,y+1))
+def _xrange(a,b):
+    if a < b:
+        return range(a, b+1)
+    else:
+        return range(a, b-1, -1)
+TO = infix(lambda x,y: _xrange(x,y))
 
 
 class TRANS:
@@ -136,7 +142,7 @@ class TRANS:
             self.yaw = yaw
             self.pitch = pitch
             self.roll = roll
-        
+            (self.x, self.y, self.z, self.yaw, self.pitch, self.roll) = decompose(self.get_htm())
         
     def __repr__(self):
         x = round(self.x, 3)
@@ -367,14 +373,38 @@ safe = PPOINT(0,-90,180,0,0,0)
 
 import IPython.ipapi
 def EXECUTE(prog):
+    jobs._status_new()
+    if len(jobs.jobs_all) > 0:
+        jobs.flush_finished()
     ip = IPython.ipapi.get()
     ip.ex("from vplus import *")
-    ip.magic("%%bg _ip.magic('%%run -i ../robot-programs/%s.py')" % prog)
+
+    if not re.match("^.*\.py$", prog):
+        prog = prog + ".py" 
+    ip.magic("%%bg _ip.magic('%%run -i %s')" % prog)
 
 def _CM_EXEC(self, prog):
+    """
+        
+    Monitor command for executing a robot program.
+
+    Example:
+
+    exec stiva
+    """
     EXECUTE(prog)
 
 def _CM_HERE(self, var):
+    """
+        
+    Monitor command for teaching robot locations.
+
+    Examples:
+
+    here a       # records current end-effector position as a transformation 
+    here #b      # records current joint position as a precision point
+    here bs:a    # records end-effector position in the local reference frame "bs"
+    """
     #IPShellEmbed()()
     ip = IPython.ipapi.get()
     
@@ -417,22 +447,53 @@ def _CM_HERE(self, var):
 
     print "(debug) " + cmd
     ip.runlines(cmd)
+    ip.runlines("vplus.%s = %s" % (var,var))
     ip.runlines(var)
 
 
     
     
-def _CM_STATUS(self, var):
+def _CM_STATUS(self, var):    
+    """
+        
+    Displays robot speeds and running programs.
+
+    """
     print "Monitor speed: ", RobotSim.speed_monitor
     print "Program speed (ALWAYS): ", RobotSim.speed_always
     print "Program speed for next motion: ", RobotSim.speed_next_motion
+    for i, j in enumerate(jobs.jobs_run):
+        print i, j, j.status
 
 def _CM_TOOL(self, var):
+    """
+        
+    Set the tool transformation.
+
+    Examples:
+
+    t = TRANS(0,0,100)
+    tool t
+
+    tool TRANS(0,0,100)
+
+    tool RZ(45)
+
+    """
     ip = IPython.ipapi.get()
     ip.runlines("TOOL(" + var + ")")
 
 
 def _CM_PARAM(self, var):
+    """
+
+    Set a parameter.
+
+    Example:
+
+    parameter hand.time = 0.5
+
+    """
     if len(var) == 0:
         print RobotSim.param
     else:
@@ -446,19 +507,182 @@ def _CM_PARAM(self, var):
         
 
 def _CM_ENABLE(self, var):
+    """
+
+    Enable a switch.
+
+    Example:
+
+    enable power
+
+    """
     RobotSim.switch[var.upper()] = True
 
+
+
 def _CM_DISABLE(self, var):
+    """
+
+    Disable a switch.
+
+    Example:
+
+    disable power
+
+    """
     RobotSim.switch[var.upper()] = False
 
 def _CM_SWITCH(self, var):
+    """
+
+    List switches and their values.
+
+    """
     if len(var) == 0:
         print RobotSim.switch
     else:
         print RobotSim.switch[var.upper()]
 
 def _CM_CALIBRATE(self, var):
+    """
+
+    Does nothing.
+
+    """
     print "Simulated robots do not need calibration :)"
 
-def _CM_SEE(self, var):
-    os.system(_editor + " ../robot-programs/%s.py" % var)
+
+def _CM_SEE(self, prog):
+    """
+
+    Edits a robot program.
+
+    Example:
+
+    see stiva
+
+    Editor is vplus._editor 
+    Default editor on Windows: notepad2 (included).
+    If not found, falls back to notepad.
+
+    """
+    if not re.match("^.*\.py$", prog):
+        prog = prog + ".py" 
+    
+    print "editing %s ..." % prog
+    os.popen('%s %s' % (_editor, prog))
+
+def _CM_SPEED(self, var):
+    """
+
+    Set monitor speed.
+
+    Example:
+
+    speed 100
+
+    Tip: you may change the monitor speed while a robot program is running.
+    """
+    spd = eval('int(%s)' % var)
+    print "Setting monitor speed to %d" % spd
+    SPEED(spd, MONITOR)
+
+from IPython.Shell import IPShellEmbed
+def _CM_LISTL(self, var):
+    """
+
+    Lists location variables (TRANS and PPOINT).
+    """
+    print "Location variables:"
+    print "==================="
+    print "Transformations:"
+    for k,v in globals().iteritems(): 
+        if type(v).__name__ == 'instance':
+            if v.__class__.__name__ == 'TRANS':
+                print k, " = ", v
+    print ""
+    print "Precision points:"
+    for k,v in globals().iteritems(): 
+        if type(v).__name__ == 'instance':
+            if v.__class__.__name__ == 'PPOINT':
+                print k, " = ", v
+
+
+def _CM_LISTR(self, var):
+    """
+
+    Lists real and integer variables.
+    """
+    print "Real and integer variables:"
+    print "=========================="
+    print "Reals:"
+    for k,v in globals().iteritems(): 
+        if type(v).__name__ == 'float':
+            print k, " = ", v
+    print ""
+    print "Integers:"
+    for k,v in globals().iteritems(): 
+        if type(v).__name__ == 'int':
+            print k, " = ", v
+            
+def _CM_LISTS(self, var):
+    """
+
+    Lists string variables.
+    """
+    print "String variables:"
+    print "================="
+    for k,v in globals().iteritems(): 
+        if type(v).__name__ == type('string').__name__:
+            print k, " = ", v
+
+
+
+
+def _CM_ENV(self, prog):
+    """
+
+    Initializes the work environment for the robot.
+    """
+    RobotSim.pauseTick = True
+    try:
+        time.sleep(0.1)
+        ip = IPython.ipapi.get()
+        ip.runlines("resetBoxes()")
+        if not re.match("^.*\.env$", prog):
+            prog = prog + ".env" 
+        f = open(prog)
+        r = f.read()
+        f.close()
+        ip.runlines(r)
+    finally:
+        RobotSim.pauseTick = False
+    
+
+
+def _CM_MC(self, var):
+    """
+
+    Displays a list of supported monitor commands.
+
+    """
+    print "Monitor commands:"
+    print "================="
+    print "here           # teach a robot location"
+    print "speed          # set monitor speed"
+    print "see            # edit a robot program"
+    print "exec           # execute a robot program"
+    print "status         # display system status"
+    print "listl          # list location variables"
+    print "listr          # list real and integer variables"
+    print "lists          # list string variables"
+    print "enable         # enable a switch"
+    print "disable        # disable a switch"
+    print "switch         # list switches"
+    print "parameter      # set a parameter"
+    print "tool           # set the tool transformation"
+    print "cd <folder>    # change directory"
+    print "ls             # list files"
+    print ""
+    print "For more help, type a monitor command followed by '?'"    
+    print "e.g. here?"    

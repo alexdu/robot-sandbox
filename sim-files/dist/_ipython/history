@@ -5,38 +5,6 @@ ls
 exec stiva
 jobs
 exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
-see palet
-exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
 see palet
 exec stiva
 ls
@@ -998,3 +966,35 @@ exec pal_back.py
 env twostacks.env
 listl
 exec spirala
+env stive
+exec spirala
+env stive
+exec spirala
+env stive
+exec spirala
+env stive
+exec spirala
+env stive
+env pal
+exec paletizare
+env stive
+exec paletizare
+exec spirala
+env pal
+exec paletizare
+exec pal_back.py
+see paletizare
+env pal
+exec paletizare
+see paletizare
+env pal
+exec paletizare
+env pal
+speed 50
+exec paletizare
+env pal
+exec paletizare
+tool NULL
+env pal
+speed 50
+exec paletizare

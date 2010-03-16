@@ -163,7 +163,7 @@ def changeRobotPos(J):
 
 
 def setGripperForces(open, close):
-    gripForce = 10
+    gripForce = 100
     slider_finger1.motorfmax = gripForce
     slider_finger2.motorfmax = gripForce
     slider_finger1.fudgefactor = 0
@@ -255,7 +255,7 @@ eventmanager.connect(STEP_FRAME, tick)
 
 
 prop = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.1, soft_cfm=1E-4)
-odeSim = ODEDynamics(gravity=9.81/5, substeps=10, cfm=1E-3, erp=0.5, defaultcontactproperties = prop,
+odeSim = ODEDynamics(gravity=9.81/5, substeps=2, cfm=1E-3, erp=0.5, defaultcontactproperties = prop,
                show_contacts=0, contactmarkersize=1E-3, contactnormalsize=0.1)
 # category bits:
 # 1 = robot (se ciocneste de piese)

@@ -34,8 +34,9 @@ Se instaleaza mediul de dezvoltare si bibliotecile de mai jos:
 - PyProtocols (from source, pyhon setup.py --without-speedups install)
 - pyreadline
 
-Este important ca ODE si PyODE sa fie compilate folosind precizie dubla.
-In cgkit, odedynamics.py se alege metoda self.world.step(subdt)
+Este important ca ODE si PyODE sa fie compilate folosind precizie dubla. 
+
+In sursele cgkit, fisierul odedynamics.py, se alege metoda self.world.step(subdt)
 si se comenteaza self.world.quickStep(subdt). Altfel o sa zboare piesele din gripper.
 
 TODO: cum rezolv chestia asta? (adica sa mearga si cu step, si cu quickstep)

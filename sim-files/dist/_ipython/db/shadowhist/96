@@ -1,0 +1,8 @@
+(dp1
+VMOVE(bs*SHIFT(a,-80,0,-100))
+p2
+I49
+sVenv pal-inc
+p3
+I30
+s.

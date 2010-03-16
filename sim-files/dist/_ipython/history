@@ -5,66 +5,6 @@ ls
 exec stiva
 jobs
 exec stiva
-see palet
-exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
-see palet
-exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
-see palet
-exec stiva
-randomizeBoxes()
-exec stiva
-see stiva
-exec stiva
-ls
-pwd
-ls
-exec stiva
-ls
-pwd
-ls
-exec stiva
-jobs
-exec stiva
 ls
 pwd
 ls
@@ -998,3 +938,63 @@ tool NULL
 env pal
 speed 50
 exec paletizare
+env pal-inc
+exec paletizare
+env pal-inc
+exec paletizare
+bs = RZ(30)*RX(10)*RY(20)
+bs
+here bs:a
+a = TRANS(119,-101,813,0,180,0)
+MOVE(bs*a)
+a = TRANS(119,-101,500,0,180,0)
+MOVE(bs*a)
+bs = INVERSE(RZ(30)*RX(10)*RY(20))
+MOVE(bs*a)
+a = TRANS(-119,-101,500,0,180,0)
+MOVE(bs*a)
+APPRO(pal,100)
+here bs:a
+a = TRANS(455,5,84,0,180,0)
+MOVE(bs*a)
+MOVE(bs*SHIFT(a,100,0,0))
+MOVE(bs*SHIFT(a,0,0,0))
+MOVE(bs*SHIFT(a,-10,0,0))
+MOVE(bs*SHIFT(a,-100,0,0))
+MOVE(bs*SHIFT(a,-80,0,0))
+MOVE(bs*SHIFT(a,-80,0,10))
+MOVE(bs*SHIFT(a,-80,0,-50))
+MOVE(bs*SHIFT(a,-80,0,-80))
+MOVE(bs*SHIFT(a,-80,0,-100))
+here bs:pal
+see paletizare
+MOVE(safe)
+env pal-inc
+exec pal_inc
+ls
+see pal_inc
+see pal_inc.
+see pal_inc
+exec pal_inc
+see pal_inc
+exec pal_inc
+bs
+APPRO(bs*pal,100)
+here bs:pal
+here x
+bs*pal
+MOVE(x)
+MOVE(bs*pal)
+env pal-inc
+bs = INVERSE(RZ(30)*RX(10)*RY(20))
+APPRO(bs*pal,100)
+APPRO(pal,100)
+a = TRANS(455,5,84,0,180,0)
+MOVE(bs*a)
+MOVE(bs*SHIFT(a,-80,0,-100))
+here bs:p
+MOVE(bs*p)
+see pal_inc
+here bs:pali
+see pal_inc
+exec pal_inc

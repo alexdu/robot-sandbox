@@ -1,0 +1,5 @@
+(dp1
+VMOVE(bs*SHIFT(a,0,0,0))
+p2
+I42
+s.

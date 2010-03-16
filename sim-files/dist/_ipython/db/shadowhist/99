@@ -2,4 +2,7 @@
 Vspeed 100
 p2
 I24
+sVMOVE(bs*SHIFT(a,-80,0,10))
+p3
+I46
 s.

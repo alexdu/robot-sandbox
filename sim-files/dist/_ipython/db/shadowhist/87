@@ -1,5 +1,14 @@
 (dp1
-Vexit()
+Vre.findall("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c")
 p2
+I96
+sVexit()
+p3
 I14
+sVdo SeT p = TrANS(0,dx(45),0)
+p4
+I209
+sVhelp re.findall
+p5
+I95
 s.

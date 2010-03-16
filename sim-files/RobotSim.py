@@ -39,6 +39,7 @@ flip = False
 single = False
 
 
+debug = 0
 
 startJointPos = currentJointPos     # de unde am inceput miscarea
 destJointPos = currentJointPos      # unde ma opresc
@@ -189,6 +190,14 @@ def ActuateGripper():
         sig_open = False
         sig_close = True
     
+def ang_distance(A,B):
+    a = cgkit.cgtypes.mat4(A.HTM.flatten().tolist()[0])
+    b = cgkit.cgtypes.mat4(B.HTM.flatten().tolist()[0])
+    qa = cgkit.cgtypes.quat(a)
+    qb = cgkit.cgtypes.quat(b)
+    qdif = qa.inverse() * qb
+    aa = qdif.toAngleAxis()
+    return aa[0] * 180/pi
     
 def lin_interp(A,B,t):
     """ Interpolare liniara intre doua transformari (pentru MOVES)
@@ -232,7 +241,7 @@ def ctraj(jdest):
         p1 = DK(currentJointPos)
         p2 = DK(destJointPos)
 
-        d = DISTANCE(p1,p2)
+        d = DISTANCE(p1,p2) + ang_distance(p1,p2)*10
         time = d / max_cartesian_speed / (speed_next_motion/100.0) / (speed_monitor/100.0)
         steps = 2 + round(time * fps)
         arm_trajectory_index = 0

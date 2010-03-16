@@ -1,5 +1,11 @@
 (dp1
-Vls
+Vdo moves bs:shift(aux by 0,0,0)
 p2
+I391
+sVls
+p3
 I53
+sVdo print #ppoint(0,-90,90,0,0,0)
+p4
+I326
 s.

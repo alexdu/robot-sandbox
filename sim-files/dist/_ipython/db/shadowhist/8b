@@ -1,5 +1,14 @@
 (dp1
-VMOVE(x)
+Vdo set e = bs:rx(180)
 p2
+I378
+sVMOVE(x)
+p3
 I59
+sVenable power(
+p4
+I66
+sVa = "x"
+p5
+I126
 s.

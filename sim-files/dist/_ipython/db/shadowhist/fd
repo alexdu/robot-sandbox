@@ -1,5 +1,14 @@
 (dp1
-VrandomizeBoxes()
+Vre.sub("([a-z])", r"x", "cucu-Bau")
 p2
+I78
+sVdo move safe
+p3
+I283
+sVdo set bs = frame(a,b,c,d)
+p4
+I215
+sVrandomizeBoxes()
+p5
 I17
 s.

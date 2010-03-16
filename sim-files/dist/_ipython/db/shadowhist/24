@@ -1,5 +1,8 @@
 (dp1
-Venv random
+Vdo move shift(pal by 0,0,10)
 p2
+I333
+sVenv random
+p3
 I64
 s.

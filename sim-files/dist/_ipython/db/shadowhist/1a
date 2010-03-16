@@ -2,4 +2,7 @@
 Va = TRANS(119,-101,500,0,180,0)
 p2
 I36
+sVdo moves shift(pal by 136, 407, -20)
+p3
+I318
 s.

@@ -2,4 +2,10 @@
 Vimport ipy_system_conf
 p2
 I4
+sVdo move shift(pal by -130, -20, -35)
+p3
+I276
+sVdo moves shift(pal by 120, 400, -40)
+p4
+I306
 s.

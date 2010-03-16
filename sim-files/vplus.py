@@ -29,6 +29,8 @@ import numpy
 import time
 import os
 import re
+from IPython.Shell import IPShellEmbed
+
 numpy.set_printoptions(precision=2, suppress=True)
 
 PI = pi
@@ -408,6 +410,8 @@ def _CM_HERE(self, var):
     #IPShellEmbed()()
     ip = IPython.ipapi.get()
     
+    var = var.lower()
+    
     reSingleVar = """
         ^
         [a-z]?        # start with lowercase letter
@@ -445,10 +449,11 @@ def _CM_HERE(self, var):
         print "here (monitor command): syntax error"
         return
 
-    print "(debug) " + cmd
-    ip.runlines(cmd)
-    ip.runlines("vplus.%s = %s" % (var,var))
-    ip.runlines(var)
+    if RobotSim.debug:
+        print "(debug) " + cmd    
+    ip.runlines(cmd + "\r\n" \
+        + "vplus.%s = %s" % (var,var) + "\r\n"\
+        + var)
 
 
     
@@ -481,7 +486,7 @@ def _CM_TOOL(self, var):
 
     """
     ip = IPython.ipapi.get()
-    ip.runlines("TOOL(" + var + ")")
+    ip.runlines("TOOL(" + _translate_do_line(var) + ")")
 
 
 def _CM_PARAM(self, var):
@@ -587,7 +592,6 @@ def _CM_SPEED(self, var):
     print "Setting monitor speed to %d" % spd
     SPEED(spd, MONITOR)
 
-from IPython.Shell import IPShellEmbed
 def _CM_LISTL(self, var):
     """
 
@@ -664,6 +668,107 @@ def _CM_ENV(self, prog):
         RobotSim.pauseTick = False
     
 
+import string
+def _translate_do_line(var):
+    vplus_keywords = ['ABORT', 'ABOVE', 'ABS', 'ACCEL', 'ALIGN', 'ALTER', 'ALWAYS', 'AND', 'ANY', 
+    'APPRO', 'APPROS', 'ASC', 'ATAN2', 'ATTACH', 'AUTO', 'BELOW', 'BREAK', 'BY', 'CALIBRATE', 'CALL', 
+    'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'COS', 'DECOMPOSE', 'DEFINED', 'DELAY', 'DEPART', 'DEPARTS', 
+    'DEST', 'DETACH', 'DISABLE', 'DISTANCE', 'DRIVE', 'DRY.RUN', 'DURATION', #DX, DY, DZ (nu le punem aici)
+    'ELSE', 'ENABLE', 'END', 'ERROR', 'ESTOP', 'EXECUTE', 'EXIT', 'FALSE', 'FINE', 'FLIP', 'FOR', 'FRACT', 
+    'FRAME', 'GLOBAL', 'HAND.TIME', 'HERE', 'IF', 'INRANGE', 'INT', 'INVERSE', 'IPS', 'JHERE', 'JMOVE', 
+    'KILL', 'LAST', 'LEFTY', 'LEN', 'LOCAL', 'MAX', 'MC', 'MCS', 'MIN', 'MMPS', 'MOD', 'MOVE', 'MOVES', 
+    'MOVET', 'MOVEST', 'MULTIPLE', 'NEXT', 'NOFLIP', 'NONULL', 'NOT', 'NULL', 'OFF', 'ON', 'OPEN', 'OPENI', 
+    'OR', 'PARAMETER', 'PAUSE', 'PI', 'POS', 'POWER', '#PPOINT', 'PPOINT', '.PROGRAM', 'PROMPT', 'RANDOM', 
+    'RELAX', 'RELAXI', 'RESET', 'RETURN', 'RETURNE', 'RIGHTY', 'ROBOT', 'RUNSIG', 'RX', 'RY', 'RZ', 
+    'SEE', 'SELECT', 'SET', 'SHIFT', 'SIG', 'SIGN', 'SIGNAL', 'SIG', 'SINGLE', 'SPEED', 'SQR', 'SQRT', 
+    'STATE', 'STATUS', 'STOP', 'SWITCH', 'TAS', 'TASK', 'TERMINAL', 'TIME', 'TIMER', 'TOOL', 'TRANS', 
+    'TRUE', 'TYPE', 'UNTIL', 'UPPER', 'VAL', 'VALUE', 'WAIT', 'WAIT.EVENT', 'WHILE', 'WRITE']
+    
+
+    # APPRO a, b    => APPRO(a, b)
+    # adica ceea ce in vplus nu are nevoie de paranteze, dar are parametri
+    vplus_functions = ['ACCEL', 'APPRO', 'APPROS', 'ATTACH', 
+    'DELAY', 'DEPART', 'DEPARTS', 
+    'DETACH', 'DISABLE', 'DRIVE',  'DURATION', # 'DX', 'DY', 'DZ', 
+    'ENABLE', 'EXECUTE', 
+    'JMOVE', 
+    'KILL', 'MCS', 'MOVE', 'MOVES', 
+    'MOVET', 'MOVEST', 
+    'PAUSE', 'PROMPT', 
+    'RUNSIG', 
+    'SIGNAL', 'SPEED',
+    'TOOL', 
+    'TIMER', 
+    'VAL', 'WAIT', 'WAIT.EVENT']
+
+    # OPENI => OPENI()
+    # adica chestii fara parametri, care nu pot sa apara in expresii
+    vplus_noarg_functions = ['ABORT', 'ABOVE', 'ALIGN', 
+    'BELOW', 'BREAK', 'CALIBRATE',
+    'CLOSE', 'CLOSEI', 'COARSE', 
+    'DEST', 
+    'FINE', 'FLIP',
+    'LEFTY', 
+    'NOFLIP', 'OPEN', 'OPENI', 
+    'RELAX', 'RELAXI', 'RESET', 'RETURN', 'RETURNE', 'RIGHTY', 
+    'SEE', 'SINGLE',
+    'STATUS', 'STOP']
+    
+    var = var.replace(":", "|")
+    vs = re.split("([a-zA-Z\#][a-zA-Z0-9_\.]*)", var)
+    newvs = []
+
+    #print vs[1]
+    if len(vs) > 1:
+        if vs[1].upper() in vplus_functions:
+            vs.insert(2, '(')
+            vs.append(')')
+        elif vs[1].upper() in vplus_noarg_functions:
+            vs.append('()')
+        #print vs
+
+    vs.append("")
+    for i,s in enumerate(vs):
+        if (i == 1) and (s.upper() == "SET"):
+            pass
+        elif s.upper() == 'BY':
+            newvs.append(",")
+        elif s.upper() == 'TYPE':
+            newvs.append("print")
+        elif s.upper() == 'HERE':
+            newvs.append("HERE()")
+        elif s.upper() == 'DEST':
+            newvs.append("DEST()")
+        elif s.upper() in vplus_keywords:
+            newvs.append(s.upper())
+        elif s.upper() in ["DX", "DY", "DZ"]:       # DX, DY, DZ sunt functii daca sunt urmate de paranteza; 
+            if re.match("\ *\(", (vs[i+1]).upper()): # altfel, sunt variabile
+                print "functie"
+                newvs.append(s.upper())
+            else:
+                newvs.append(s.lower())
+        else:
+            newvs.append(s.lower())
+
+    vs = list(newvs)
+    newvs = []
+    # inlocuiesc punctul cu underscore
+    for s in vs:
+        if re.match("^[a-zA-Z0-9\.\_\#]+$", s): # nume de variabila
+            newvs.append(s.replace(".", "_").replace("#", ""))
+        else:
+            newvs.append(s)
+    
+    var = string.join(newvs, "")
+    return var
+    
+def _CM_DO(self, var):
+    var = _translate_do_line(var)
+    if RobotSim.debug:
+        print "(debug) " + var
+    
+    ip = IPython.ipapi.get()
+    ip.runlines(var)
 
 def _CM_MC(self, var):
     """

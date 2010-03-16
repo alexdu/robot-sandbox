@@ -2,4 +2,7 @@
 Vquit()
 p2
 I1
+sVdo move shift(pal by 110,120,60)
+p3
+I340
 s.

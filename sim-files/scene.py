@@ -1,3 +1,4 @@
+
 #       scene.py#       #       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>#       #       This program is free software; you can redistribute it and/or modify#       it under the terms of the GNU General Public License as published by#       the Free Software Foundation; either version 2 of the License, or#       (at your option) any later version.#       #       This program is distributed in the hope that it will be useful,#       but WITHOUT ANY WARRANTY; without even the implied warranty of#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the#       GNU General Public License for more details.#       #       You should have received a copy of the GNU General Public License#       along with this program; if not, write to the Free Software#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,#       MA 02110-1301, USA.
 
 from __future__ import division
@@ -64,14 +65,6 @@ floor.pos = (0,0,-25E-3)
 global t
 t = 0
 
-def enforceSpeedLimit(maxspeed):
-    for b in scene.walkWorld():
-        if b.linearvel.length() > maxspeed:
-            odeSim.createBodyManipulator(b).setLinearVel(b.linearvel.normalize() * maxspeed)
-            print "speed limit exceeded"
-        if b.angularvel.length() > maxspeed:
-            odeSim.createBodyManipulator(b).setAngularVel(b.angularvel.normalize() * maxspeed)
-            print "angular vel limit exceeded"
             
 
 def enforcePose(m, P):
@@ -237,7 +230,6 @@ def tick():
         setGripperForces(RobotSim.sig_open, RobotSim.sig_close)
         
         changeRobotPos(RobotSim.currentJointPos)
-        enforceSpeedLimit(50) # ca sa nu crape ODE
 
         # avans la urmatorul punct pe traiectorie
         
@@ -257,6 +249,9 @@ eventmanager.connect(STEP_FRAME, tick)
 prop = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.1, soft_cfm=1E-4)
 odeSim = ODEDynamics(gravity=9.81/5, substeps=2, cfm=1E-3, erp=0.5, defaultcontactproperties = prop,
                show_contacts=0, contactmarkersize=1E-3, contactnormalsize=0.1)
+odeSim.world.setLinearDamping(0.1)
+odeSim.world.setAngularDamping(0.1)
+
 # category bits:
 # 1 = robot (se ciocneste de piese)
 # 2 = floor (se ciocneste de piese)

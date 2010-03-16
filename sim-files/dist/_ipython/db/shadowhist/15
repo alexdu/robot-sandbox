@@ -2,4 +2,7 @@
 VMOVE(bs*p)
 p2
 I62
+sVdo move here:rz(90)
+p3
+I387
 s.

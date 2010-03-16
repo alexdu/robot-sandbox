@@ -1,5 +1,11 @@
 (dp1
-VMOVE(bs*SHIFT(a,100,0,0))
+Vdo set bs = frame(b,a,c,d)
 p2
+I376
+sVMOVE(bs*SHIFT(a,100,0,0))
+p3
 I41
+sVs = re.findall("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c")
+p4
+I97
 s.

@@ -1,5 +1,8 @@
 (dp1
-Vtool TRANS(0,0,1000)
+Vfor i in s: print i.start()
 p2
+I106
+sVtool TRANS(0,0,1000)
+p3
 I28
 s.

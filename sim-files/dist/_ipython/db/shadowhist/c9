@@ -1,8 +1,20 @@
 (dp1
-Vhere bs:a
+Vdo move shift(pal by -100, 10, 0)
 p2
-I33
+I264
 sVMOVE(bs*SHIFT(a,-80,0,0))
 p3
 I45
+sVhere bs:a
+p4
+I33
+sVa = [1,2,3]
+p5
+I148
+sVdo move shift(pal by 90,170,48)
+p6
+I369
+sVdo appro b, 100
+p7
+I330
 s.

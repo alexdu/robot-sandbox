@@ -1,8 +1,11 @@
 (dp1
-VMOVE(bs*SHIFT(a,-80,0,-100))
+Vdo appros c, 100
 p2
-I49
+I366
 sVenv pal-inc
 p3
 I30
+sVMOVE(bs*SHIFT(a,-80,0,-100))
+p4
+I49
 s.

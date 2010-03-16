@@ -5,4 +5,13 @@ I38
 sVMOVE(bs*SHIFT(a,-80,0,-80))
 p3
 I48
+sVdo moves a
+p4
+I328
+sVdo appro st, 200
+p5
+I140
+sVdo moves a, 100
+p6
+I147
 s.

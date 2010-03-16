@@ -24,9 +24,9 @@ def pick_place(pick,place):
 def paletizare():
     # variabile globale: safe, st, pal, dx, dy, dz
     n = 12   # numarul de piese
-    ang = -30
-    nl = 2
-    nc = 3
+    ang = 60
+    nl = 3
+    nc = 2
     nn = 2
     
 

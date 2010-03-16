@@ -1,5 +1,11 @@
 (dp1
-VMOVE(bs*SHIFT(a,-80,0,-50))
+Vdo moves bs:shift(aux by 150,0,-90)
 p2
+I395
+sVMOVE(bs*SHIFT(a,-80,0,-50))
+p3
 I47
+sVdo set bs = frame(a,b,C,D)
+p4
+I217
 s.

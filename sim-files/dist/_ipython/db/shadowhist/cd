@@ -2,4 +2,16 @@
 VAPPRO(pal,100)
 p2
 I39
+sVhere bs|test
+p3
+I227
+sVdo print ppoint(0,-90,90,0,0,0)
+p4
+I327
+sVbs = RZ(45)
+p5
+I201
+sVdo moves shift(pal by 128, 400, 0)
+p6
+I310
 s.

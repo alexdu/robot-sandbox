@@ -1,5 +1,8 @@
 (dp1
-Vtool NULL
+Vdo moves shift(pal by -100, 400, -40)
 p2
+I303
+sVtool NULL
+p3
 I29
 s.

@@ -1,5 +1,17 @@
 (dp1
-Venv pal
+Vtool new.tool
 p2
+I236
+sVenv pal
+p3
 I20
+sVs = "x"
+p4
+I75
+sVreload vplus
+p5
+I141
+sVdo appro bs:loc, 100
+p6
+I224
 s.

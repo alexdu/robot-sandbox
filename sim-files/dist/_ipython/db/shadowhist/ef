@@ -1,5 +1,20 @@
 (dp1
-VTRANS(10)
+V_ip
 p2
+I418
+sV__globals__
+p3
+I404
+sVdo appro dy(201), 200
+p4
+I197
+sVTRANS(10)
+p5
 I7
+sV__builtins__.dict
+p6
+I413
+sV"x" in ["x", "y"]
+p7
+I122
 s.

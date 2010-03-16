@@ -2,4 +2,10 @@
 VMOVE(safe)
 p2
 I51
+sVRobotSim.debug = 0
+p3
+I253
+sVhere bs:A
+p4
+I199
 s.

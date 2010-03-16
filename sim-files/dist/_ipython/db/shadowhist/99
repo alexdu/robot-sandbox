@@ -1,8 +1,11 @@
 (dp1
-Vspeed 100
+Vdo appro pal, 6
 p2
+I256
+sVspeed 100
+p3
 I24
 sVMOVE(bs*SHIFT(a,-80,0,10))
-p3
+p4
 I46
 s.

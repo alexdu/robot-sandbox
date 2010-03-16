@@ -1,5 +1,8 @@
 (dp1
-VTRANS
+Vfor i in s: print i.groups()
 p2
+I102
+sVTRANS
+p3
 I5
 s.

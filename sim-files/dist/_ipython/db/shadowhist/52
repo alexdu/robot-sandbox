@@ -2,4 +2,7 @@
 Va  = HERE()
 p2
 I15
+sVre.split("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu(baFu + #bau+c")
+p3
+I120
 s.

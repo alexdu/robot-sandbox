@@ -1,5 +1,11 @@
 (dp1
-Vexec pal_inc
+V203-332
 p2
+I293
+sVexec pal_inc
+p3
 I52
+sVdo move shift(pal by -100, 30, -30)
+p4
+I269
 s.

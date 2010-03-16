@@ -1,8 +1,11 @@
 (dp1
-Vhere bs:pali
+VMOVE(bs*SHIFT(a,-100,0,0))
 p2
-I63
-sVMOVE(bs*SHIFT(a,-100,0,0))
-p3
 I44
+sVhere bs:pali
+p3
+I63
+sVdo move d
+p4
+I373
 s.

@@ -46,6 +46,7 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("here", vplus._CM_HERE)
         IPython.ipapi.get().expose_magic("status", vplus._CM_STATUS)
         IPython.ipapi.get().expose_magic("tool", vplus._CM_TOOL)
+        IPython.ipapi.get().expose_magic("TOOL", vplus._CM_TOOL)
         IPython.ipapi.get().expose_magic("enable", vplus._CM_ENABLE)
         IPython.ipapi.get().expose_magic("en", vplus._CM_ENABLE)
         IPython.ipapi.get().expose_magic("disable", vplus._CM_DISABLE)
@@ -63,6 +64,8 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("mc", vplus._CM_MC)
         IPython.ipapi.get().expose_magic("cm", vplus._CM_MC)
         IPython.ipapi.get().expose_magic("env", vplus._CM_ENV)
+        IPython.ipapi.get().expose_magic("do", vplus._CM_DO)
+        IPython.ipapi.get().expose_magic("DO", vplus._CM_DO)
         _ipshell() 
         os.abort()
         raise SystemExit

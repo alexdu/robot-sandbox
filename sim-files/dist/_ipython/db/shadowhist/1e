@@ -1,5 +1,8 @@
 (dp1
-VMOVE(bs*pal)
+Vhere b
 p2
+I319
+sVMOVE(bs*pal)
+p3
 I60
 s.

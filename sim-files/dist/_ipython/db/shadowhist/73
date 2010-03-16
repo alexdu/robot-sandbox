@@ -1,5 +1,14 @@
 (dp1
-Vexec spirala
+Vre.sub("[a-z]", "x", "cucu-bau")
 p2
+I72
+sVre.search("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu baFu + bau+c").groups()
+p3
+I114
+sVdo moves e:rz(90)
+p4
+I379
+sVexec spirala
+p5
 I19
 s.

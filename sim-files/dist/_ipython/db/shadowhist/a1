@@ -2,4 +2,10 @@
 Venv stive
 p2
 I18
+sVdo moves shift(pal by 130, 400, -40)
+p3
+I307
+sVset p_world = bs:p
+p4
+I211
 s.

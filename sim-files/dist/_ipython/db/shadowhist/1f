@@ -1,0 +1,26 @@
+(dp1
+Venv paletizare.env
+p2
+I823
+sVsplit_comment('ana; "are ; 5" ;mere')
+p3
+I1183
+sV_ip.to_user_ns
+p4
+I843
+sVdo print rz(45)
+p5
+I291
+sV(1.2 | 1.5)
+p6
+I1295
+sVSHIFT(a, 1,2,3)
+p7
+I1262
+sVhere c
+p8
+I353
+sVdo set place = bs:shift(pal, i*dx, j*dy, k*dz)
+p9
+I234
+s.

@@ -1,0 +1,23 @@
+(dp1
+Vls *.env
+p2
+I575
+sVnotstring = '([^"])'
+p3
+I1131
+sVdo move e
+p4
+I375
+sVdo param hand.time = 5
+p5
+I625
+sVprint (a=5)
+p6
+I1227
+sVsys.platform
+p7
+I1361
+sVmagic_tb
+p8
+I952
+s.

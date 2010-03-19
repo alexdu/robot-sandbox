@@ -1,0 +1,38 @@
+(dp1
+Vauto x
+p2
+I1081
+sVre.search('("[^"]*")', 'ana are " + 5 + " mere').groups()
+p3
+I1118
+sVtc.Normal
+p4
+I1414
+sVprint i
+p5
+I558
+sVa.upper()
+p6
+I191
+sVprint "%5.3g" % 53.3
+p7
+I502
+sVlen(A)
+p8
+I1412
+sVexec bg
+p9
+I986
+sVdic = vplus._build_dictionary()
+p10
+I886
+sVlocals().sort()
+p11
+I471
+sVdo SET BS = TRANS(XBS,YBS,DZ):RZ(ANG)
+p12
+I220
+sVdo wait 4
+p13
+I873
+s.

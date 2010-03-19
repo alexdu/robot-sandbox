@@ -1,0 +1,20 @@
+(dp1
+Vre.sub("([a-z])", r"\u005C1".upper(), "cucu-bau")
+p2
+I76
+sVhelp jobs
+p3
+I1320
+sVdo appro c, 100
+p4
+I354
+sVdo move trans(0,0,988.4,0,0,0)
+p5
+I802
+sVre.match(elem, test).groups()
+p6
+I1146
+sVsys.last_traceback.tb_next
+p7
+I924
+s.

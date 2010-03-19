@@ -2,4 +2,16 @@
 Vsee paletizare
 p2
 I23
+sVprint "%40s" % "x032e"
+p3
+I494
+sVtool tool:rz(45)
+p4
+I628
+sV'4' in a
+p5
+I1383
+sVhelp _ip.runlines
+p6
+I825
 s.

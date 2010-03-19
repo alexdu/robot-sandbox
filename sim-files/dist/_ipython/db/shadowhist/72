@@ -1,0 +1,29 @@
+(dp1
+Vdo move #ppoint(0,-90,90,0,0,0)
+p2
+I325
+sV(1)+()
+p3
+I687
+sVa.index(4)
+p4
+I664
+sVa[:8]
+p5
+I1165
+sVdo move trans(0,0,988,0,0,0)
+p6
+I797
+sVpprint(lin)
+p7
+I1010
+sVtb.tb_frame.f_code
+p8
+I1367
+sVlistl rz(34)
+p9
+I738
+sVdo move shift(pal by 100, 10, 100)
+p10
+I262
+s.

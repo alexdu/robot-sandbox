@@ -1,0 +1,29 @@
+(dp1
+Vre.match("dx\u005C *\u005C(", "dx (")
+p2
+I171
+sVdx
+p3
+I167
+sVbeautify_line('print "shift(x by dx(5)"')
+p4
+I1197
+sVdo set new.tool = old.tool:inverse(loc):ref.loc
+p5
+I732
+sVa = "vucsd"
+p6
+I507
+sVs.index('x')
+p7
+I1162
+sVdo moves trans(10,-300,800,0,0,0)
+p8
+I816
+sVdo move shift(pal by -100, 20, -30)
+p9
+I268
+sVdo moves bs:shift(here by 0,0,-10)
+p10
+I384
+s.

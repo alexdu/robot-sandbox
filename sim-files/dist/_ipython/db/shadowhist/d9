@@ -1,0 +1,17 @@
+(dp1
+Vdo departs 100
+p2
+I155
+sVdo move ppoint(10,-171,226,180,55.4,180-10)
+p3
+I779
+sVprint "%5.3g" % 5.3
+p4
+I503
+sVre.split('("[^"]*")', '"ana are " + 5 ; + " mere"')
+p5
+I1122
+sVdo move shift(pal by 100,170,50)
+p6
+I346
+s.

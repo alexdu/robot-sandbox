@@ -1,0 +1,17 @@
+(dp1
+Vwait x = 1
+p2
+I703
+sVa["r"] = 5
+p3
+I1413
+sVprint traceback.extract_stack()[-2][2]
+p4
+I1225
+sVhelp TRANS
+p5
+I459
+sVre.search("([^a-zA-Z0-9_\u005C.\u005C#][a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c").groups()
+p6
+I92
+s.

@@ -1,0 +1,20 @@
+(dp1
+V" "*2
+p2
+I1028
+sVdo here bs:test
+p3
+I226
+sVdo set c = here()
+p4
+I468
+sVtool trans(0,0,100)
+p5
+I247
+sVpprint dic.keys()
+p6
+I893
+sVdo for i = 1 to n step -1
+p7
+I680
+s.

@@ -1,0 +1,23 @@
+(dp1
+Vcod = read(f)
+p2
+I979
+sV%bg %run -i EXECUTE("paletizare.v2")
+p3
+I970
+sVfor i,j in a: print i,j
+p4
+I1444
+sVdo moves bs:shift(aux by -150,-50,-90)
+p5
+I399
+sVdo set place = SHIFT(c BY 0, 0, h*i) : RZ(total.ang * i / (n-1))
+p6
+I658
+sVdel jobs.jobs_all[0]
+p7
+I1338
+sVhelp os.listdir
+p8
+I578
+s.

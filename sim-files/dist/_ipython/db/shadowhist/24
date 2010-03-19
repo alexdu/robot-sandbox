@@ -1,8 +1,11 @@
 (dp1
-Vdo move shift(pal by 0,0,10)
+Venv random
 p2
-I333
-sVenv random
-p3
 I64
+sVdo move shift(pal by 0,0,10)
+p3
+I333
+sVprint "%20.3g", 5
+p4
+I495
 s.

@@ -1,0 +1,29 @@
+(dp1
+VTRANS(1,2,3,4,"3",6)
+p2
+I1268
+sVhelp sys.settrace
+p3
+I1354
+sVdo set pick = shift(a by 1,2,3,-h*int(I/2)
+p4
+I655
+sVbeautify_line("cucu Bau:rz(45):rz(45):dx,dy,dz(4)")
+p5
+I1062
+sVdo auto x,y,z
+p6
+I1079
+sVdo .program cucu(a,b)
+p7
+I543
+sVc.x
+p8
+I860
+sV_ip.
+p9
+I946
+sVre.split('("[^"]*")', '"ana are " + 5 ; + " mere')
+p10
+I1121
+s.

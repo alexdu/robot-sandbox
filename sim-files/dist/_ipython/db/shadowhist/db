@@ -1,0 +1,17 @@
+(dp1
+Vc.co_cellvars
+p2
+I1375
+sVdo move trans(0,0,990,0,0,0)
+p3
+I789
+sVre.search("dx\u005C *\u005C(", "x + dx (")
+p4
+I175
+sVdo wait.event ,3
+p5
+I715
+sVdo a = trans(10,10,0):rx(180)
+p6
+I159
+s.

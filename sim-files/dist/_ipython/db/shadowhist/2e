@@ -1,0 +1,26 @@
+(dp1
+V"1"+"1"
+p2
+I602
+sVdo set c = here
+p3
+I469
+sVdo .program cucu(1,2)
+p4
+I673
+sVre.split(elem, 'cucu bau cucu "bau"')
+p5
+I1154
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_name
+p6
+I936
+sVrun?
+p7
+I899
+sVdo move a
+p8
+I360
+sVparam
+p9
+I626
+s.

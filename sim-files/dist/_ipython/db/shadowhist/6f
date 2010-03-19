@@ -1,0 +1,22 @@
+(dp1
+V3 in a
+p2
+I1380
+sVdo moves shift(pal by 125, 400, -40)
+p3
+I308
+sVdo type rz(45)
+p4
+I290
+sVdic
+p5
+I887
+sVdo set bs = rz(45)
+p6
+I440
+sVprint RX(45)
+p7
+I287
+sVn
+I689
+s.

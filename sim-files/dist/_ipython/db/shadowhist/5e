@@ -1,0 +1,29 @@
+(dp1
+Vdo wait.event,1
+p2
+I594
+sVdo moves trans(10,200,900,0,0,0)
+p3
+I812
+sVenv pall
+p4
+I590
+sVdo appros a, 300
+p5
+I763
+sVsee spirala
+p6
+I518
+sVdo appro xx, 100
+p7
+I189
+sVdic.keys
+p8
+I891
+sVlocal x
+p9
+I1049
+sV" "*5
+p10
+I1029
+s.

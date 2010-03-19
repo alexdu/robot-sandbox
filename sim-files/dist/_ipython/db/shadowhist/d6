@@ -1,0 +1,26 @@
+(dp1
+Va = {}
+p2
+I838
+sVdis trace
+p3
+I1386
+sVdo type a=2
+p4
+I636
+sVstring.join(["1","2"],"")
+p5
+I1177
+sVdo move trans(0,0,940,0,0,0)
+p6
+I787
+sVdo moves e
+p7
+I233
+sVa = [(1,2), (3,4)]
+p8
+I1443
+sVeval
+p9
+I417
+s.

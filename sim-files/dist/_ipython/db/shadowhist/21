@@ -1,0 +1,23 @@
+(dp1
+Vre.match("dx\u005C *\u005C(.*", "dx (fdsfdsf")
+p2
+I181
+sVre.match(line, test).groups()
+p3
+I1139
+sVd = c*NULL
+p4
+I864
+sVdo auto x,y[2],z
+p5
+I1080
+sV__builtins__.vars
+p6
+I415
+sVdis dry.run
+p7
+I1430
+sVEXEC("paletizare")
+p8
+I962
+s.

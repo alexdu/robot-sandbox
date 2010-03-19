@@ -2,16 +2,22 @@
 VAPPRO(pal,100)
 p2
 I39
-sVhere bs|test
+sVsplit_comment('ana; "are ; 5" mere')
 p3
-I227
-sVdo print ppoint(0,-90,90,0,0,0)
+I1182
+sVhere bs|test
 p4
+I227
+sVdo moves shift(pal by 128, 400, 0)
+p5
+I310
+sVtype(a)
+p6
+I508
+sVdo print ppoint(0,-90,90,0,0,0)
+p7
 I327
 sVbs = RZ(45)
-p5
+p8
 I201
-sVdo moves shift(pal by 128, 400, 0)
-p6
-I310
 s.

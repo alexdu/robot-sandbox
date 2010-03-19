@@ -1,0 +1,23 @@
+(dp1
+VRobotSim.arm_trajectory
+p2
+I1425
+sV_ip.user_ns.keys()
+p3
+I846
+sVTAN(3.3)
+p4
+I1248
+sVtype(r)
+p5
+I854
+sVj=2
+p6
+I622
+sVdo move shift(pal by 100,170,48)
+p7
+I367
+sVfor i in dic: print i
+p8
+I1431
+s.

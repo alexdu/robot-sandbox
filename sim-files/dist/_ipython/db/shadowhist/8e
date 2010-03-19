@@ -1,0 +1,14 @@
+(dp1
+V%bg vplus.RZ(45)
+p2
+I999
+sVhelp __builtins__
+p3
+I409
+sVhelp string.join
+p4
+I131
+sVdo call pick.place(pick,place)
+p5
+I539
+s.

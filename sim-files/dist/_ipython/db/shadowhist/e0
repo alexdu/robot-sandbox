@@ -1,4 +1,16 @@
 (dp1
 Va
 I12
+sVos.listdir("*.env")
+p2
+I577
+sVtc.Black
+p3
+I1447
+sVi=1
+p4
+I621
+sVsee pal_back
+p5
+I1310
 s.

@@ -1,0 +1,20 @@
+(dp1
+Vs = 'a"gfs"dsf"'
+p2
+I1125
+sVdo set place = bs:shift(pal by i*dx, j*dy, k*dz)
+p3
+I235
+sVdo moves trans(100,100,900,0,0,0)
+p4
+I811
+sVvplus.a
+p5
+I257
+sVdo moves trans(0,300,800,0,0,0)
+p6
+I817
+sVdo exit
+p7
+I870
+s.

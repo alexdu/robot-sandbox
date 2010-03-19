@@ -1,0 +1,20 @@
+(dp1
+Vdo auto x
+p2
+I1075
+sVsee stiva
+p3
+I516
+sVline = "(" + string + "?" + notstring + "?" + ")"
+p4
+I1140
+sVjobs.jobs_all[0].stat_running_c
+p5
+I1349
+sVx in ["x", "y"]
+p6
+I121
+sVdo set c = here:rz(45)
+p7
+I470
+s.

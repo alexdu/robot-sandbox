@@ -2,10 +2,34 @@
 VTRANS(0)
 p2
 I6
-sVdo relaxi
+sVlist(Set(a))
 p3
-I154
-sVdo appros a, 0
+I489
+sVdo relaxi
 p4
+I154
+sVa==b
+p5
+I1468
+sVdo departs 40
+p6
+I726
+sVstr(1)
+p7
+I1410
+sVhelp string.split
+p8
+I1066
+sVa = [0,0,0,0]
+p9
+I1053
+sVdo appros a, 0
+p10
 I364
+sVdo move trans(0,0,910,0,0,0)
+p11
+I784
+sVtool rz(34)
+p12
+I722
 s.

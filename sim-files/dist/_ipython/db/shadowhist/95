@@ -1,0 +1,14 @@
+(dp1
+Vdo appros b, 100
+p2
+I365
+sVwhile not (x == 1): wait
+p3
+I705
+sVc.x = 400
+p4
+I861
+sVdo move shift(pal by -120, -30, -30)
+p5
+I272
+s.

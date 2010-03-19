@@ -1,0 +1,20 @@
+(dp1
+Vdo param hand.time = 0.5
+p2
+I597
+sVstatu
+p3
+I1344
+sVRZ("43")
+p4
+I1241
+sVx = _ip.runlines("RZ(45")
+p5
+I205
+sVdo set a = a
+p6
+I867
+sVexcept Error as e:
+p7
+I1390
+s.

@@ -1,0 +1,23 @@
+(dp1
+Venable trace
+p2
+I1384
+sV1.2 |MOD| 1.5
+p3
+I1297
+sVdo move shift(pal by -125, -30, -30)
+p4
+I274
+sVdo end
+p5
+I548
+sVdo type SHIFT(Here by 2,3,4)
+p6
+I1307
+sVdo speed 50
+p7
+I651
+sVdo moves shift(pal by 0,0,0)
+p8
+I258
+s.

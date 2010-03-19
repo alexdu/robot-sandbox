@@ -1,8 +1,32 @@
 (dp1
-V_ip.user_ns
+V_ip.runlines("EXECUTE('paletizare.py'))
 p2
-I419
-sVhere x
+I1005
+sVINVERSE(a)
 p3
+I1257
+sVraise Exception
+p4
+I1396
+sVhere x
+p5
 I57
+sVdo parameter hand.time = 1
+p6
+I599
+sVd = c*NUL
+p7
+I863
+sV_ip.user_ns
+p8
+I419
+sVa = 5
+p9
+I504
+sVfor i,j in jobs.jobs_all: print i,j
+p10
+I1340
+sVk=3
+p11
+I623
 s.

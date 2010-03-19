@@ -1,0 +1,17 @@
+(dp1
+Vprint "%4s" % "x"
+p2
+I492
+sVdo appro dx(4), 200
+p3
+I194
+sVsys.call_tracing()
+p4
+I1358
+sVf = open("paletizare.py")
+p5
+I903
+sVtool rz(45)
+p6
+I243
+s.

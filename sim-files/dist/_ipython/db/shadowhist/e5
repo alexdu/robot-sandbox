@@ -1,0 +1,17 @@
+(dp1
+Vdo speed 100 always
+p2
+I521
+sVglobal x
+p3
+I1048
+sVmode con
+p4
+I1415
+sVj = jobs.jobs_all[0]
+p5
+I1329
+sVre.match("(\u005C *)", a).groups()
+p6
+I1035
+s.

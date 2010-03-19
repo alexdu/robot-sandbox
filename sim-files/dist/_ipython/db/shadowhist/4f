@@ -1,0 +1,20 @@
+(dp1
+Vlistr
+p2
+I505
+sVsplit_comment('ana are ; 5 mere')
+p3
+I1180
+sVdo type a:b
+p4
+I1271
+sVbeautify_line('type "a = appro(5)"')
+p5
+I1196
+sVtranslate_program("spirala.v2")
+p6
+I1042
+sVa = "xsad.env"
+p7
+I587
+s.

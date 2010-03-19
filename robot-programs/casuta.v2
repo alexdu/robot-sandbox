@@ -1,0 +1,56 @@
+.PROGRAM casuta()
+    GLOBAL a, b, c, #safe, h
+    AUTO sursa[4], desti[4]
+    AUTO i, j, d
+    d = 35
+    
+    SPEED 100 ALWAYS
+    MOVET #safe, TRUE
+    BREAK
+    LEFTY
+    ABOVE
+    NOFLIP
+    FOR i = 0 TO 2
+        FOR j = 0 TO 1
+            SET sursa[j] = SHIFT(a BY 0, 0, - h * (2*i + j))
+            SET desti[j] = SHIFT(c BY 0, d * SIGN(j-0.5), h*(i*2)):RZ(90)
+        END
+        FOR j = 0 TO 1
+            SET sursa[j+2] = SHIFT (b BY 0, 0, - h * (2*i + j))
+            SET desti[j+2] = SHIFT (c BY d*SIGN(j-0.5), 0, h*(i*2+1))
+        END
+        FOR j = 0 TO 3
+            CALL pick.place(sursa[j], desti[j])
+        END
+    END
+    MOVET #safe, TRUE
+.END
+
+
+.PROGRAM pick.place(pick,place)
+    AUTO z.pick, z.place
+    
+    z.pick = 100
+    z.place = 100
+    
+    OPEN
+    APPRO pick, 100
+    BREAK
+    SPEED 30
+    MOVES pick
+    CLOSEI
+    SPEED 30
+    DEPARTS 100
+    BREAK
+    SET pick = SHIFT(pick BY 0,0,0)
+    SET place = SHIFT(place BY 0,0,1)
+    
+    APPRO place, 100
+    BREAK
+    SPEED 30
+    APPROS place, 1
+    OPENI
+    SPEED 30
+    DEPARTS 100
+    BREAK
+.END

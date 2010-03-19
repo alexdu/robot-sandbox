@@ -2,4 +2,16 @@
 Vhere bs:p
 p2
 I61
+sVa=1;b=2;
+p3
+I1064
+sV(4,5) = (4,5)
+p4
+I1311
+sVRX(HERE())
+p5
+I1277
+sVdo print a:a
+p6
+I1275
 s.

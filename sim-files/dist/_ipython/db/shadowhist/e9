@@ -2,10 +2,28 @@
 VMOVE(safe)
 p2
 I51
-sVRobotSim.debug = 0
+sVdef spanac():
 p3
-I253
-sVhere bs:A
+I996
+sVdo if 1 == 2 then
 p4
+I693
+sVRobotSim.debug = 0
+p5
+I253
+sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c
+p6
+I432
+sVhere bs:A
+p7
 I199
+sVvplus._compactdisplay = False
+p8
+I743
+sVr=
+p9
+I851
+sVdo while 1 do
+p10
+I699
 s.

@@ -1,0 +1,32 @@
+(dp1
+Vstring.upper(["x"])
+p2
+I678
+sVlsmagic
+p3
+I898
+sVcode
+p4
+I1095
+sVdo move #safe
+p5
+I284
+sVsplit_strings('a"1;2"; bla')
+p6
+I1187
+sVdo move shift(pal by -100, 10, -30)
+p7
+I267
+sVa.endswith(".env")
+p8
+I580
+sVtranslate_program("casuta.v2")
+p9
+I1044
+sVdo SET p = TRANS(dx,dy,0)
+p10
+I206
+sVpprint(cod)
+p11
+I909
+s.

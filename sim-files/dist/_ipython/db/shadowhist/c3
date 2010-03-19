@@ -1,8 +1,26 @@
 (dp1
-Vexec paletizare
+Vjobs.remove("#0")
 p2
-I21
-sVdo SeT p = TrANS(dx,dy,0)
+I1326
+sVdo lefty
 p3
+I617
+sVbeautify_line("3 mod4")
+p4
+I1303
+sVexec paletizare
+p5
+I21
+sVjob[0]
+p6
+I1322
+sVdo SeT p = TrANS(dx,dy,0)
+p7
 I207
+sVdo appros a, 600
+p8
+I766
+sVdo move trans(0,0,987,0,0,0)
+p9
+I796
 s.

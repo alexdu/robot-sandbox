@@ -1,0 +1,14 @@
+(dp1
+Vdo moves b
+p2
+I361
+sVdo moves bs:shift(aux by -150,-10,-90)
+p3
+I397
+sVjobs.remove(0)
+p4
+I1325
+sVstring.split("a , b , cdsfs  ,   dew[]", ",")
+p5
+I1069
+s.

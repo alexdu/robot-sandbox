@@ -1,8 +1,23 @@
 (dp1
-Vhere b
+Va  = "cucu \u005Cn"
 p2
-I319
-sVMOVE(bs*pal)
+I1045
+sVlistl rz(43), rz(23)
 p3
+I739
+sVdo type "cucu" bau; rz(45)
+p4
+I1211
+sV%bg EXECUTE("paletizare.py")
+p5
+I994
+sVMOVE(bs*pal)
+p6
 I60
+sVprint translate_program("paletizare.v2")
+p7
+I1212
+sVhere b
+p8
+I319
 s.

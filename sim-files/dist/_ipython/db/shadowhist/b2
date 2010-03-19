@@ -1,0 +1,14 @@
+(dp1
+Vdeepcopy(a)
+p2
+I1462
+sVdo a = 5
+p3
+I696
+sVdo wait.event 0,3
+p4
+I716
+sVdo appros safe, 200
+p5
+I768
+s.

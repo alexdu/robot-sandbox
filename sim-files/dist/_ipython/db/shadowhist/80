@@ -5,4 +5,16 @@ I40
 sVre.match?
 p3
 I81
+sVdo appro #safe, 200
+p4
+I509
+sVstring.split("a , b , cdsfs  ,   dew[]", ", ")
+p5
+I1070
+sVprint "%40s" % "x"
+p6
+I493
+sVenv paletizare.py
+p7
+I822
 s.

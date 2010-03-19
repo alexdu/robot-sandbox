@@ -1,0 +1,50 @@
+.PROGRAM pick.place(pick,place)
+    z.pick = 100
+    z.place = 100
+    
+    OPEN
+    APPRO pick, 100
+    BREAK
+    SPEED 30
+    MOVES pick
+    CLOSEI
+    SPEED 30
+    DEPARTS 100
+    BREAK
+    
+    APPRO place, 100
+    BREAK
+    SPEED 30
+    APPROS place, 1
+    OPENI
+    SPEED 30
+    DEPARTS 100
+    BREAK
+.END
+
+.PROGRAM spirala()
+    GLOBAL a, b, c, #safe, h
+    AUTO p, i
+    
+    total.ang = 360
+    n = 12
+    SPEED 100 ALWAYS
+    
+    OPEN
+    MOVE safe
+    BREAK
+    
+    FOR p = 1 TO n
+        i = p-1
+        IF i MOD 2 == 0 THEN
+            pick = SHIFT(a BY 0, 0, -h * INT(i/2))
+        ELSE
+            pick = SHIFT(b BY 0, 0, -h * INT(i/2))
+        END
+        SET place = SHIFT(c BY 0, 0, h*i):RZ(total.ang * i / (n-1))
+        CALL pick_place(pick, place)
+    END
+    MOVE safe
+    
+.END
+

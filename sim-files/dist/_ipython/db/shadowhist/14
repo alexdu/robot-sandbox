@@ -1,0 +1,26 @@
+(dp1
+Vsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_names
+p2
+I937
+sVdo moves bs:shift(aux by 0,0,-80)
+p3
+I393
+sVe.message()
+p4
+I1395
+sVcod = translate_program("casuta.v2")
+p5
+I1090
+sVMIN(3,4)
+p6
+I1254
+sVjobs.jobs_all[0]
+p7
+I1328
+sVprint "%5.3g" % 532.3
+p8
+I501
+sVtest2 = '"do print "a;b; c'
+p9
+I1147
+s.

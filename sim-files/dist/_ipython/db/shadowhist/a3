@@ -2,4 +2,22 @@
 VAPPRO(bs*pal,100)
 p2
 I56
+sVsys.last_traceback.tb_lasti
+p3
+I922
+sVdo appro
+p4
+I646
+sVos.path.splitext("gigel.v2")
+p5
+I1421
+sVsplit_comment(ana are; mere)
+p6
+I1179
+sVTRANS?
+p7
+I458
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_firstlineno
+p8
+I940
 s.

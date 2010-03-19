@@ -1,0 +1,32 @@
+(dp1
+Vf = open("x.txt", "w")
+p2
+I1025
+sVa[1:]
+p3
+I1019
+sVdo depart 100
+p4
+I329
+sVlen(a)
+p5
+I665
+sVdo global a, b
+p6
+I631
+sVdo moves shift(pal by 135, 410, -20)
+p7
+I314
+sVfor k,v in locals().iteritems():
+p8
+I428
+sVdo pick = shift(st by 0,0,dz*(n-p))
+p9
+I532
+sV__builtins__()
+p10
+I412
+sVa = {3:5}
+p11
+I1377
+s.

@@ -1,8 +1,26 @@
 (dp1
-Vfor i in s: print i.groups()
+Vdo wait.event,4
 p2
-I102
+I712
 sVTRANS
 p3
 I5
+sVfor i in s: print i.groups()
+p4
+I102
+sVdo moves here:rx(43)
+p5
+I730
+sVcopy
+p6
+I1313
+sVa.keys
+p7
+I474
+sVtranslate_program("paletizare.v2")
+p8
+I1016
+sV" "*0
+p9
+I1031
 s.

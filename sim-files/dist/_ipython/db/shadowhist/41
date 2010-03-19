@@ -1,0 +1,23 @@
+(dp1
+V%bg print(1)
+p2
+I974
+sVdo type a
+p3
+I1272
+sVFRAME(a,1,2,3)
+p4
+I1264
+sVdo
+p5
+I1017
+sVdo move ppoint(do move ppoint(0,-171,226,180,55.4,180)
+p6
+I775
+sVdo appro rx(45):trans(0,0,1)
+p7
+I163
+sVsys.last_traceback.tb_frame
+p8
+I920
+s.

@@ -1,0 +1,17 @@
+(dp1
+Vcopy(a)
+p2
+I1438
+sVre.search('("[^"]*")', 'ana are "453re\u005C"wre" mere').groups()
+p3
+I1114
+sVa[:2]
+p4
+I1164
+sVre.match("(\u005C *)", a).groups(0)
+p5
+I1036
+sVSIN("")
+p6
+I1244
+s.

@@ -1,0 +1,17 @@
+(dp1
+Vjobs.jobs_dead.remove(j)
+p2
+I1330
+sVdo set #a = here
+p3
+I643
+sVre.match("\u005C *", a).groups()
+p4
+I1034
+sVprint "%5.3g" % 5
+p5
+I497
+sVhere rz(45):a
+p6
+I437
+s.

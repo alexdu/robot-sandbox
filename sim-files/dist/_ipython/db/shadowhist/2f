@@ -1,0 +1,23 @@
+(dp1
+Vdo move shift(pal by 100,120,80)
+p2
+I338
+sV3 % 4
+p3
+I1284
+sVdo moves here:trans(100,100,-100)
+p4
+I465
+sVwhos
+p5
+I897
+sVRY("cd")
+p6
+I1235
+sVmod?
+p7
+I1172
+sVdo type 1, "+", 1
+p8
+I511
+s.

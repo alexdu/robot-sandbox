@@ -5,4 +5,10 @@ I1
 sVdo move shift(pal by 110,120,60)
 p3
 I340
+sVsys.last_traceback.tb_next.tb_next
+p4
+I926
+sVjobs.jobs_all[0].stat_code
+p5
+I1350
 s.

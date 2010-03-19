@@ -1,0 +1,14 @@
+(dp1
+Vdo moves pick
+p2
+I552
+sVglobal a, b
+p3
+I616
+sVprint "ana are "" mere"
+p4
+I1123
+sVdo while a do
+p5
+I697
+s.

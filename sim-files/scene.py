@@ -62,9 +62,6 @@ floor.pos = (0,0,-25E-3)
 
 
 
-global t
-t = 0
-
             
 
 def enforcePose(m, P):
@@ -213,10 +210,10 @@ def tick():
         programspath = os.path.normpath(os.path.join(os.getcwd(), "..", "robot-programs"))
         os.chdir(programspath)
 
-    if int(scene._timer.frame) |MOD| 10 == 1:
-        jobs._status_new()
-        if len(jobs.jobs_comp) > 0:
-            jobs.flush_finished()
+    #~ if int(scene._timer.frame) |MOD| 10 == 1:
+        #~ jobs._status_new()
+        #~ if len(jobs.jobs_comp) > 0:
+            #~ jobs.flush_finished()
         
 
 
@@ -356,36 +353,6 @@ odeSim.add(slider_finger2)
 
 
 
-
-
-def stdevBoxes():
-    x = numpy.zeros(len(boxes))
-    y = x + 0
-    for i, b in enumerate(boxes):
-        x[i] = b.pos[0]
-        y[i] = b.pos[1]
-    sx = numpy.std(x)
-    sy = numpy.std(y)
-    print sx, sy
-
-def listBoxes():
-    for b in boxes:
-        print b.pos
-
-
-boxloc = NULL
-def pickBox(i):
-    global boxloc
-    p = worldObject("Box%d"%i).pos * 1000
-    boxloc = TRANS(p[0],p[1],100,0,180,90)
-    OPENI()
-    APPRO(boxloc, 100)
-    BREAK()
-    MOVES(boxloc)
-    CLOSEI()
-    DEPARTS(100)
-    BREAK()
-    MOVE(safe)
 
 
 

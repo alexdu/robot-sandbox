@@ -1,11 +1,26 @@
 (dp1
-Vbs
+Vdo moves d
 p2
-I32
-sVdo moves d
-p3
 I377
-sVhelp re.split
+sVdo appro pal, -50
+p3
+I462
+sV__builtins__.all
 p4
+I422
+sVbs
+p5
+I32
+sVlocals()["c"]
+p6
+I480
+sVhelp re.split
+p7
 I118
+sVre.search('("[^"]*")', 'ana are "453regrewre" mere').groups()
+p8
+I1117
+sVs.count('"')
+p9
+I1126
 s.

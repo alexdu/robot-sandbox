@@ -1,11 +1,17 @@
 (dp1
-Vx.replace(":", "|")
+Vc.co_nlocals
 p2
+I1435
+sVx.replace(":", "|")
+p3
 I161
 sV3+3
-p3
-I9
-sVdo openi
 p4
+I9
+sVhelp dict
+p5
+I837
+sVdo openi
+p6
 I150
 s.

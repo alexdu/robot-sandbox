@@ -1,0 +1,11 @@
+(dp1
+Vsplit_comment('print "shift(x by dx(5)" ; shift(x by dx(4))')
+p2
+I1200
+sVa = [1,2,3,RZ(45)]
+p3
+I1461
+sVsys.exc_value
+p4
+I1400
+s.

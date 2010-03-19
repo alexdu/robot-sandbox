@@ -1,17 +1,32 @@
 (dp1
-Vtool new.tool
+VCOS(3)
 p2
-I236
-sVenv pal
+I1246
+sVdo k = (p-1) mod nn
 p3
-I20
-sVs = "x"
+I531
+sVenv pal
 p4
-I75
-sVreload vplus
+I20
+sVtool new.tool
 p5
-I141
-sVdo appro bs:loc, 100
+I236
+sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "a:rz(45):rx(45):c").groups()
 p6
+I436
+sVs = "x"
+p7
+I75
+sVdo appros safe, 100
+p8
+I767
+sVdo appro bs:loc, 100
+p9
 I224
+sVx = "dsufs"
+p10
+I855
+sVreload vplus
+p11
+I141
 s.

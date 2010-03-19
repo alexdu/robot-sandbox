@@ -1,0 +1,23 @@
+(dp1
+Vif i |MOD| 2 == 0:
+p2
+I557
+sVdo param
+p3
+I624
+sVa = "fsdfds"
+p4
+I1041
+sVdo move trans(0,0,982,0,0,0)
+p5
+I791
+sVdo set place = SHIFT(c BY 0, 0, h*i) : RZ(total_ang * i / (n-1))
+p6
+I657
+sVdo move ppoint(0+10,-171,226,180,55.4,180-10)
+p7
+I778
+sVx=0;y=5;
+p8
+I1051
+s.

@@ -2,4 +2,16 @@
 VEXEC("stiva")
 p2
 I16
+sVrange(1,10,1)
+p3
+I669
+sVexec casuta.v2
+p4
+I1466
+sVwhile not (x == 1):print i
+p5
+I706
+sVbreak
+p6
+I1456
 s.

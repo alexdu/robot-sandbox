@@ -1,0 +1,26 @@
+(dp1
+V_ip.magic_tb
+p2
+I953
+sVcc
+p3
+I1101
+sVre.match(notstring, test).groups()
+p4
+I1136
+sVdo wait.event 2,3
+p5
+I717
+sVdo i = int((P-1)/(NC*NN))
+p6
+I527
+sVre.search('("[^"]*")', 'ana are "453rewre" mere').groups()
+p7
+I1113
+sVdo appro #safe, 0
+p8
+I451
+sVfrom pprint import pprint
+p9
+I848
+s.

@@ -1,5 +1,22 @@
 (dp1
-Vparam hand.time = 0
+Vdo IF 1 == 2 then
 p2
+I694
+sVsys.exc_info()
+p3
+I1398
+sVtype(INT(4))
+p4
+I1279
+sVparam hand.time = 0
+p5
 I26
+sVh
+I512
+sVlistl a,b,5
+p6
+I757
+sVdo appro safe, 100
+p7
+I442
 s.

@@ -1,5 +1,20 @@
 (dp1
-VMOVE(bs*a)
+Vls *.v2
 p2
+I1317
+sVhelp _ip.set_hook
+p3
+I827
+sVsys.exc_info
+p4
+I1397
+sVMOVE(bs*a)
+p5
 I35
+sVdo while x do
+p6
+I563
+sVre.search('("[^"]*")', 'ana are "453re""wre" mere').groups()
+p7
+I1116
 s.

@@ -1,5 +1,26 @@
 (dp1
-Vhere bs:pal
+Vsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_locals
 p2
+I931
+sVdo moves trans(10,-300,900,0,0,0)
+p3
+I814
+sVdo move trans(0,0,930,0,0,0)
+p4
+I786
+sVhere bs:pal
+p5
 I50
+sVdo .program cucu
+p6
+I540
+sV%%bg print(1)
+p7
+I987
+sV%bg 4
+p8
+I1352
+sVexec(cod in dic
+p9
+I911
 s.

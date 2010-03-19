@@ -1,0 +1,14 @@
+(dp1
+Vdo move shift(pal by 100,120,60)
+p2
+I339
+sVprint 0,a
+p3
+I570
+sVdo auto x, y
+p4
+I1082
+sVbeautify_line("cucu Bau:rz(45)")
+p5
+I1061
+s.

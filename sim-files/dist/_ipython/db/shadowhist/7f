@@ -1,0 +1,20 @@
+(dp1
+Vwhile not (x = 1): wait
+p2
+I704
+sVdo j = 3
+p3
+I537
+sV_ip.system
+p4
+I945
+sVdo appro a, 10
+p5
+I758
+sVlin = f.readlines()
+p6
+I1008
+sVhelp _ip.defmacro
+p7
+I833
+s.

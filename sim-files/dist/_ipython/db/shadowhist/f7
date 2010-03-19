@@ -1,0 +1,20 @@
+(dp1
+Vlen(re.match("(\u005C *)", a).groups()[0])
+p2
+I1038
+sVdo set a = 4
+p3
+I869
+sVdo moves shift(pal by 130, 400, -20)
+p4
+I312
+sVexec dic
+p5
+I1099
+sVtype(3)
+p6
+I1239
+sVprint "ana are \u005C" mere"
+p7
+I1124
+s.

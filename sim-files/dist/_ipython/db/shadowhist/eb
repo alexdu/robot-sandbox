@@ -1,0 +1,44 @@
+(dp1
+Vdo a=4
+p2
+I633
+sVexecfile('paletizare.py')
+p3
+I835
+sV['TRANS'] + numeric*6
+p4
+I1231
+sVtraceback
+p5
+I954
+sVdo moves trans(10,100,900,0,0,0)
+p6
+I810
+sV_ip.options
+p7
+I830
+sVpprint(dic.keys())
+p8
+I894
+sV1 |TO| 5
+p9
+I1021
+sVre.match("dx\u005C *\u005C(", "dx(")
+p10
+I170
+sVre.sub("([a-z])", r"\u005C1", "cucu-Bau")
+p11
+I77
+sVstring = '("[^"]*")'
+p12
+I1130
+sVDO SET BS = TRANS(XBS,YBS,DZ):RZ(ANG)
+p13
+I219
+sVdo moves shift(pal by -100, 300, -40)
+p14
+I302
+sVstring.uppercase(["x"])
+p15
+I679
+s.

@@ -1,14 +1,28 @@
 (dp1
-Vre.sub("[a-z]", "x", "cucu-bau")
-p2
-I72
-sVre.search("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu baFu + bau+c").groups()
-p3
-I114
-sVdo moves e:rz(90)
-p4
-I379
+Vr
+I853
 sVexec spirala
-p5
+p2
 I19
+sVhere rz(45):rx(90):a
+p3
+I438
+sVexec casuta
+p4
+I1092
+sVdo for p = 1 to n step -4
+p5
+I654
+sVre.search("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu baFu + bau+c").groups()
+p6
+I114
+sVprint  "ana are type shift # cucu spanac mere", RZ(45), dx, DX(35) #; trans
+p7
+I1215
+sVre.sub("[a-z]", "x", "cucu-bau")
+p8
+I72
+sVdo moves e:rz(90)
+p9
+I379
 s.

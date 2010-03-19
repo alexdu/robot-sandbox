@@ -1,0 +1,20 @@
+(dp1
+VAPPRO(safe,100)
+p2
+I444
+sVdo type i,",",j,",",k
+p3
+I620
+sVdo timer -1 = 0
+p4
+I606
+sVdo moves shift(pal by -129, 100, -40)
+p5
+I297
+sVdo speed 30 always
+p6
+I648
+sVx=0
+p7
+I1050
+s.

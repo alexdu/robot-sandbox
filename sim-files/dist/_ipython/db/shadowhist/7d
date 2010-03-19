@@ -1,11 +1,23 @@
 (dp1
-Vdo moves bs:shift(aux by 150,0,-90)
+Vdo move trans(0,0,988.5,0,0,0)
 p2
-I395
-sVMOVE(bs*SHIFT(a,-80,0,-50))
+I801
+sVdo moves bs:shift(aux by 150,0,-90)
 p3
-I47
-sVdo set bs = frame(a,b,C,D)
+I395
+sV1 |TO| 5+1
 p4
+I1022
+sV_ip.user_ns["dic"]
+p5
+I845
+sVdo set bs = frame(a,b,C,D)
+p6
 I217
+sV_oh
+p7
+I426
+sVMOVE(bs*SHIFT(a,-80,0,-50))
+p8
+I47
 s.

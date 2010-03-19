@@ -1,5 +1,29 @@
 (dp1
-VQuit()
+Va  = "cucu \u005Cr\u005Cn"
 p2
+I1046
+sVlocals()["b"]
+p3
+I479
+sVdo wait.event,5
+p4
+I872
+sVATAN2(3.3,3)
+p5
+I1250
+sVQuit()
+p6
 I2
+sVline
+p7
+I1141
+sVstring.split("a,b,cdsfs,dew[]", ",")
+p8
+I1067
+sVRX(RZ(3))
+p9
+I1240
+sVeval((n)+(1))
+p10
+I682
 s.

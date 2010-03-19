@@ -1,0 +1,17 @@
+(dp1
+Vre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c)
+p2
+I433
+sVenable
+p3
+I67
+sVimport re
+p4
+I1015
+sVdo set p = trans(dx,dy,0)
+p5
+I165
+sVDISTANCE(a,a)
+p6
+I1260
+s.

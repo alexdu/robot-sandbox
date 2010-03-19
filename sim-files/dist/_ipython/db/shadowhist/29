@@ -1,0 +1,20 @@
+(dp1
+V-1 % 4
+p2
+I1286
+sVdo type here
+p3
+I639
+sVdo move shift(pal by -128, -20, -40)
+p4
+I280
+sVpprint cod
+p5
+I908
+sVwhile a
+p6
+I702
+sVdo speed 100 ips
+p7
+I608
+s.

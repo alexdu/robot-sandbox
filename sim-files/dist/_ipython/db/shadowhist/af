@@ -1,0 +1,23 @@
+(dp1
+Vdo global a,b,c
+p2
+I871
+sVwor
+p3
+I260
+sVdo j = int((p-1)/nn)mod nc
+p4
+I530
+sVdo for i = n to 1 step -1
+p5
+I681
+sVdo enable x
+p6
+I598
+sVdo moves shift(pal by 110, 400, -40)
+p7
+I305
+sVdo move shift(pal by 105,170,55)
+p8
+I351
+s.

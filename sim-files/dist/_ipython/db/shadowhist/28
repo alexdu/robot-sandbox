@@ -1,0 +1,20 @@
+(dp1
+Vdreload(v2py)
+p2
+I1014
+sVdo move shift(pal by -130, -30, -30)
+p3
+I273
+sVb = HERE()
+p4
+I424
+sVdo n = 12
+p5
+I519
+sVdo appro pal, 100
+p6
+I250
+sVdo i = int((p-1)/(nc*nn))
+p7
+I526
+s.

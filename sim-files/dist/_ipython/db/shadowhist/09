@@ -1,0 +1,17 @@
+(dp1
+Vdo appro pal,100
+p2
+I321
+sVdo type SHIFT(Here by 2,3,rz(4))
+p3
+I1308
+sVdo moves here:trans(100,100,100)
+p4
+I464
+sVdo moves e:rz(90):TRANS(10,10,90)
+p5
+I382
+sVdo moves e:rz(90):TRANS(10,10,0)
+p6
+I380
+s.

@@ -1,11 +1,26 @@
 (dp1
-Vdo appros c, 100
+V%bg print hello
 p2
-I366
+I972
 sVenv pal-inc
 p3
 I30
 sVMOVE(bs*SHIFT(a,-80,0,-100))
 p4
 I49
+sVdo appros c, 100
+p5
+I366
+sVindent_program("paletizare.v2")
+p6
+I1030
+sVdo type "cucu" bau rz(45)
+p7
+I1210
+sVprint "%5.3g" % 53232
+p8
+I499
+sVdo type "cucu
+p9
+I1208
 s.

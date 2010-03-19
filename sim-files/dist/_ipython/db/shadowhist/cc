@@ -1,0 +1,17 @@
+(dp1
+Vhelp re.search
+p2
+I93
+sVre.match(elem, test)
+p3
+I1145
+sVdo wait 1 == 1
+p4
+I710
+sV__builtins__.all()
+p5
+I423
+sVs.groups()
+p6
+I87
+s.

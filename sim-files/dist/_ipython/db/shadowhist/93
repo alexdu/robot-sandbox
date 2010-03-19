@@ -1,17 +1,29 @@
 (dp1
-Vsee pal_inc.
+Vvs
 p2
-I55
-sVre.sub("[a-z]", "x", cucu-bau)
-p3
-I71
-sVvs
-p4
 I136
+sVdo move trans(0,100,900,0,0,0)
+p3
+I807
 sVabort
-p5
+p4
 I320
-sVdo set loc = inverse(bs):here
+sVd = rz(45)
+p5
+I876
+sVsee pal_inc.
 p6
+I55
+sVRobotSim.arm_trajectory_index
+p7
+I1426
+sVdo set loc = inverse(bs):here
+p8
 I223
+sVbeautify_program("casuta.v2")
+p9
+I1063
+sVre.sub("[a-z]", "x", cucu-bau)
+p10
+I71
 s.

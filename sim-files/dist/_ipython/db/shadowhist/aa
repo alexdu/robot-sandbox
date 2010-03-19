@@ -1,0 +1,26 @@
+(dp1
+Vdo move shift(pal by 105,170,45)
+p2
+I350
+sVpprint([a,b])
+p3
+I752
+sVlin
+p4
+I1009
+sVfor i,s in enumerate(vs): print i,s
+p5
+I138
+sV%bg execfile("paletizare.py", dic)
+p6
+I900
+sVexec trace
+p7
+I1428
+sVdo set p = trans(10,10,0)
+p8
+I168
+sVsee pal-inc
+p9
+I517
+s.

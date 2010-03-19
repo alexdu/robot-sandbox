@@ -1,0 +1,20 @@
+(dp1
+Vdo set e = bs:ry(180)
+p2
+I228
+sVa[1:2]
+p3
+I666
+sVstring.join(["x", "y"])help string.join
+p4
+I130
+sVdo moves bs:shift(aux by -150,-100,-90)
+p5
+I402
+sVvar
+p6
+I1191
+sVnotstring = '[^"]*'
+p7
+I1151
+s.

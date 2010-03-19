@@ -1,0 +1,10 @@
+(dp1
+Vdo move shift(pal by 10, 10, 100)
+p2
+I261
+sVj
+I1331
+sVdo auto x, y[4], z
+p3
+I1084
+s.

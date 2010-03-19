@@ -5,4 +5,16 @@ I54
 sV"xx" in ["x", "y"]
 p3
 I123
+sVjobs.traceback?
+p4
+I957
+sVdo set a = 3
+p5
+I640
+sVfrom copy import copy
+p6
+I1464
+sVhelp jobs.flush_finished
+p7
+I1319
 s.

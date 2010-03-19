@@ -1,0 +1,17 @@
+(dp1
+VTAN(3)
+p2
+I1247
+sVk = locals().keys()
+p3
+I483
+sVsplit_after_keyword(line)
+p4
+I1077
+sVdo move trans(0,0,981,0,0,0)
+p5
+I790
+sVdo wait
+p6
+I564
+s.

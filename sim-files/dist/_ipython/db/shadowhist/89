@@ -2,4 +2,22 @@
 Vexec pal_back.py
 p2
 I22
+sVstr_compact("cdus       fw fr        fr")
+p3
+I1459
+sVdo if a == b then
+p4
+I691
+sVdo type "cucu" bau
+p5
+I1209
+sVdo print "cucu"
+p6
+I1204
+sVSIN(4)
+p7
+I1243
+sV%bg a=4
+p8
+I988
 s.

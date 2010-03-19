@@ -1,0 +1,20 @@
+(dp1
+Vdo move shift(pal by 100,170,60)
+p2
+I345
+sVdo program cucu
+p3
+I541
+sV%bg _ip.magic('run -i EXECUTE("paletizare.v2")')
+p4
+I971
+sVsplit_strings('a"1;2""; bla')
+p5
+I1188
+sVdo a[1] = here
+p6
+I1055
+sVprint traceback.extract_stack()[-2]
+p7
+I1224
+s.

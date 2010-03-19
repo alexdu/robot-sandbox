@@ -1,0 +1,20 @@
+(dp1
+Vcopy casuta.v2 cucu.v2
+p2
+I1315
+sV__file__
+p3
+I917
+sVINT(5.5)
+p4
+I1305
+sVtool
+p5
+I246
+sVbeautify_line('print "shift(x by dx(5)" dz(4); shift(x by dx(4))')
+p6
+I1201
+sVcode = translate_program("casuta.v2")
+p7
+I1094
+s.

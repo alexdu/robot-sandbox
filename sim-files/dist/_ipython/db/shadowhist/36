@@ -1,0 +1,14 @@
+(dp1
+Va = [3,4]
+p2
+I1460
+sVtranslate_program("spirala.py")
+p3
+I1043
+sVexecfile("paletizare.py", dic)
+p4
+I888
+sVjobs.jobs_all[j]
+p5
+I1337
+s.

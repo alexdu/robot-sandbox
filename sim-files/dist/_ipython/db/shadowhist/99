@@ -1,11 +1,14 @@
 (dp1
-Vdo appro pal, 6
+VMOVE(bs*SHIFT(a,-80,0,10))
 p2
-I256
-sVspeed 100
-p3
-I24
-sVMOVE(bs*SHIFT(a,-80,0,10))
-p4
 I46
+sVdo appro pal, 6
+p3
+I256
+sVnotstring = '([^"]*)'
+p4
+I1137
+sVspeed 100
+p5
+I24
 s.

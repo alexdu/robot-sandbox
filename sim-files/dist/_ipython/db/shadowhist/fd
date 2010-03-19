@@ -1,14 +1,26 @@
 (dp1
-Vre.sub("([a-z])", r"x", "cucu-Bau")
+VrandomizeBoxes()
 p2
-I78
-sVdo move safe
+I17
+sVdo set b = shift(a by 0,0,0)
 p3
-I283
+I1467
 sVdo set bs = frame(a,b,c,d)
 p4
 I215
-sVrandomizeBoxes()
+sVre.match(nostring, test)
 p5
-I17
+I1134
+sVre.sub("([a-z])", r"x", "cucu-Bau")
+p6
+I78
+sVdo move safe
+p7
+I283
+sVdo n = 5
+p8
+I653
+sVdo print here
+p9
+I638
 s.

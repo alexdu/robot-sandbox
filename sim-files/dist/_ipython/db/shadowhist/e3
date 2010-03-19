@@ -1,0 +1,29 @@
+(dp1
+Vdo moves shift(pal by 100, 100, -40)
+p2
+I299
+sVmod(s.count('"'), 3)
+p3
+I1128
+sVdo set c = b
+p4
+I875
+sVwhos mod
+p5
+I1171
+sVb = a
+p6
+I858
+sVdo set e = d
+p7
+I880
+sVjobs.traceback(1)
+p8
+I959
+sVa.endswith("d")
+p9
+I582
+sVs = re.search("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#])", "cucu bau + bau+c").groups()
+p10
+I88
+s.

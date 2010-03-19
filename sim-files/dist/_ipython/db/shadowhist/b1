@@ -1,0 +1,20 @@
+(dp1
+Vtool tool
+p2
+I627
+sVsplit_comment('ana are; mere')
+p3
+I1168
+sVsplit_comment("ana are; mere")
+p4
+I1178
+sVc = compile(cod, "casuta.v2", "exec")
+p5
+I1091
+sVhelp _ip.options
+p6
+I829
+sVdic["__file__"] = "cucu"
+p7
+I916
+s.

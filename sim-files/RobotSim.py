@@ -29,7 +29,7 @@ import cgkit
 class IKError(Exception):
     pass
 
-    
+
 
 currentJointPos = [0,-90,180,0,0,0]
 
@@ -41,6 +41,7 @@ single = False
 
 debug = 0
 
+
 startJointPos = currentJointPos     # de unde am inceput miscarea
 destJointPos = currentJointPos      # unde ma opresc
 #intermedJointPos = currentJointPos  # punctul intermediar (pt MOVE-uri fara BREAK)
@@ -51,6 +52,8 @@ param["HAND.TIME"] = 0.5
 
 switch = dict()
 switch["POWER"] = True
+switch["TRACE"] = True
+switch["DRY.RUN"] = False
 
 global speed_monitor, speed_always, speed_next_motion
 speed_monitor = 25.0
@@ -76,6 +79,8 @@ sig_close = False
 arm_trajectory_index = 0
 arm_trajectory = []
 
+abort_flag = False
+        
     
 def DK(J):
     """Cinematica directa
@@ -85,7 +90,6 @@ def DK(J):
     Returneaza un obiect de tip TRANS
     Se ia in calcul si transformarea TOOL curenta
     """
-    
     
     Txz = omotrans(-20,0,0)*omorot(roty(-90))
     T65 = omotrans(-60,0,0)*omorot(rotx(-J[5]-180))
@@ -111,6 +115,8 @@ def IK(loc):
         - exceptii (ce se intampla daca nu am solutie?)
         - RIGHTY, BELOW, SINGLE/MULTIPLE
     """
+
+
     try:
         loc = loc * INVERSE(tool_trans)
         # merge doar FLIP/NOFLIP
@@ -157,9 +163,9 @@ def IK(loc):
 
 
         if flip:
-            J[4] = J[4] + 180;
-            J[5] = -j(5);
-            J[6] = J[6] + 180;
+            J[3] = J[3] + 180;
+            J[4] = -J[4];
+            J[5] = J[5] + 180;
 
     except ValueError:
         raise IKError, "No solution."
@@ -231,7 +237,7 @@ def lin_interp(A,B,t):
 def ctraj(jdest):        
     # Calculeaza traiectoria robotului pentru miscari in linie dreapta (MOVES)
     # Rezultatul este memorat pe articulatii, in arm_trajectory
-    global arm_trajectory, startJointPos, destJointPos
+    global arm_trajectory, startJointPos, destJointPos, switch
     
     lock = threading.Lock()
     lock.acquire()
@@ -245,10 +251,11 @@ def ctraj(jdest):
         time = d / max_cartesian_speed / (speed_next_motion/100.0) / (speed_monitor/100.0)
         steps = 2 + round(time * fps)
         arm_trajectory_index = 0
-        for t in numpy.linspace(0,1,steps):
-            p = lin_interp(p1,p2,t)
-            j = IK(p)
-            arm_trajectory.append(j)
+        if not switch["DRY.RUN"]:
+            for t in numpy.linspace(0,1,steps):
+                p = lin_interp(p1,p2,t)
+                j = IK(p)
+                arm_trajectory.append(j)
     finally:
         lock.release() 
         
@@ -262,6 +269,7 @@ def jtraj(jdest):
     lock = threading.Lock()
     lock.acquire()
     try:
+        
         startJointPos = currentJointPos
         destJointPos = jdest.J
         ja = mat(currentJointPos)
@@ -272,10 +280,11 @@ def jtraj(jdest):
         steps = 2 + round(time * fps)
         
         arm_trajectory_index = 0
-        for t in numpy.linspace(0,1,steps):
-            j = ja * (1-t) + jb * t
-            j = j.tolist()[0]
-            arm_trajectory.append(PPOINT(j))
+        if not switch["DRY.RUN"]:
+            for t in numpy.linspace(0,1,steps):
+                j = ja * (1-t) + jb * t
+                j = j.tolist()[0]
+                arm_trajectory.append(PPOINT(j))
         #print arm_trajectory
 
     finally:

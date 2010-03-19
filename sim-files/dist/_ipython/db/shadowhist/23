@@ -1,0 +1,20 @@
+(dp1
+V%bg EXECUTE("paletizare.v2")
+p2
+I966
+sVdo move up
+p3
+I800
+sVdo appro pal, -10
+p4
+I461
+sVdo for i = n to 1
+p5
+I686
+sVa.remove(2)
+p6
+I156
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_lnotab
+p7
+I938
+s.

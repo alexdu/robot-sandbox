@@ -1,8 +1,23 @@
 (dp1
-Vdo moves shift(pal by -100, 400, -40)
+Vre.match(string, test)
 p2
-I303
-sVtool NULL
+I1133
+sV%bg exec c in dic
 p3
+I984
+sV%bg RZ(45)
+p4
+I976
+sVdo moves shift(pal by -100, 400, -40)
+p5
+I303
+sVhere rz(45):c
+p6
+I431
+sVtool NULL
+p7
 I29
+sVdo appro place, 100
+p8
+I553
 s.

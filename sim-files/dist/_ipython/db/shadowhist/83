@@ -1,0 +1,20 @@
+(dp1
+Vfor i in s: prin ti
+p2
+I100
+sVset
+p3
+I164
+sVdo .end
+p4
+I661
+sVbeautify_line('print "shift(x by dx(5)" shift(x by dx(4))')
+p5
+I1198
+sVRY(45)
+p6
+I1234
+sVfor s in vs: s = "y"
+p7
+I135
+s.

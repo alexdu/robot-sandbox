@@ -1,0 +1,17 @@
+(dp1
+Vdo move shift(pal by 105,170,50)
+p2
+I348
+sVdo  ang = atan2(dy(a))
+p3
+I725
+sVhelp jobs.traceback
+p4
+I958
+sVc.co_varnames
+p5
+I1436
+sVbg exec(c) in dic
+p6
+I983
+s.

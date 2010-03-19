@@ -1,11 +1,23 @@
 (dp1
-Vimport ipy_system_conf
+Vdo move shift(pal by -130, -20, -35)
 p2
-I4
-sVdo move shift(pal by -130, -20, -35)
-p3
 I276
-sVdo moves shift(pal by 120, 400, -40)
+sVpprint.pprint "cucu"
+p3
+I749
+sVrun
 p4
+I1003
+sVdo moves shift(pal by 120, 400, -40)
+p5
 I306
+sVjobs
+p6
+I1102
+sVimport ipy_system_conf
+p7
+I4
+sVtype(x).__name__
+p8
+I856
 s.

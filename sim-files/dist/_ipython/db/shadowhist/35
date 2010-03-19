@@ -1,11 +1,26 @@
 (dp1
-Vdo moves bs:shift(aux by 0,0,0)
+Vdo appros a, 1000
 p2
-I391
-sVls
+I761
+sVRZ(RZ(45))
 p3
-I53
+I1238
 sVdo print #ppoint(0,-90,90,0,0,0)
 p4
 I326
+sVdo moves bs:shift(aux by 0,0,0)
+p5
+I391
+sVsee paletizare.v2
+p6
+I1024
+sVls
+p7
+I53
+sVsplit_strings('"1;2"; bla')
+p8
+I1186
+sVprint traceback.extract_stack()
+p9
+I1221
 s.

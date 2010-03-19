@@ -1,0 +1,26 @@
+(dp1
+Vdo type "cucu"
+p2
+I1205
+sVdo move shift(pal by 100,120,100)
+p3
+I337
+sVpprint.pprint((a,b))
+p4
+I754
+sVhelp _ip.to_user_ns
+p5
+I844
+sVdo appro dx + 10
+p6
+I177
+sVhere b:c
+p7
+I486
+sVa = "   "
+p8
+I1032
+sVdo move here:rz(43)
+p9
+I727
+s.

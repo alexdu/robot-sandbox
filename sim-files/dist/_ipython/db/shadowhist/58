@@ -1,0 +1,23 @@
+(dp1
+Vc = tb.tb_next.tb_frame.f_code
+p2
+I1433
+sVline = "" + string + "?" + notstring + "?" + ""
+p3
+I1142
+sVdo .program CUCUcu(a,b)
+p4
+I674
+sVEXECUTE("paletizare")
+p5
+I963
+sVhelp _ip.load
+p6
+I828
+sVstring.split("a , b , cdsfs  ,   dew[]", " ,")
+p7
+I1071
+sVstring.join
+p8
+I1174
+s.

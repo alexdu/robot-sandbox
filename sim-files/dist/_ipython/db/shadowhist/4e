@@ -1,5 +1,20 @@
 (dp1
-Vbs*pal
+Vprint_tb
 p2
+I942
+sVbs*pal
+p3
 I58
+sVlists
+p4
+I506
+sVhelp os.popen
+p5
+I513
+sVprint?
+p6
+I746
+sVdo j = int((p-1)/nn) mod nc
+p7
+I529
 s.

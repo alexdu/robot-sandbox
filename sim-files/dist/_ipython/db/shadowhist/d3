@@ -1,0 +1,17 @@
+(dp1
+Vjobs.jobs_all
+p2
+I1104
+sVprint_tb(sys.last_traceback)
+p3
+I955
+sVdo appro pal, 10
+p4
+I254
+sVbase
+p5
+I1004
+sVdo move shift(pal by -130, -20, -45)
+p6
+I277
+s.

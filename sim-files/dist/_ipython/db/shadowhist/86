@@ -1,0 +1,20 @@
+(dp1
+Vdo auto x,y,z[3],z
+p2
+I1085
+sVrange(10,1,-1)
+p3
+I672
+sVhelp print
+p4
+I745
+sVdo move shift(pal by -129, -20, -40)
+p5
+I281
+sVre.match("(\u005C *)", a).groups()[0]
+p6
+I1037
+sVdo SeT p = TrANS(0,0,0)
+p7
+I208
+s.

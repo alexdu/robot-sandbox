@@ -1,5 +1,26 @@
 (dp1
-Va = HERE()
+Vdo speed 100 mmps
 p2
+I609
+sVTAN(2,3)
+p3
+I1251
+sVRZ("3")
+p4
+I1219
+sVa = HERE()
+p5
 I11
+sVjobs.jobs_dead
+p6
+I1332
+sV_ip.defmacro
+p7
+I831
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_lasti
+p8
+I933
+sVSPEED(100,4)
+p9
+I1270
 s.

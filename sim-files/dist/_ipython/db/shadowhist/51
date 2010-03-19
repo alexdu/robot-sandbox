@@ -1,0 +1,23 @@
+(dp1
+Vbeautify_line("cucu bau:rz(45)")
+p2
+I1060
+sVdo appro c, 0
+p3
+I355
+sVen dry.run
+p4
+I1424
+sVdo move trans(0,0,800,0,0,0)
+p5
+I782
+sVe = d
+p6
+I878
+sVd = c:null
+p7
+I862
+sVlistl
+p8
+I222
+s.

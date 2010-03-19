@@ -1,0 +1,31 @@
+(dp1
+Vhelp reduce
+p2
+I684
+sVhelp builtins
+p3
+I408
+sVa |MOD| b
+p4
+I1287
+sVdo move shift(pal by -110, -30, -30)
+p5
+I271
+sVs
+I99
+sVdo move shift(pal by 110,170,50)
+p6
+I347
+sVswitch
+p7
+I69
+sVdo appro safe, 0
+p8
+I450
+sVhelp compile
+p9
+I977
+sVa[:-2]
+p10
+I586
+s.

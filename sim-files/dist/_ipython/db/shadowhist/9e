@@ -1,0 +1,23 @@
+(dp1
+Vos.path.splitext("gigel.py")
+p2
+I1419
+sVdo moves trans(10,300,800,0,0,0)
+p3
+I815
+sVdo RobotSim.debug = 1
+p4
+I546
+sV_ip.expose_magic
+p5
+I950
+sVdo moves bs:shift(aux by -150,-60,-90)
+p6
+I400
+sVprint >> Term.cout, tc.LightGray + "fds"
+p7
+I1455
+sVdo tool tool:rz(34)
+p8
+I719
+s.

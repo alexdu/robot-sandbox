@@ -1,0 +1,23 @@
+(dp1
+Vdo if a > b then
+p2
+I544
+sVre.split(elem, 'cucu bau cucu "bal"u"')
+p3
+I1156
+sVs.index('d')
+p4
+I1161
+sVdo speed 10
+p5
+I231
+sVtb = sys.last_traceback.tb_next
+p6
+I1371
+sV%bg exec(c)
+p7
+I985
+sVException
+p8
+I1392
+s.

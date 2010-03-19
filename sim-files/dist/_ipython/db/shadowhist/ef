@@ -1,20 +1,32 @@
 (dp1
-V_ip
+Vdo k = 2
 p2
+I538
+sV_ip
+p3
 I418
 sV__globals__
-p3
+p4
 I404
 sVdo appro dy(201), 200
-p4
-I197
-sVTRANS(10)
 p5
-I7
-sV__builtins__.dict
+I197
+sVjobs.remove("0")
 p6
-I413
-sV"x" in ["x", "y"]
+I1327
+sVprint "%5.3g" % 5323
 p7
+I500
+sV"x" in ["x", "y"]
+p8
 I122
+sVvplus._build_dictionary
+p9
+I882
+sV__builtins__.dict
+p10
+I413
+sVTRANS(10)
+p11
+I7
 s.

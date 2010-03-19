@@ -5,4 +5,22 @@ I13
 sV-225+205
 p3
 I294
+sVEXECUTE("spirala")
+p4
+I1363
+sVa = "x "
+p5
+I603
+sVsys.last_traceback.tb_next.tb_lineno
+p6
+I925
+sVRZ(45)
+p7
+I1000
+sVa[:-4)
+p8
+I584
+sV%bg math.sin(4)
+p9
+I1351
 s.

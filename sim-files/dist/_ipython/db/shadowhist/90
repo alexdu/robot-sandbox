@@ -1,0 +1,20 @@
+(dp1
+Vre.match("dx\u005C *\u005C(", "dx(fdsfdsf")
+p2
+I183
+sVdo moves shift(pal by 136, 409, -20)
+p3
+I317
+sVdo noflip
+p4
+I619
+sVprint >> Term.cout, tc.Black, "fsd"
+p5
+I1450
+sVraise Exception, "cucu"
+p6
+I593
+sVrange(4, (1)+())
+p7
+I688
+s.

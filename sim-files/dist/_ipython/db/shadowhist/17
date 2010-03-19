@@ -1,0 +1,17 @@
+(dp1
+Vre.split("[a-z]", "av+b")
+p2
+I151
+sVdo move ppoint(150,-171,226,180,55.4,180-150)
+p3
+I780
+sVre.search('"[^"]*"', 'ana are "453" mere')
+p4
+I1107
+sVdo if 1 == 2
+p5
+I692
+sVdo speed 100 ips always
+p6
+I607
+s.

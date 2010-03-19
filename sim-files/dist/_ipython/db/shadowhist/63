@@ -1,0 +1,22 @@
+(dp1
+Vc.co_consts
+p2
+I1376
+sVdo moves trans(10,-100,900,0,0,0)
+p3
+I809
+sVdo moves shift(pal by -100, -100, -40)
+p4
+I300
+sVb
+I371
+sVbeautify_program("paletizare.v2")
+p5
+I1203
+sVexec(cod in dic)
+p6
+I913
+sVsplit_comment('ana "are ; 5" ;mere')
+p7
+I1184
+s.

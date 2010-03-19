@@ -2,4 +2,10 @@
 Vplot(4)
 p2
 I10
+sVsplit_comment('ana "are ; 5" mere')
+p3
+I1181
+sVbs = rz(45)
+p4
+I439
 s.

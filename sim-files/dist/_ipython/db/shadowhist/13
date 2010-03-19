@@ -1,0 +1,26 @@
+(dp1
+Vlocals().keys()
+p2
+I476
+sVdo type 3
+p3
+I289
+sVa.strip("\u005Cn")
+p4
+I1409
+sVprint >> Term.cout, tc.DarkGray + "fds"
+p5
+I1454
+sVlistl d, e
+p6
+I229
+sVd = RZ(45)
+p7
+I877
+sVre.match("dx\u005C *\u005C(", "x + dx (")
+p8
+I174
+sVpprint.pprint "cucu", "bau"
+p9
+I750
+s.

@@ -1,0 +1,13 @@
+(dp1
+Vhelp re.match
+p2
+I82
+sVdo moves bs:shift(aux by 0,0,100)
+p3
+I390
+sVsys.call_tracing
+p4
+I1357
+sV)
+I912
+s.

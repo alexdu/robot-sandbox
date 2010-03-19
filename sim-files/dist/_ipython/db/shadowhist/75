@@ -1,0 +1,11 @@
+(dp1
+Vdo a = trans(10,10,0)
+p2
+I158
+sV[0]*10
+p3
+I1074
+sV%bg vplus.EXECUTE("paletizare.v2")
+p4
+I967
+s.

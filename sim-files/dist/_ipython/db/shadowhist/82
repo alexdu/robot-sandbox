@@ -1,0 +1,8 @@
+(dp1
+Vdo speed 10 always
+p2
+I232
+sVdo call pick.place(1,2)
+p3
+I660
+s.

@@ -1,0 +1,26 @@
+(dp1
+Vdo wait.event ,4
+p2
+I713
+sVdo moves shift(pal by 130, 410, -20)
+p3
+I313
+sVdo move trans(0,0,986,0,0,0)
+p4
+I795
+sVenv paletizare
+p5
+I824
+sVre.split("([a-z])", "av+b")
+p6
+I152
+sVdo move trans(0,0,700,0,0,0)
+p7
+I773
+sVdo auto x,y,z[3],z,x
+p8
+I1086
+sVdo speed 30 mmps always
+p9
+I650
+s.

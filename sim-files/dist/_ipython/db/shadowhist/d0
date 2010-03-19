@@ -1,0 +1,29 @@
+(dp1
+Vexec(c) in dic
+p2
+I981
+sVdo moves c
+p3
+I362
+sVraise SyntaxError
+p4
+I595
+sVhere bs:x
+p5
+I200
+sVdo move bs:shift(aux by 0,0,100)
+p6
+I389
+sVdo auto z[4]
+p7
+I1087
+sVbeautify_line("cucu bau")
+p8
+I1059
+sVRobotSim.debug
+p9
+I698
+sVsys
+p10
+I1356
+s.

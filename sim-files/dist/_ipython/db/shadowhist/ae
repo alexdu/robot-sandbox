@@ -1,0 +1,11 @@
+(dp1
+Vlocals().keys().sort
+p2
+I482
+sVprint "%20.3g" % 5
+p3
+I496
+sVtranslate_statement('type "1;2" ; bla')
+p4
+I1185
+s.

@@ -1,8 +1,20 @@
 (dp1
-VMOVE(bs*p)
+Va[1 : 3]
 p2
-I62
-sVdo move here:rz(90)
+I668
+sVa.endswith("ad")
 p3
+I583
+sVdo move here:rz(90)
+p4
 I387
+sVMOVE(bs*p)
+p5
+I62
+sVRZ(45) % 4
+p6
+I1298
+sVhere rz(180):pal
+p7
+I614
 s.

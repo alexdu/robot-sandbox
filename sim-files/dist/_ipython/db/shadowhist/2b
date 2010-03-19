@@ -1,11 +1,32 @@
 (dp1
-VMOVE(bs*SHIFT(a,-100,0,0))
+Vhere bs:pali
 p2
-I44
-sVhere bs:pali
-p3
 I63
-sVdo move d
+sVdo appros safe, 300
+p3
+I769
+sVMOVE(bs*SHIFT(a,-100,0,0))
 p4
+I44
+sVtype(int(1 |MOD| 3))
+p5
+I1282
+sVdo move d
+p6
 I373
+sVdo appros a, 10
+p7
+I759
+sVhere a:b
+p8
+I850
+sVpprint
+p9
+I747
+sVa[1] = HERE()
+p10
+I1054
+sVs.end
+p11
+I1110
 s.

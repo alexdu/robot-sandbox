@@ -22,8 +22,62 @@
 import re
 import string
 import math
+import parser
+import symbol
+import token
 
+from types import ListType, TupleType
 
+def match_subtree(pattern, data, vars=None):
+    #~ print pattern
+    #~ print data
+    if vars is None:
+        vars = {}
+    if type(pattern) is ListType:
+        vars[pattern[0]] = data
+        return 1, vars
+    if type(pattern) is not TupleType:
+        return (pattern == data), vars
+    if len(data) != len(pattern):
+        return 0, vars
+    for pattern, data in map(None, pattern, data):
+        same, vars = match_subtree(pattern, data, vars)
+        if not same:
+            break
+    return same, vars
+
+def guess_name(code):
+    if code in symbol.sym_name:
+        return symbol.sym_name[code]
+    if code in token.tok_name:
+        return token.tok_name[code]
+    return code
+    
+def convert_parse_tree(l):
+    newl = []
+    for i,e in enumerate(l):
+        if type(e).__name__ == 'int':
+            newl.append(guess_name(e))
+        elif type(e).__name__ == 'list':
+            newl.append(convert_parse_tree(e))
+        else:
+            newl.append(e)
+    return newl
+        
+
+def find_params_passable_by_ref(args):
+    pattern = (symbol.test, (symbol.or_test, (symbol.and_test, (symbol.not_test, (symbol.comparison, (symbol.expr, (symbol.xor_expr, (symbol.and_expr, (symbol.shift_expr, (symbol.arith_expr, (symbol.term, (symbol.factor, (symbol.power, (symbol.atom, (token.NAME, ['name'])))))))))))))))
+    t = parser.expr(args).totuple()
+    num_args = len(t[1]) / 2
+    
+    args = []
+    for i in range(num_args):
+        (found, var) = match_subtree(pattern, t[1][1 + 2*i])
+        if found:
+            args.append(var["name"])
+        else:
+            args.append("__")
+    return args
 
 
 def beautify_program(file):
@@ -34,7 +88,7 @@ def beautify_program(file):
     newcode = []
     
     indent = 0
-    
+
     for line in code:
         (d_indent_now, d_indent_future) = get_indent(line)
         indent_now = indent + d_indent_now
@@ -50,6 +104,7 @@ def beautify_program(file):
         if indent < 0:
             print "Warning: too many END's."
             indent = 0
+            
     if indent > 0:
         print "Warning: some END's are missing."
     
@@ -57,6 +112,7 @@ def beautify_program(file):
     f = open(file, "w")
     f.writelines(newcode)
     f.close()
+    
 def get_indent(line): # intoarce indentarea pentru linia curenta si pentru urmatoarele
 
 
@@ -121,6 +177,7 @@ def beautify_block(var):
 
 
 
+
 def translate_program(file):
     
     beautify_program(file)
@@ -130,27 +187,49 @@ def translate_program(file):
     f.close()
     
     newcode = []
-    for line in code:
+    for line in code:        
         spaces = re.match("(\ *)", line).groups()[0]
         line = line.strip()
-        lt = translate_line(line)
+        lt = translate_line(line, len(spaces))
+        
         #print spaces + lt
         newcode.append(spaces + lt)
     
     newcode.append("#end of file\n")
     return string.join(newcode, "\n")
 
-def translate_line(line):
+def translate_line(line, indent=None):
     (code, comment) = split_comment(line)
-    code = translate_statement(code)
+    code = translate_statement(code, indent)
     if len(comment.strip()):
         return code + " #" + comment
     else:
         return code
         
 
+def parse_function_call(expr):
+    #print expr
+    m = re.match("^([^\(]+)\(([^\(]*)\)$", expr)
+    #print m.groups()
+    if m:
+        func = m.groups()[0].strip()
+        args = m.groups()[1].strip()
+        if len(args) > 0:
+            args_ref = find_params_passable_by_ref(args)
+        else:
+            args_ref = []
+        return (func, args, args_ref)
+    else:
+        if ("(" in expr) or (")" in expr):
+            raise SyntaxError, "Error in function call declaration."
+        else:
+            return (expr, "", [])
+
+
+_program_args = []
     
-def translate_statement(var):
+def translate_statement(var, indent):
+    
     # argumentul contine o linie de program fara comentarii
     # primul cuvant este de obicei un cuvant cheie
     
@@ -183,15 +262,26 @@ def translate_statement(var):
     'FINE', 'FLIP',
     'LEFTY', 
     'NOFLIP', 'OPEN', 'OPENI', 
-    'RELAX', 'RELAXI', 'RESET', 'RETURN', 'RETURNE', 'RIGHTY', 
+    'RELAX', 'RELAXI', 'RESET', 'RIGHTY', 
     'SEE', 'SINGLE',
     'STATUS', 'STOP']
 
     # PARAMETER HAND.TIME = 0.5
     # TIMER 1 = 0
     vplus_eq_functions = ['PARAMETER', 'TIMER']
-    
+
     (kw, rest, vs) = split_after_keyword(var)
+    global _program_args
+
+    if kw[0] == '.':
+        if indent != 0:
+            raise IndentationError, "Missing END statement."
+    if kw[0] != '.':
+        if indent == 0:
+            if kw == 'END':
+                raise IndentationError, "Too many END statements."
+            else:
+                raise IndentationError, "Statements written outside .PROGRAM ... .END blocks are not allowed."
     
     if kw in vplus_eq_functions:
         (name, value) = split_at_equal_sign(rest)
@@ -207,10 +297,20 @@ def translate_statement(var):
         name = translate_expression(name)
         value = translate_expression(value)            
         vs = [name.strip(), ' = SET(', value.strip(), ')']
-    elif kw == "CALL":
-        vs = [translate_expression(rest).strip()]
-        if not vs[0].strip().endswith(")"):
-            vs.append("()")
+    elif kw == "CALL":                       
+        
+        # CALL func(a,b,c)   => (a,b,c) = func(a,b,c)
+        # CALL func(a,b+1,c)   => (a,__,c) = func(a,b+1,c)
+        vs = []
+        callexpr = translate_expression(rest).strip()
+        (func, args, args_ref) = parse_function_call(callexpr)
+
+        if len(args) > 0:
+            arg_ref = find_params_passable_by_ref(args)
+            vs = ["(", string.join(arg_ref, ", "), ") = ", func, "(", args, ")"]
+        else:
+            vs = [callexpr, "()"]
+
     elif kw == "EXIT":
         vs = ['break']
     elif kw == 'TYPE':
@@ -229,16 +329,23 @@ def translate_statement(var):
                 size = m.groups()[1].strip()
                 if len(size) == 0:
                     size = "100"      # fixme
-                newvars.append(variable + "=[0]*(" + size + ")")
+                newvars.append(variable + "=[None]*(" + size + ")")
             else:
-                newvars.append(v + "=0")
+                newvars.append(v + "=None")
         vs = [ string.join(newvars, "; ") ]
     elif kw == ".PROGRAM":
-        vs = [translate_expression(rest).strip()]
-        if not vs[0].endswith(")"):
-            vs.append("()")
-        vs.insert(0, "def ")
-        vs.append(":")
+            
+        
+        progdecl = translate_expression(rest).strip()
+        (name, args, args_ref) = parse_function_call(progdecl)
+        if "__" in args_ref:
+            raise SyntaxError, "Invalid .PROGRAM declaration"
+        vs = ["def ", name, "(", args, "):"]
+        
+        _program_args = args_ref
+        
+
+
     elif kw == "FOR":
         rest = translate_expression(rest)
         vs = split_keywords(rest)
@@ -294,7 +401,9 @@ def translate_statement(var):
     elif kw == "END":
         vs = ['#end']
     elif kw == ".END":
-        vs = ['#end program']
+        vs = ['    return (', string.join(_program_args, ', '), ') # .END']
+    elif kw == "RETURN":
+        vs = ['return (', string.join(_program_args, ', '), ')']
     else:
         vs = [translate_expression(var)]
 

@@ -22,7 +22,6 @@
 import sys
 import os
 import threading
-global ipshell
 #print sys.argv
 sys.argv.pop()
 sys.argv.pop()
@@ -35,13 +34,16 @@ import vplus
 # acum sunt in folderul cu sursele (src, sim-files)
 _dir = os.getcwd()
 _args = ['-pi1','. ','-po','=> ', '-colors', 'LightBG', '-xmode', 'Plain']
-_ipshell = IPShellEmbed(_args, banner="\r\nType 'mc' to see a list of monitor commands.\r\n\r\nV+ simulation console ready.")
-
-
+_ipshell = IPShellEmbed(_args, banner="V+ simulation console ready.")
 
 
 class ConsoleThread ( threading.Thread ):
     def run(self):
+
+        from IPython.genutils import Term
+        sys.sys_stdout = sys.stdout
+        sys.ipy_stdout = Term.cout
+
         IPython.ipapi.get().expose_magic("exec", vplus._CM_EXEC)
         IPython.ipapi.get().expose_magic("here", vplus._CM_HERE)
         IPython.ipapi.get().expose_magic("status", vplus._CM_STATUS)
@@ -65,7 +67,17 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("env", vplus._CM_ENV)
         IPython.ipapi.get().expose_magic("do", vplus._CM_DO)
         IPython.ipapi.get().expose_magic("abort", vplus._CM_ABORT)
+        
+        print
+        print "Type 'mc' to see a list of monitor commands."
+        print "Use ! to invoke operating system commands (dir, ls, copy...)"
+        print
+        print "TRACE is ON."
+        print
+
+        
         _ipshell() 
+        _ipshell.IP.savehist()
         os.abort()
         raise SystemExit
 

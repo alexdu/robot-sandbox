@@ -220,21 +220,16 @@ def tick():
     while RobotSim.pauseTick:
         time.sleep(0.1)
 
-    lock = threading.Lock()
-    lock.acquire()
-    try:
-        #print RobotSim.currentJointPos
-        setGripperForces(RobotSim.sig_open, RobotSim.sig_close)
-        
-        changeRobotPos(RobotSim.currentJointPos)
+    #print RobotSim.currentJointPos
+    setGripperForces(RobotSim.sig_open, RobotSim.sig_close)
+    
+    changeRobotPos(RobotSim.currentJointPos)
 
-        # avans la urmatorul punct pe traiectorie
-        
-        if RobotSim.arm_trajectory_index < len(RobotSim.arm_trajectory) - 1:
-            RobotSim.arm_trajectory_index = RobotSim.arm_trajectory_index + 1
-            RobotSim.currentJointPos = RobotSim.arm_trajectory[RobotSim.arm_trajectory_index].J
-    finally:
-        lock.release() 
+    # avans la urmatorul punct pe traiectorie
+    
+    if RobotSim.arm_trajectory_index < len(RobotSim.arm_trajectory) - 1:
+        RobotSim.arm_trajectory_index = RobotSim.arm_trajectory_index + 1
+        RobotSim.currentJointPos = RobotSim.arm_trajectory[RobotSim.arm_trajectory_index].J
     
 
     
@@ -274,15 +269,17 @@ odeSim.add(finger1,  categorybits=1, collidebits=6)
 odeSim.add(finger2,  categorybits=1, collidebits=6)
 
 
-
-boxes = []
-for i in range(20):
-    b = Box("Box1", lx=100E-3,ly=30E-3,lz=15E-3,material=GLMaterial(diffuse=(random.uniform(0,1), random.uniform(0,0.5), random.uniform(0,1))))
-    b.mass = 1E-2
-    b.pos = (0.5, 0.5, -0.01)
-    boxes.append(b)
-    odeSim.add(b, categorybits=4, collidebits=0)
-    odeSim.createBodyManipulator(b).odebody.setKinematic()
+def createBoxes():
+    global boxes
+    boxes = []
+    for i in range(20):
+        b = Box("Box1", lx=100E-3,ly=30E-3,lz=15E-3,material=GLMaterial(diffuse=(random.uniform(0,1), random.uniform(0,0.5), random.uniform(0,1))))
+        b.mass = 1E-2
+        b.pos = (0.5, 0.5, -0.01)
+        boxes.append(b)
+        odeSim.add(b, categorybits=4, collidebits=0)
+        odeSim.createBodyManipulator(b).odebody.setKinematic()
+createBoxes()
 
 def resetBoxes():
     RobotSim.pauseTick = True

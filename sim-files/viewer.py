@@ -51,6 +51,9 @@ fps            Framerate
 camera         Specify camera to be used
 """
 
+import IPython.Shell
+from IPython.Shell import IPShellEmbed
+
 import sys, os, os.path
 #sys.path = [r"D:\tmp\pygame_src\pygame-1.6.2\build\lib.win32-2.3"]+sys.path
 import pygame
@@ -69,6 +72,10 @@ from cgkit.tool import Tool
 import cgkit.wintab
 from cgkit.wintab.constants import *
 import cgkit.spacedevice
+
+from cgkit.ri import *
+
+
 
 
 # Viewer
@@ -366,6 +373,9 @@ class Viewer(Tool):
                 self.wintabcontext.open(hwnd, True)
                 pygame.event.set_allowed(SYSWMEVENT)
 
+        #~ initGUI()
+
+        
         # Event loop...
         self.running = True
         active = True
@@ -373,30 +383,48 @@ class Viewer(Tool):
         cnt = 0
         timer.startClock()
         while self.running:
-            # Display the scene
-            self.draw(self.cam, width, height)
-            pygame.display.flip()
+            try:
+                # Display the scene
 
-            # Handle events
-            events = pygame.event.get()
-            self.handleEvents(events)
+                #~ myguiapp.draw()
+                #gui_screen.refresh()
+                #gui_screen.display()
+                
+                self.draw(self.cam, width, height)
+                
+                
+                pygame.display.flip()
+                #time.sleep(1)
 
-            if self.wintabcontext!=None:
-                self.handleWintabEvents()
 
-            if self.time_end!=None and timer.time>self.time_end+1E-10:
-                active = False
+                # Handle events
 
-            if active:
-                if self.options.save!=None:
-                    self.saveScreenshot(srf)
 
-                # Step time
-                timer.step()
+                events = pygame.event.get()
+                self.handleEvents(events)
 
-            # Sync
-            clk.tick(fps)
-            cnt+=1
+                #~ myguiapp.run(events)
+
+                if self.wintabcontext!=None:
+                    self.handleWintabEvents()
+
+                if self.time_end!=None and timer.time>self.time_end+1E-10:
+                    active = False
+
+                if active:
+                    if self.options.save!=None:
+                        self.saveScreenshot(srf)
+
+                    # Step time
+                    timer.step()
+
+                # Sync
+                clk.tick(fps)
+
+                cnt+=1
+            except KeyboardInterrupt:
+                print "CTRL-C"
+                IPython.Shell.KBINT = False
 #            if cnt==25:
 #                print "fps: %d"%clk.get_fps()
 #                print "Virtual time:",timer.time, "Real time:",timer.clock
@@ -404,6 +432,7 @@ class Viewer(Tool):
         #print "Exiting..."
         #raise SystemExit
         print "Forced Quit..."
+        #_ipshell.IP.savehist()
         os.abort()        
 
 
@@ -604,6 +633,7 @@ class Viewer(Tool):
 
     def draw(self, cam, width, height):
         scene = getScene()
+        
         renderer = self.renderer
 
         # Set handedness
@@ -642,9 +672,14 @@ class Viewer(Tool):
         if V2!=None:
             renderer.setViewTransformation(V2, 1)
 
+        
+        
         # Draw scene
         root = scene.worldRoot()
         renderer.paint(root)
+        
+        
+        
 
     # saveScreenshot
     def saveScreenshot(self, srf):

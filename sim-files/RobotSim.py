@@ -239,54 +239,44 @@ def ctraj(jdest):
     # Rezultatul este memorat pe articulatii, in arm_trajectory
     global arm_trajectory, startJointPos, destJointPos, switch
     
-    lock = threading.Lock()
-    lock.acquire()
-    try:
-        destJointPos = jdest.J
+    destJointPos = jdest.J
 
-        p1 = DK(currentJointPos)
-        p2 = DK(destJointPos)
+    p1 = DK(currentJointPos)
+    p2 = DK(destJointPos)
 
-        d = DISTANCE(p1,p2) + ang_distance(p1,p2)*10
-        time = d / max_cartesian_speed / (speed_next_motion/100.0) / (speed_monitor/100.0)
-        steps = 2 + round(time * fps)
-        arm_trajectory_index = 0
-        if not switch["DRY.RUN"]:
-            for t in numpy.linspace(0,1,steps):
-                p = lin_interp(p1,p2,t)
-                j = IK(p)
-                arm_trajectory.append(j)
-    finally:
-        lock.release() 
+    d = DISTANCE(p1,p2) + ang_distance(p1,p2)*10
+    time = d / max_cartesian_speed / (speed_next_motion/100.0) / (speed_monitor/100.0)
+    steps = 2 + round(time * fps)
+    arm_trajectory_index = 0
+    if not switch["DRY.RUN"]:
+        for t in numpy.linspace(0,1,steps):
+            p = lin_interp(p1,p2,t)
+            j = IK(p)
+            arm_trajectory.append(j)
         
 def jtraj(jdest):
-    # Calculeaza traiectoria robotului pentru miscari in linie dreapta (MOVES)
+    # Calculeaza traiectoria robotului pentru miscari interpolate pe articulatii (MOVE)
     # Rezultatul este memorat pe articulatii, in arm_trajectory
 
 
     global arm_trajectory, startJointPos, destJointPos
     
-    lock = threading.Lock()
-    lock.acquire()
-    try:
         
-        startJointPos = currentJointPos
-        destJointPos = jdest.J
-        ja = mat(currentJointPos)
-        jb = mat(destJointPos)
-        dif = ja - jb
-        maxrot = abs(dif / mat(max_joint_speed)).max()
-        time = maxrot / (speed_next_motion/100.0) / (speed_monitor/100.0)
-        steps = 2 + round(time * fps)
-        
-        arm_trajectory_index = 0
-        if not switch["DRY.RUN"]:
-            for t in numpy.linspace(0,1,steps):
-                j = ja * (1-t) + jb * t
-                j = j.tolist()[0]
-                arm_trajectory.append(PPOINT(j))
-        #print arm_trajectory
+    startJointPos = currentJointPos
+    destJointPos = jdest.J
+    ja = mat(currentJointPos)
+    jb = mat(destJointPos)
+    dif = ja - jb
+    maxrot = abs(dif / mat(max_joint_speed)).max()
+    time = maxrot / (speed_next_motion/100.0) / (speed_monitor/100.0)
+    steps = 2 + round(time * fps)
+    
+    arm_trajectory_index = 0
+    if not switch["DRY.RUN"]:
+        for t in numpy.linspace(0,1,steps):
+            j = ja * (1-t) + jb * t
+            j = j.tolist()[0]
+            arm_trajectory.append(PPOINT(j))
+    #print arm_trajectory
 
-    finally:
-        lock.release() 
 

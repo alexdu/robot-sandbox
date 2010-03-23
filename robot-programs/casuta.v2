@@ -42,8 +42,6 @@
     SPEED 30
     DEPARTS 100
     BREAK
-    SET pick = SHIFT(pick BY 0,0,0)
-    SET place = SHIFT(place BY 0,0,1)
     
     APPRO place, 100
     BREAK

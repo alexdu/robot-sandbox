@@ -81,6 +81,8 @@ def check_args(args, types):
             caller = traceback.extract_stack()[-2][2]
             raise TypeError, "%s expects argument %d to be '%s', not '%s'." % (caller, i+1, string.join(allowedtypes, "' or '"), t)
 
+def DEFINED(x):
+    return not(x == None)
 
 def SIN(ang):
     check_args(ang, numeric)
@@ -92,78 +94,234 @@ def TAN(ang):
     check_args(ang, numeric)
     return numpy.tan(ang * pi/180)
 def ATAN2(dy, dx):
+    """
+    Arctangent function
+    Arguments: delta Y and delta X
+    
+    ATAN2(1,1) => 45
+    
+    """
     check_args([dy,dx], [numeric])
     return numpy.arctan2(dy, dx) * 180/pi
 def INT(x):
     check_args(x, numeric)
     return x.__int__()
 def FRACT(x):
+    """
+    
+    Computes the fractional part of x
+    (x is scalar)
+    
+    FRACT(1.2) => 0.2
+    
+    """
     check_args(x, numeric)
     return x - INT(x)
 def ABS(x):
+    """
+    
+    Computes the absolute value of x
+    (x is scalar)
+    
+    ABS(-5) => 5
+    ABS(10) => 10
+    
+    """
     check_args(x, numeric)
     return abs(x)
 def SIGN(x):
+    """
+    
+    SIGN(x) = 1 if x >= 0,
+              0 otherwise
+    
+    """
     check_args(x, numeric)
     if x >= 0:
         return 1
     else:
         return -1
 def SQR(x):
+    """
+    
+    Computes x^2 
+    (x is scalar)
+    
+    """
     check_args(x, numeric)
     return x*x
 def SQRT(x):
+    """
+    
+    Square root of a scalar variable
+    
+    """
     check_args(x, numeric)
     return math.sqrt(x)
 def MIN(a,b):
+    """
+    
+    Minimum value between 2 scalar variables
+    
+    """
     check_args([a,b], [numeric])
     if a > b:
         return b
     else:
         return a
 def MAX(a,b):
+    """
+    
+    Maximum value between 2 scalar variables
+    
+    """
     check_args([a,b], [numeric])
     return -MIN(-a,-b)
 
     
 
 def INVERSE(a):
+    """
+    
+    Computes the inverse of a transformation matrix
+    
+    Examples:
+    
+    .do set inv = INVERSE(RX(45))
+    .do set tool = old.tool:INVERSE(HERE):ref.loc
+    
+    """
     check_args(a, "TRANS")
     return TRANS(HTM = numpy.linalg.inv(a.HTM))    
 
 def RX(ang):
+    """
+    
+    Elementary rotation around X axis.
+    
+    Example:
+    
+    RX(45)
+    .do moves here:rx(45)
+    
+    """
     check_args(ang, numeric)
     return TRANS(HTM = RobotSim.omorot(rotx(ang)))
 
 def RY(ang):
+    """
+    
+    Elementary rotation around Y axis.
+    
+    Example:
+    
+    RY(45)
+    .do moves here:ry(45)
+    
+    """
     check_args(ang, numeric)
     return TRANS(HTM = RobotSim.omorot(roty(ang)))
 
 
 def RZ(ang):
+    """
+    
+    Elementary rotation around Z axis.
+    
+    Example:
+    
+    RZ(45)
+    .do moves here:rz(45)
+    
+    """
     check_args(ang, numeric)
     return TRANS(HTM = RobotSim.omorot(rotz(ang)))
     
 def DX(a):
+    """
+    Extracts the X component from a transformation.
+    
+    Examples:
+    
+    DX(TRANS(1,2,3)) => 1
+    
+    .do type DX(HERE)
+    
+    """
     check_args(a, "TRANS")
     return a.x
+
 def DY(a):
+    """
+    Extracts the Y component from a transformation.
+    
+    Examples:
+    
+    DY(TRANS(1,2,3)) => 2
+    
+    .do type DY(HERE)
+    
+    """
     check_args(a, "TRANS")
     return a.y
+    
+    
 def DZ(a):
+    """
+    Extracts the Z component from a transformation.
+    
+    Examples:
+    
+    DZ(TRANS(1,2,3)) => 3
+    
+    .do type DZ(HERE)
+    
+    """
     check_args(a, "TRANS")
     return a.z
 
 def DISTANCE(a,b):
+    """
+    
+    Computes the 3D (XYZ) distance between two transformations (robot locations).
+    
+    EXAMPLE:
+    
+    .do type distance(here, TRANS(100,0,0))
+    
+    """
     check_args([a,b], "TRANS")
     return SQRT((a.x - b.x)**2 + (a.y - b.y)**2 + (a.z - b.z)**2)
 
 def SHIFT(a, dx, dy, dz):
+    """
+    Translates a transformation (robot location) in the World reference frame.
+    
+    Examples:
+    
+    .do set b = SHIFT(a BY 10, 20, 30)
+    
+    SHIFT(loc BY dx, dy, dz) is equivalent to TRANS(dx, dy, dz):loc
+    
+    """
     check_args([a, dx, dy, dz], ["TRANS", numeric, numeric, numeric])
     
     return TRANS(dx,dy,dz) * a
 
 def FRAME(a,b,c,d):
+    """
+
+    Computes a right-handed reference frame determined by 4 transformations (robot locations).
+    
+    a - b       : is the direction of local X axis
+    a - b - c   : defines the XY plane and the sign of Y axis
+    d           : defines the origin of the frame
+
+    EXAMPLES:
+    .do set bs = FRAME(a,b,c,d)
+    .here bs:a
+    .do appro bs:a, 100
+    """
     check_args([a, b, c, d], "TRANS")
     
     x = b.POS - a.POS
@@ -195,6 +353,19 @@ class infix:
 
 TO = infix(lambda x,y: _TO(x,y))
 def _TO(a,b):
+    """
+    Creates an interval to be used in FOR loops:
+    _TO(1,5) = [1,2,3,4,5]
+    _TO(5,1) = [5,4,3,2,1]
+    1 |TO| 5 is a shortcut for _TO(1,5)
+    
+    Usage in V+ program:
+              
+    FOR i = 1 TO 5
+        TYPE i
+    END
+    
+    """    
     check_args([a, b], [numeric])
 
     if a < b:
@@ -371,28 +542,84 @@ def SPEED(spd, flag1=None, flag2=None):
         
 
 def LEFTY():
-	RobotSim.lefty = True
-def LEFTY():
-	RobotSim.lefty = False
+    """
+    Asserts the LEFTY configuration flag.
+    Effect: at the next motion, the robot will try to reach locations
+    (transformation variables) in the LEFTY configuration.
+    
+    For SCARA and planar arm, LEFTY looks like this (view from above):
+        o
+       /       
+      /
+      \
+       \
+      (())
+    """
+    RobotSim.lefty = True
+def RIGHTY():
+    """
+    Asserts the RIGHTY configuration flag.
+    Effect: at the next motion, the robot will try to reach locations
+    (transformation variables) in the RIGHTY configuration.
+    
+    For SCARA and planar arm, RIGHTY looks like this (view from above):
+        o
+         \       
+          \
+          /
+         /
+       (())
+    """
+    
+    RobotSim.lefty = False
 def ABOVE():
-	RobotSim.above = True
+    """
+    For vertical robots: sets the ELBOW above the line between SHOULDER and WRIST.
+    Not implemented.
+    """
+    RobotSim.above = True
 def BELOW():
-	RobotSim.above = False
+    """
+    For vertical robots: sets the ELBOW below the line between SHOULDER and WRIST.
+    Not implemented.
+    """
+    RobotSim.above = False
 def FLIP():
-	RobotSim.flip = True
+    """
+    FLIP configuration mode for spherical wrist.
+    """
+    RobotSim.flip = True
 def NOFLIP():
-	RobotSim.flip = False
+    """
+    NOFLIP configuration mode for spherical wrist.
+    """
+    RobotSim.flip = False
 def SINGLE():
-	RobotSim.single = True
+    RobotSim.single = True
 def MULTIPLE():
-	RobotSim.single = False
+    RobotSim.single = False
 def OPEN():
+    """
+    The robot will open the gripper at the next motion instruction
+    (MOVE, APPRO, BREAK etc.)
+    """
     RobotSim.open_flag = True
     RobotSim.close_flag = False
 def CLOSE():
+    """
+    The robot will close the gripper at the next motion instruction
+    (MOVE, APPRO, BREAK etc.)
+    """
     RobotSim.open_flag = False
     RobotSim.close_flag = True
 def BREAK():
+    """
+    Waits for the robot to finish the current motion.
+    """
+
+    if RobotSim.switch["DRY.RUN"]:
+        return
+
     RobotSim.ActuateGripper()
     
     while RobotSim.arm_trajectory_index < len(RobotSim.arm_trajectory) - 1:
@@ -400,9 +627,19 @@ def BREAK():
         if RobotSim.abort_flag:
             RobotSim.abort_flag = False
             raise UserAbort
+    time.sleep(0.2)
     
     
 def OPENI():
+    """
+    Waits for the current robot motion to finish, 
+    then OPENs the gripper immediately, 
+    then waits for (PARAMETER HAND.TIME) seconds.
+    """
+
+    if RobotSim.switch["DRY.RUN"]:
+        return
+
     BREAK()
     OPEN()
     BREAK()
@@ -410,25 +647,86 @@ def OPENI():
         time.sleep(RobotSim.param["HAND.TIME"])
     
 def CLOSEI():
+    """
+    Waits for the current robot motion to finish, 
+    then CLOSEs the gripper immediately, 
+    then waits for (PARAMETER HAND.TIME) seconds.
+    """
+
+    if RobotSim.switch["DRY.RUN"]:
+        return
+
     BREAK()
     CLOSE()
     BREAK()
-    if not RobotSim.switch["DRY.RUN"]:
-        time.sleep(RobotSim.param["HAND.TIME"])
+    time.sleep(RobotSim.param["HAND.TIME"])
     
 
 def HERE():
-	return RobotSim.DK(RobotSim.currentJointPos)
+    """
+    Returns the current location of the robot.
+    
+    Examples:
+    
+    Using HERE as monitor command:
+    .here a       ; "a" will contain the current robot location, as a transformation (TRANS)
+    .here #safe   ; "#safe" will contain the current robot location, as a precision point (PPOINT)
+    .here bs:b    ; "b" will contain the current robot location, as a TRANS, 
+                  ; relative to the "bs" reference frame. In contrast, "a" is relative to "World" frame.
+    
+    Using HERE in a V+ program:
+    
+    HERE a        ; as a statement; useful for recording the robot trajectory
+    
+    
+    IF DISTANCE(HERE, DEST) > 10  ; as a function
+        WAIT
+    END
+    """
+    return RobotSim.DK(RobotSim.currentJointPos)
 def DEST():
-	return RobotSim.DK(RobotSim.destJointPos)
+    """
+    Returns the current destination of the robot, as a transformation variable.
+    This is usually the argument of the last motion instruction.
+    
+    Example:
+    .do move trans(200,300,100,0,180,0)  ; start a robot motion
+    .do print dest                       ; print its destination (while the robot is moving)
+    
+    """
+    return RobotSim.DK(RobotSim.destJointPos)
 
 def PHERE():
-	return PPOINT(RobotSim.currentJointPos)
+    """
+    Returns the current robot position as a precision point. 
+    It is used in V+ programs as a function.
+    
+    See also: HERE
+    """
+    return PPOINT(RobotSim.currentJointPos)
 def PDEST():
-	return PPOINT(RobotSim.destJointPos)
+    """
+    Returns the current robot destination as a precision point.     
+    
+    See also: DEST
+    """
+    return PPOINT(RobotSim.destJointPos)
 
     
 def SET(a):
+    """
+    PROGRAM INSTRUCTION
+    Sets the value of a transformation or a precision point.
+    
+    Usage:
+    
+    At monitor console (using "do"):
+    .do set a = shift(b by 1,2,3)
+    
+    In V+ program:
+    SET pick = SHIFT(st BY 0, 0, 100)
+    
+    """
     check_args(a, location)
     return a
 
@@ -451,6 +749,17 @@ def _convert_to_ppoint(a):
     
 
 def MOVE(a):
+    """
+    Starts a joint interpolated motion towards "a".
+    a is a robot location (TRANS or PPOINT)
+    
+    The function returns immediatly after the trajectory is generated.
+    
+    Use BREAK for forcing the program to wait for the current motion to finish.
+    
+    Two or more succesive MOVE calls perform procedural motion (not implemented yet).
+    
+    """
     check_args(a, location)
     
     RobotSim.ActuateGripper() 
@@ -462,6 +771,17 @@ def MOVE(a):
 
   
 def MOVES(a):
+    """
+    Starts a straight line motion towards "a".
+    a is a robot location (TRANS or PPOINT)
+    
+    The function returns immediatly after the trajectory is generated.
+    
+    Use BREAK for forcing the program to wait for the current motion to finish.
+    
+    Two or more succesive MOVES calls perform procedural motion (not implemented yet).
+    
+    """
     check_args(a, location)
 
     RobotSim.ActuateGripper()
@@ -472,6 +792,22 @@ def MOVES(a):
     RobotSim.speed_next_motion_unit = RobotSim.speed_always_unit
 
 def MOVET(a, grip):
+    """
+    PROGRAM INSTRUCTION
+    
+    MOVET a, grip
+    is a shortcut for:
+    Shortcut for:
+    
+        OPEN           ; when grip = TRUE
+        MOVE(a)
+    
+    and 
+
+        CLOSE          ; when grip = FALSE
+        MOVE(a)
+    
+    """
     check_args([a, grip], [location, numeric])
 
     if grip:
@@ -481,6 +817,21 @@ def MOVET(a, grip):
     MOVE(a)
     
 def MOVEST(a, grip):
+    """
+    PROGRAM INSTRUCTION
+    
+    MOVEST a, grip
+    is a shortcut for:
+    
+        OPEN           ; when grip = TRUE
+        MOVES(a)
+    
+    and 
+
+        CLOSE          ; when grip = FALSE
+        MOVES(a)
+    
+    """
     check_args([a, grip], [location, numeric])
 
     if grip:
@@ -490,26 +841,83 @@ def MOVEST(a, grip):
     MOVES(a)
     
 def APPRO(a, h):
+    """
+    PROGRAM INSTRUCTION
+    
+    APPRO a, h
+    Moves the robot "behind" 'a' at a distance 'h', 
+    using a joint interpolated motion (similar to MOVE).
+    
+    'a' is a robot location (TRANS or PPOINT)
+    
+    "Behind" means in the negative direction of a's Z axis.
+    
+    If 'a' is PPOINT, it is converted to a TRANS using DK in order to determine its Z axis.
+    
+    Equivalent to:
+    MOVE a:TRANS(0,0,-h)
+    
+    """
     check_args([a, h], [location, numeric])
     a = _convert_to_trans(a)
     MOVE(a * TRANS(0, 0, -h))
+    
 def DEPART(h):
+    """
+    PROGRAM INSTRUCTION
+    
+    DEPART h
+    Moves the robot "backwards" from the current position, at a distance 'h',
+    using a joint interpolated motion (similar to MOVE).
+    
+    
+    'a' is a robot location (TRANS or PPOINT)
+    
+    "Backwards" means in the negative direction of the Z axis of DEST.
+    If robot is not moving, DEST is identical to HERE.
+    
+    Equivalent to:
+    MOVE DEST:TRANS(0,0,-h)
+    
+    """
     check_args(h, numeric)
     MOVE(DEST() * TRANS(0, 0, -h))
 def APPROS(a, h):
+    """
+    Similar to APPRO, but uses a straight line trajectory.
+    """
     check_args([a, h], [location, numeric])
     a = _convert_to_trans(a)
     MOVES(a * TRANS(0, 0, -h))
 def DEPARTS(h):
+    """
+    Similar to DEPART, but uses a straight line trajectory.
+    """
     check_args(h, numeric)
     MOVES(DEST() * TRANS(0, 0, -h))
 
 def PARAMETER(param_name, value):
+    """
+    PROGRAM INSTRUCTION and MONITOR COMMAND
+    
+    Sets a V+ parameter.
+    
+    Usage as monitor command:
+    .parameter hand.time = 100
+    .parameter
+    
+    Usage as program instruction:
+    
+    PARAMETER HAND.TIME = 100
+    """
     check_args([param_name, value], ["str", numeric])
     param_name = param_name.replace("_", ".")
     RobotSim.param[param_name] = value
 
 def TOOL(t = None):
+    """
+    Sets the tool transformation.
+    """
     check_args(t, ["TRANS", "NoneType"])
     if t != None:
         RobotSim.tool_trans = t
@@ -533,8 +941,8 @@ class UserAbort(Exception):
 
 
 from IPython import ColorANSI
-from IPython.genutils import Term
 tc = ColorANSI.TermColors()
+Term = None
 
 _code_tracing_cache = {}
 _color_dic = {}
@@ -542,7 +950,7 @@ _dic_locals = {}
 _dic_globals = {}
 _spaces_last_line = ""
 def init_trace():
-    global _code_tracing_cache, _color_dic, _dic_locals, _dic_globals
+    global _code_tracing_cache, _color_dic, _dic_locals, _dic_globals, _spaces_last_line
     _code_tracing_cache = {}
     _color_dic = {"<module>": tc.DarkGray}
     _dic_locals = {}
@@ -562,68 +970,105 @@ def str_compact(val):
     while "  " in s:
         s = s.replace("  ", " ")
     return s
-def print_new_vars(func, newvars):
+def print_new_vars(func, newvars, flags):
+
+    if flags == 'global':
+        globstr = "global "
+    else:
+        globstr = ""
+
     newvars.sort()
     
     for name, val in newvars:
         if (type(val).__name__ == 'instance') and (val.__class__.__name__ == 'TRANS'):
-            print >> Term.cout, "%s%snew variable: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, get_color(func), name, str_compact(val), tc.Normal)
+            print "%s%snew %svariable: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
             
     for name, val in newvars:
         if (type(val).__name__ == 'instance') and (val.__class__.__name__ == 'PPOINT'):
-            print >> Term.cout, "%s%snew variable: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, get_color(func), name, str_compact(val), tc.Normal)
+            print "%s%snew %svariable: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
+
+    for name, val in newvars:
+        if type(val).__name__ == 'list':
+            print "%s%snew %sarray: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
     
     smallchanges = []
     for name, val in newvars:
         if (type(val).__name__ != 'instance') or not(val.__class__.__name__ in ['TRANS', 'PPOINT']):
-            smallchanges.append("%s%s = %s%s" % (get_color(func), name, str(val), tc.Normal))
+            if not (type(val).__name__  in ['list', 'function', 'classobj', 'module']):
+                smallchanges.append("%s%s = %s" % (get_color(func), name, str(val)))
+                
     if len(smallchanges):
-        print >> Term.cout, _spaces_last_line + tc.DarkGray + "new variables: " + string.join(smallchanges, ", ")
+        print _spaces_last_line + tc.DarkGray + "new " + globstr + "variables: " + string.join(smallchanges, ", ") + tc.Normal
     
-def print_changed_vars(func, changedvars):
+def print_changed_vars(func, changedvars, flags):
+    
+    if flags == 'global':
+        globstr = "global "
+    else:
+        globstr = ""
+        
     changedvars.sort()
     
     for name, old_val, new_val in changedvars:
         if (type(new_val).__name__ == 'instance') and (new_val.__class__.__name__ == 'TRANS'):
-            print >> Term.cout, "%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), name, str_compact(new_val), _spaces_last_line, tc.DarkGray, str_compact(old_val), tc.Normal)
+            print "%s%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), globstr, name, str_compact(new_val), _spaces_last_line, tc.DarkGray, str_compact(old_val), tc.Normal)
             
     for name, old_val, new_val in changedvars:
         if (type(new_val).__name__ == 'instance') and (new_val.__class__.__name__ == 'PPOINT'):
-            print >> Term.cout, "%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), name, str_compact(new_val), _spaces_last_line, tc.DarkGray, str_compact(old_val), tc.Normal)
+            print "%s%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), globstr, name, str_compact(new_val), _spaces_last_line, tc.DarkGray, str_compact(old_val), tc.Normal)
 
     
     smallchanges = []
     for name, old_val, new_val in changedvars:
         if (type(new_val).__name__ != 'instance') or not(new_val.__class__.__name__ in ['TRANS', 'PPOINT']):
-            smallchanges.append("%s%s = %s %s(was %s)%s" % (get_color(func), name, str(new_val), tc.DarkGray, str(old_val), tc.Normal))
+            smallchanges.append("%s%s = %s %s(was %s)" % (get_color(func), name, str(new_val), tc.DarkGray, str(old_val)))
     
     if len(smallchanges):
-        print >> Term.cout, _spaces_last_line + tc.DarkGray + "changed: " + string.join(smallchanges, ", ")
+        if len(globstr) > 0:
+            print _spaces_last_line + tc.DarkGray + "global%s changed: " % ("s" if len(smallchanges) != 1 else "") + string.join(smallchanges, ", ") + tc.Normal
+        else:
+            print _spaces_last_line + tc.DarkGray + "changed: " + string.join(smallchanges, ", ") + tc.Normal
 
-def print_new_and_changed_variables(func, locals, globals):
+def make_list_of_new_and_changed_variables(func, dic, prev_dic):
     global _dic_locals, _dic_globals
     
     newvars = []
     changedvars = []
     
+        
+    for v in dic:
+        if v[0] != "_":
+            if v[0].lower() == v[0]:
+                if not (v in prev_dic):
+                    newvars.append((v, dic[v]))
+                elif (type(dic[v]).__name__ == 'list') and (type(prev_dic[v]).__name__ == 'list'):
+                    for i, vl in enumerate(dic[v]):
+                        if not (prev_dic[v][i] == vl):
+                            changedvars.append(("%s[%d]" % (v,i), prev_dic[v][i], vl))
+                elif not(prev_dic[v] == dic[v]):
+                    changedvars.append((v, prev_dic[v], dic[v]))
+        
+    return (newvars, changedvars)
+    
+def print_new_and_changed_variables(func, locals, globals):
+    global _dic_locals, _dic_globals
+    
+
+    prev_locals = {}
     if func in _dic_locals:
         prev_locals = _dic_locals[func]
-        for v in locals:
-            if not (v in prev_locals):
-                newvars.append((v, locals[v]))
-            elif (type(locals[v]).__name__ == 'list') and (type(prev_locals[v]).__name__ == 'list'):
-                #print "vector: ", locals[v]
-                #print "  prev: ", prev_locals[v]
-                for i, vl in enumerate(locals[v]):
-                    if not (prev_locals[v][i] == vl):
-                        changedvars.append(("%s[%d]" % (v,i), prev_locals[v][i], vl))
-            elif not(prev_locals[v] == locals[v]):
-                changedvars.append((v, prev_locals[v], locals[v]))
-                        
-            
-            
-    print_new_vars(func, newvars)
-    print_changed_vars(func, changedvars)
+    
+    prev_globals = _dic_globals
+    
+    (newvars, changedvars) = make_list_of_new_and_changed_variables(func, locals, prev_locals)    
+    print_new_vars(func, newvars, 'local')
+    print_changed_vars(func, changedvars, 'local')
+    
+    
+    (newvars, changedvars) = make_list_of_new_and_changed_variables(func, globals, prev_globals)    
+    print_new_vars(func, newvars, 'global')
+    print_changed_vars(func, changedvars, 'global')
+
     
     localscopy = locals.copy()
     for k,v in localscopy.iteritems():
@@ -631,8 +1076,20 @@ def print_new_and_changed_variables(func, locals, globals):
             localscopy[k] = copy(v)
     _dic_locals[func] = localscopy
     
+    globalscopy = globals.copy()
+    for k,v in globalscopy.iteritems():
+        if type(v).__name__ == 'list':
+            globalscopy[k] = copy(v)
+    _dic_globals = globalscopy
+    
 
-def print_code_line(file, func, lineno):
+def print_code_line(frame):
+    co = frame.f_code
+    lineno = frame.f_lineno
+    slineno = str(lineno).ljust(3)
+    file = co.co_filename
+    func = co.co_name
+    global _spaces_last_line    
     try:
         if not (file in _code_tracing_cache):
             f = open(file)
@@ -641,30 +1098,51 @@ def print_code_line(file, func, lineno):
             f.close()
         line = _code_tracing_cache[file][lineno-1]
         line = line.strip("\n")
-        slineno = str(lineno).ljust(3)
-        print >> Term.cout, "%s%s[%s]:%s %s%s" % (get_color(func), file, func, slineno, line, tc.Normal)
+        print "%s%s[%s]:%s %s%s" % (get_color(func), file, func, slineno, line, tc.Normal)
+        _spaces_last_line = " " * (len(re.match("(\ *)", line).groups()[0]) + len(file) + len(func) + len(slineno) + 4)
     except:
         slineno = str(lineno).ljust(3)
-        print >> Term.cout, "%s%s[%s]:%s <%s:%s>%s" % (get_color(func), file, func, slineno, sys.exc_type.__name__, sys.exc_value, tc.Normal)
+        print "%s%s[%s]:%s <%s:%s>%s" % (get_color(func), file, func, slineno, sys.exc_type.__name__, sys.exc_value, tc.Normal)
+        _spaces_last_line = " " * (len(file) + len(func) + len(slineno) + 4)
     
-    global _spaces_last_line    
-    _spaces_last_line = " " * (len(re.match("(\ *)", line).groups()[0]) + len(file) + len(func) + len(slineno) + 4)
+
+
+
+def print_return(frame):
+    
+    co = frame.f_code
+    func = co.co_name
+    caller = frame.f_back
+    caller_func = caller.f_code.co_name
+    
+    if caller_func in ["<module>", "EXECUTE"]:
+        return
+    
+    
+    print "%s%sReturning to '%s'%s" % (get_color(func), _spaces_last_line, caller_func, tc.Normal)
+
     
 def trace_calls(frame, event, arg):
     if RobotSim.abort_flag:
         RobotSim.abort_flag = False
         raise UserAbort
 
-
-    if event == 'line':
+    if event == 'return':
         co = frame.f_code
         line_no = frame.f_lineno
         filename = co.co_filename
         func_name = co.co_name
         #~ print filename + ":%d" % (line_no)
         if RobotSim.switch["TRACE"]:
+            print_return(frame)
             print_new_and_changed_variables(func_name, frame.f_locals, frame.f_globals)
-            print_code_line(filename, func_name, line_no)
+        return
+
+    if event == 'line':
+        func_name = frame.f_code.co_name
+        if RobotSim.switch["TRACE"]:
+            print_new_and_changed_variables(func_name, frame.f_locals, frame.f_globals)
+            print_code_line(frame)
         return trace_calls
 
     if event == 'call':
@@ -674,7 +1152,11 @@ def trace_calls(frame, event, arg):
         func_line_no = frame.f_lineno
         func_filename = co.co_filename
         if func_filename.lower().endswith(".v2"):
+            if RobotSim.switch["TRACE"]:
+                if func_name != "<module>":
+                    print_code_line(frame)
             return trace_calls
+        
 
         #~ caller = frame.f_back
         #~ caller_line_no = caller.f_lineno
@@ -686,26 +1168,57 @@ def trace_calls(frame, event, arg):
                  #~ caller_line_no, caller_filename)
     return
 
-def EXECUTE(file):
-    dic = _build_dictionary()
 
+def exec_init():
     init_trace()
-    
-    code = translate_program(file)        
-    code = compile(code, file, "exec")
-    
-    (name,ext) = os.path.splitext(file)
-    name = translate_expression(name)
-    bootloader = compile("%s()\n" % name, "<exec loader>", "exec")
-    
+    sys.stdout = sys.ipy_stdout
     sys.settrace(trace_calls)
+    
+    time.sleep(0.2)
+    print 
+    
+def exec_end():
+    print
+    print "Press ENTER to continue "
+    sys.settrace(None)
+    sys.stdout = sys.sys_stdout
+    # daca nu dau ENTER, ramane consola "ametita"
+
+def EXECUTE(file, dic=None):
+    """
+    Executes a robot program.
+    """
+    
+    exec_init()
     try:
-        exec(code) in dic
-        exec(bootloader) in dic
+
+
+        if dic==None:
+            glob = _build_dictionary()
+            if RobotSim.debug:
+                _list_dictionary(glob)
+
+        code = translate_program(file)
+        code = compile(code, file, "exec")
+        
+        (name,ext) = os.path.splitext(file)
+        name = translate_expression(name)
+        bootloader = compile("%s()\n" % name, "<exec loader>", "exec")
+        loc = {}
+
+        exec(code) in glob, loc
+        
+        for v in loc:
+            glob[v] = loc[v]
+            
+        exec(bootloader) in glob
+        
+    except UserAbort:
+        print "Robot program aborted by user."
     except:
         raise
     finally:
-        sys.settrace(None)
+        exec_end()
         
 
 def _flush_completed_jobs():
@@ -723,9 +1236,18 @@ def _flush_completed_jobs():
         del jobs.jobs_all[i]
     
 def _CM_ABORT(self, arg):
-    print "Aborting robot program..."
-    RobotSim.abort_flag = True
+    """
+    Aborts a robot program.
+    You may type "abort" while a robot program is running.
+    """
 
+    _flush_completed_jobs()
+    if len(jobs.jobs_all) > 0:
+        print "Aborting robot program..."
+        RobotSim.abort_flag = True
+    else:
+        print "No robot program is running."
+        RobotSim.abort_flag = False
 
     
 def _CM_EXEC(self, prog):
@@ -738,18 +1260,24 @@ def _CM_EXEC(self, prog):
     exec stiva
     """
 
-    if RobotSim.abort_flag:
-        print "Please wait for previous robot program to finish."
-        return
 
     ip = IPython.ipapi.get()
 
     if not re.match("^.*\.[^.]*$", prog): # fara extensie, ii adaug .v2
         prog = prog + ".v2" 
 
-    
+
     _flush_completed_jobs()
+    if len(jobs.jobs_all) > 0:
+        if RobotSim.abort_flag:
+            print "Please wait for previous robot program to finish."
+            return
     
+
+    dic = _build_dictionary()   # workaround... sper sa mearga :)
+    if RobotSim.debug:
+        _list_dictionary(glob)
+
     ip.runlines("%%bg _ip.runlines(\"EXECUTE('%s')\")" % prog)
 
 
@@ -948,6 +1476,13 @@ def _CM_SPEED(self, var):
     print "Setting monitor speed to %d" % spd
     SPEED(spd, "MONITOR")
 
+def _list_dictionary(dic):
+    K = dic.keys()
+    K.sort()
+    for k in K:
+        if k.lower() == k:
+            print k,
+    print ""
 
 def _build_dictionary():
     code = """

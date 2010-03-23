@@ -1,0 +1,118 @@
+.PROGRAM hanoi_main()
+    ;
+    ; Problema turnurilor din Hanoi
+    ; Autor: Andrei Balaban (341A3)
+    ;
+    ;
+    ; Utilizare pe simulator:
+    ;
+    ; .env hanoi
+    ; .load hanoi
+    ; .exec hanoi_main
+    ;
+    ;
+    ; Daca dorim sa rulam programul cu un alt numar de piese:
+    ;
+    ; .env hanoi(3)
+    ; .load hanoi
+    ; .exec hanoi_main
+    ;
+    
+    
+    GLOBAL varf_stv_a           ;varful stivei A - sursa
+    GLOBAL varf_stv_b           ;varful stivei B - destinatia
+    GLOBAL varf_stv_c           ;varful stivei C - auxiliara
+    GLOBAL #safe                ;punct siguranta
+    GLOBAL dz                   ;inaltimea piesei
+    GLOBAL nr_discuri           ;numarul de piese
+    
+    CALL init(nr_discuri)       ;seteaza varfurile stivei si dz
+    
+    
+    SPEED 70 ALWAYS             ;viteza de lucru
+    PARAMETER HAND.TIME = 0.2
+    
+    OPEN
+    MOVE #safe
+    BREAK
+    
+    CALL muta_discuri(varf_stv_a:NULL, varf_stv_b:NULL, varf_stv_c:NULL, nr_discuri+0)
+    
+    MOVE #safe
+    
+.END
+
+.PROGRAM init(nr_discuri)
+    GLOBAL top                                     ; varful primei stive (invatat)
+    GLOBAL varf_stv_a, varf_stv_b, varf_stv_c, dz  ; puncte calculate
+    GLOBAL dx                                      ; distanta intre doua stive
+    AUTO ang                                       ; directia de shiftare
+    
+    ang = 90                                       ; pe simulator e 90 (adica axa Y), in laborator e un pic diferit
+    
+    SET varf_stv_a = SHIFT(top BY 0,0,dz)
+    SET varf_stv_b = RZ(ang):TRANS(dx,0,-(nr_discuri-1)*dz):RZ(-ang):top
+    SET varf_stv_c = RZ(ang):TRANS(2*dx,0,-(nr_discuri-1)*dz):RZ(-ang):top
+    
+.END
+
+.PROGRAM muta_discuri(vf_stv_src, vf_stv_dst, vf_stv_aux, nr_discuri)
+    TYPE "muta_discuri: nr_discuri = ", nr_discuri
+    
+    IF nr_discuri == 1 THEN
+        CALL pick_place_adap(vf_stv_src, vf_stv_dst)
+    ELSE
+        CALL muta_discuri(vf_stv_src, vf_stv_aux, vf_stv_dst, nr_discuri-1)
+        CALL pick_place_adap(vf_stv_src, vf_stv_dst)
+        CALL muta_discuri(vf_stv_aux, vf_stv_dst, vf_stv_src, nr_discuri-1)
+    END
+    
+.END
+
+
+.PROGRAM pick_place_adap(vf_stv_src, vf_stv_dst)
+    GLOBAL dz
+    
+    TYPE "Inceput pick_place_adap:", DX(vf_stv_src), " ", DZ(vf_stv_src), " => ", DX(vf_stv_dst), " ", DZ(vf_stv_dst)
+    
+    SET vf_stv_src = SHIFT(vf_stv_src BY 0,0,(-1)*dz)
+    
+    CALL pick_place(vf_stv_src, vf_stv_dst)
+    
+    SET vf_stv_dst = SHIFT(vf_stv_dst BY 0,0,dz)
+    
+    TYPE "Sfarsit pick_place_adap:", DY(vf_stv_src), " ", DZ(vf_stv_src), " -> ", DY(vf_stv_dst), " ", DZ(vf_stv_dst)
+.END
+
+.PROGRAM pick_place(pick, place)
+    AUTO z_pick
+    AUTO z_place
+    
+    
+    z_pick = 80
+    z_place = 80
+    
+    
+    APPRO pick, z_pick
+    BREAK
+    
+    SPEED 50
+    MOVES pick
+    CLOSEI
+    
+    SPEED 50
+    DEPARTS z_pick
+    BREAK
+    
+    APPRO place, z_place
+    BREAK
+    
+    SPEED 50
+    MOVES place
+    OPENI
+    
+    SPEED 50
+    DEPARTS z_place
+    BREAK
+    
+.END

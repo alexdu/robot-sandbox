@@ -2,19 +2,25 @@
 Vcompile("print(1)", "x", "eval")
 p2
 I991
-sVline = "auto x"
-p3
-I1076
 sVINT(5)
-p4
+p3
 I1304
+sVa = "acd"
+p4
+I190
 sVa.strip()
 p5
 I604
-sVa = "acd"
+sV(name, args, args_ref) = parse_function_call(progdecl)
 p6
-I190
+I1737
 sVdo dx=4
 p7
 I634
+sVsee pal
+p8
+I1831
+sVline = "auto x"
+p9
+I1076
 s.

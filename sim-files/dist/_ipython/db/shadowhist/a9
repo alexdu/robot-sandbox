@@ -1,11 +1,23 @@
 (dp1
-Vx = "12:3"
+V_ipshell.IP.var_expand("x")
 p2
-I160
-sVdo appro a,100
+I1547
+sVlen(t[1][0])
 p3
-I322
-sVdo appro dx, 200
+I1697
+sVpattern
 p4
+I1656
+sVdo appro dx, 200
+p5
 I193
+sVdo appro a,100
+p6
+I322
+sVprint for
+p7
+I1870
+sVx = "12:3"
+p8
+I160
 s.

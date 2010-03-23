@@ -1,14 +1,32 @@
 (dp1
-Vdo appros safe, 400
+Vfdsfds
 p2
-I770
-sVhelp locals
+I1498
+sVdo appros safe, 400
 p3
-I406
+I770
 sVRZ(45) |MOD| 4
 p4
 I1299
 sVreturn
 p5
 I1364
+sVdo moves shift(here by -10,0,0)
+p6
+I1927
+sVsee /? 1 hanoi_main
+p7
+I1830
+sVhelp locals
+p8
+I406
+sV1/3
+p9
+I1808
+sVi.savehist
+p10
+I1535
+sVconvert_parse_tree(l[1][5])
+p11
+I1671
 s.

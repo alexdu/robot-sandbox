@@ -1,26 +1,32 @@
 (dp1
-Vjobs.traceback(2)
+V_ip.defmacro()
 p2
-I968
-sV_ip.defmacro()
-p3
 I832
-sVhelp re.subn
-p4
-I107
-sVdo type inverse(pal):a
-p5
-I292
+sVjobs.traceback(2)
+p3
+I968
 sVRX(45)
-p6
+p4
 I1233
-sVtb.tb_lineno
+sVhelp re.subn
+p5
+I107
+sVspanac
+p6
+I1537
+sVdo type inverse(pal):a
 p7
-I1372
-sVnumpy.mod(1.2, 1.5)
+I292
+sVtb.tb_lineno
 p8
+I1372
+sVpritn i.usage
+p9
+I1529
+sVnumpy.mod(1.2, 1.5)
+p10
 I1294
 sVdo move ppoint(0+10,-171,226,180,55.4,180+10)
-p9
+p11
 I776
 s.

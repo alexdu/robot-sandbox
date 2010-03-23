@@ -1,20 +1,23 @@
 (dp1
-Va["rf"] = 4
+Vimport v2py
 p2
-I839
-sVa[:-1]
-p3
-I585
-sVtool RZ(45)
-p4
-I240
-sVimport v2py
-p5
 I1012
+sVtool RZ(45)
+p3
+I240
+sVa[:-1]
+p4
+I585
+sVa["rf"] = 4
+p5
+I839
 sVns
 p6
 I425
-sVdo move here:rx(43)
+sVdelete "calltest.v2"
 p7
+I1581
+sVdo move here:rx(43)
+p8
 I728
 s.

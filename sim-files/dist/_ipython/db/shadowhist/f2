@@ -1,24 +1,24 @@
 (dp1
-Vhelp reduce
+Vhelp builtins
 p2
-I684
-sVhelp builtins
-p3
 I408
-sVa |MOD| b
-p4
-I1287
+sVswitch
+p3
+I69
 sVdo move shift(pal by -110, -30, -30)
-p5
+p4
 I271
+sVhelp reduce
+p5
+I684
 sVs
 I99
-sVdo move shift(pal by 110,170,50)
+sVa |MOD| b
 p6
-I347
-sVswitch
+I1287
+sVdo move shift(pal by 110,170,50)
 p7
-I69
+I347
 sVdo appro safe, 0
 p8
 I450
@@ -28,4 +28,7 @@ I977
 sVa[:-2]
 p10
 I586
+sVpattern = (symbol.eval_input, (symbol.testlist, [spanac]))
+p11
+I1654
 s.

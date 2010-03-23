@@ -1,8 +1,11 @@
 (dp1
-Vre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c")
+Vtool null
 p2
-I434
-sVtool null
-p3
 I244
+sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c")
+p3
+I434
+sVsys.stdout.writelines("spanac")
+p4
+I1495
 s.

@@ -1,23 +1,38 @@
 (dp1
-Va  = "cucu \u005Cn"
+Vsymbol.__hash__()
 p2
-I1045
-sVlistl rz(43), rz(23)
-p3
-I739
-sVdo type "cucu" bau; rz(45)
-p4
-I1211
-sV%bg EXECUTE("paletizare.py")
-p5
-I994
+I1623
 sVMOVE(bs*pal)
-p6
+p3
 I60
-sVprint translate_program("paletizare.v2")
-p7
-I1212
+sVdo move bs:shifT(ry(180) by -100,-100,0)
+p4
+I1796
 sVhere b
-p8
+p5
 I319
+sVsys.stdion
+p6
+I1502
+sVdo type "cucu" bau; rz(45)
+p7
+I1211
+sVenv hanoi(15)
+p8
+I1971
+sVlistl rz(43), rz(23)
+p9
+I739
+sVa  = "cucu \u005Cn"
+p10
+I1045
+sVprint translate_program("paletizare.v2")
+p11
+I1212
+sVexcept: pass
+p12
+I1917
+sV%bg EXECUTE("paletizare.py")
+p13
+I994
 s.

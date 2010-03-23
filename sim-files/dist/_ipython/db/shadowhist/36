@@ -1,14 +1,23 @@
 (dp1
-Va = [3,4]
+Vdo departs -10
 p2
-I1460
-sVtranslate_program("spirala.py")
-p3
-I1043
+I1949
 sVexecfile("paletizare.py", dic)
-p4
+p3
 I888
-sVjobs.jobs_all[j]
+sVsee hanoi.v2
+p4
+I1982
+sVtranslate_program("spirala.py")
 p5
+I1043
+sVa = [3,4]
+p6
+I1460
+sVmatch_subtree(pattern, t[1][5])
+p7
+I1691
+sVjobs.jobs_all[j]
+p8
 I1337
 s.

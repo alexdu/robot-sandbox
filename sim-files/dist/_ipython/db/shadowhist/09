@@ -1,17 +1,23 @@
 (dp1
-Vdo appro pal,100
+Vloader = compile('CALL["casuta"]()\u005Cn', "spanac", "exec")
 p2
+I1893
+sVdo moves e:rz(90):TRANS(10,10,90)
+p3
+I382
+sVprogramDict["pick.place"]
+p4
+I1857
+sVdo moves e:rz(90):TRANS(10,10,0)
+p5
+I380
+sVdo appro pal,100
+p6
 I321
 sVdo type SHIFT(Here by 2,3,rz(4))
-p3
+p7
 I1308
 sVdo moves here:trans(100,100,100)
-p4
+p8
 I464
-sVdo moves e:rz(90):TRANS(10,10,90)
-p5
-I382
-sVdo moves e:rz(90):TRANS(10,10,0)
-p6
-I380
 s.

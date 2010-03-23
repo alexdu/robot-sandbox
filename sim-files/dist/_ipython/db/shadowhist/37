@@ -1,17 +1,20 @@
 (dp1
-Va.startswith("")
+Vdo set #a = phere
 p2
-I1097
-sVre.match("dx\u005C *\u005C(", "x + dx ,")
+I645
+sVload spana
 p3
-I173
+I1876
 sVdo move trans(0,0,988.51,0,0,0)
 p4
 I804
-sVdo set #a = phere
+sVa.startswith("")
 p5
-I645
+I1097
 sVdo move trans(0,0,983,0,0,0)
 p6
 I792
+sVre.match("dx\u005C *\u005C(", "x + dx ,")
+p7
+I173
 s.

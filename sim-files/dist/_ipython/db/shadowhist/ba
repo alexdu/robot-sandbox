@@ -2,22 +2,31 @@
 VATAN2(1,2)
 p2
 I1255
-sVre.match("dx\u005C *\u005C(", "dx ,")
+sV_env_args[0]
 p3
-I172
+I1955
 sVjobs.jobs_comp
 p4
 I1333
 sVhere b:d
 p5
 I487
-sVdo dx(3)=4
-p6
-I635
 sVMAX(3,4)
-p7
+p6
 I1256
-sVdo .program cucu()
+sVconvert_parse_tree(l[1])
+p7
+I1662
+sVre.match("dx\u005C *\u005C(", "dx ,")
 p8
+I172
+sVdo .program cucu()
+p9
 I542
+sVlen(t[1])
+p10
+I1696
+sVdo dx(3)=4
+p11
+I635
 s.

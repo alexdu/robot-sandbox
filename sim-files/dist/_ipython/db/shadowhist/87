@@ -1,20 +1,26 @@
 (dp1
-Vdo SeT p = TrANS(0,dx(45),0)
+Vstdout
 p2
-I209
-sVre.findall("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c")
+I1500
+sVdo SeT p = TrANS(0,dx(45),0)
 p3
-I96
+I209
 sVhelp re.findall
 p4
 I95
-sVexit()
+sVre.findall("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c")
 p5
-I14
-sVEXECUTE("paletizare.v2")
+I96
+sVexit()
 p6
-I964
+I14
 sVSPEED(100,"MONITOR")
 p7
 I1269
+sVEXECUTE("paletizare.v2")
+p8
+I964
+sVinclude parser
+p9
+I1586
 s.

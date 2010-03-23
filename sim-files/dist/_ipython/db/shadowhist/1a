@@ -1,29 +1,32 @@
 (dp1
-Vx = 2
+Va = TRANS(119,-101,500,0,180,0)
 p2
-I708
-sVa = TRANS(119,-101,500,0,180,0)
-p3
 I36
+sVi.magic_exec
+p3
+I1527
 sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c").groups()
 p4
 I435
-sVdo moves shift(pal by 136, 407, -20)
-p5
-I318
 sVprint >> Term.cout, tc.Black
-p6
+p5
 I1449
-sVtb.tb_next.tb_frame.f_code
-p7
-I1432
-sVFRAME(1,2,3,4)
-p8
-I1220
-sVi = 3
-p9
-I559
 sVcod = f.read()
-p10
+p6
 I904
+sVdo moves shift(pal by 136, 407, -20)
+p7
+I318
+sVi = 3
+p8
+I559
+sVFRAME(1,2,3,4)
+p9
+I1220
+sVx = 2
+p10
+I708
+sVtb.tb_next.tb_frame.f_code
+p11
+I1432
 s.

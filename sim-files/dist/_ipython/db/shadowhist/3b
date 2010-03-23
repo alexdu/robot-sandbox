@@ -14,4 +14,7 @@ I903
 sVtool rz(45)
 p6
 I243
+sV_ipshell.set_exit_msg("spanac")
+p7
+I1517
 s.

@@ -1,20 +1,23 @@
 (dp1
-Vwhile not (x = 1): wait
+Vdo j = 3
 p2
-I704
-sVdo j = 3
-p3
 I537
 sV_ip.system
-p4
+p3
 I945
-sVdo appro a, 10
+sVwhile not (x = 1): wait
+p4
+I704
+sVenv hanoi(6)
 p5
-I758
+I1967
 sVlin = f.readlines()
 p6
 I1008
-sVhelp _ip.defmacro
+sVdo appro a, 10
 p7
+I758
+sVhelp _ip.defmacro
+p8
 I833
 s.

@@ -2,10 +2,18 @@
 Vre.match(elem, test2).groups()
 p2
 I1148
-sVnumpy.mod(1.5, 1.5)
+sVm = worldObject("Box1").getMaterial()
 p3
-I1293
+I1941
 sVtype(None)
 p4
 I1229
+sVdo move bs:shift(ry(180) by -150,-100,-90)
+p5
+I1486
+sVp
+I1599
+sVnumpy.mod(1.5, 1.5)
+p6
+I1293
 s.

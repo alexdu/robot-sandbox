@@ -20,7 +20,10 @@ I278
 sVtool x
 p8
 I721
-sVtool tool:rz(34)
+sVstr(t[1][5])
 p9
+I1692
+sVtool tool:rz(34)
+p10
 I718
 s.

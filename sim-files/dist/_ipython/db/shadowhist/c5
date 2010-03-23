@@ -1,17 +1,23 @@
 (dp1
-Vbeautify_line('type "cucu"')
+Vdo here #
 p2
-I1206
-sVbs = RZ(30)*RX(10)*RY(20)
-p3
-I31
-sVdo here #
-p4
 I145
+sVa = TRANS(119,-101,813,0,180,0)
+p3
+I34
+sVhelp i.format_latex
+p4
+I1525
 sVdo z.pick = 100
 p5
 I549
-sVa = TRANS(119,-101,813,0,180,0)
+sVhelp parser.expr
 p6
-I34
+I1588
+sVbeautify_line('type "cucu"')
+p7
+I1206
+sVbs = RZ(30)*RX(10)*RY(20)
+p8
+I31
 s.

@@ -1,11 +1,20 @@
 (dp1
-Vplot(4)
+Vtoken.tok_name[5]
 p2
-I10
-sVsplit_comment('ana "are ; 5" mere')
+I1646
+sVsymbol._value
 p3
-I1181
-sVbs = rz(45)
+I1620
+sV_ip.itpl
 p4
+I1566
+sVbs = rz(45)
+p5
 I439
+sVsplit_comment('ana "are ; 5" mere')
+p6
+I1181
+sVplot(4)
+p7
+I10
 s.

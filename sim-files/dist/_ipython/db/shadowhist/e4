@@ -1,16 +1,19 @@
 (dp1
-Ve
-I374
-sVa.sort()
+Vspeed 50
 p2
+I25
+sVa.sort()
+p3
 I473
 sVdo type a,3
-p3
-I637
-sVspeed 50
 p4
-I25
-sVre.split(elem, 'cucu bau cucu')
+I637
+sVdo moves shift(here by 0,0,-10)
 p5
+I1929
+sVre.split(elem, 'cucu bau cucu')
+p6
 I1153
+sVe
+I374
 s.

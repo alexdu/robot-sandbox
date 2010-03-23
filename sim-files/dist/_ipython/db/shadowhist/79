@@ -1,19 +1,28 @@
 (dp1
-V_ip.runlines("EXECUTE('paletizare.py')")
+Vx
+I125
+sV_ip.runlines("EXECUTE('paletizare.py')")
 p2
 I1006
-sVvplus._compactdisplay
+sVfound
 p3
-I742
-sVx
-I125
-sVhelp exec
+I1659
+sVvplus._compactdisplay
 p4
+I742
+sVexec casut
+p5
+I1782
+sVhelp exec
+p6
 I902
 sVbpx
-p5
+p7
 I1422
+sV_ipshell.sys_displayhook_
+p8
+I1542
 sV_ip.set_custom_exc
-p6
+p9
 I951
 s.

@@ -1,14 +1,17 @@
 (dp1
-Va[:3]
+Vdo departs -100
 p2
-I1163
-sVsafe?
+I249
+sVhelp _ipshell.IP.interact_prompt
 p3
+I1562
+sVsafe?
+p4
 I456
 sVdo move shift(pal by 0,0,100)
-p4
-I334
-sVdo departs -100
 p5
-I249
+I334
+sVa[:3]
+p6
+I1163
 s.

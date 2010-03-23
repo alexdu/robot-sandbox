@@ -2,15 +2,15 @@
 Vdo aPPro a, 100
 p2
 I143
-sVprint translate_program("spirala.v2")
-p3
-I1309
 sVenv listl
-p4
+p3
 I429
 sV1 |TO| 2
-p5
+p4
 I1266
+sVprint translate_program("spirala.v2")
+p5
+I1309
 sVdreload vplus
 p6
 I142
@@ -20,10 +20,15 @@ I127
 sV%bg rz(45)
 p8
 I975
+sVm
+I1741
 sVTRANS(1,2,3,4,5,6)
 p9
 I1267
-sVsw
+sVprogramDict["pick.place"][3]()
 p10
+I1860
+sVsw
+p11
 I68
 s.

@@ -1,20 +1,26 @@
 (dp1
-Vdreload(v2py)
+Vdo i = int((p-1)/(nc*nn))
 p2
-I1014
-sVdo move shift(pal by -130, -30, -30)
-p3
-I273
+I526
 sVb = HERE()
-p4
+p3
 I424
 sVdo n = 12
-p5
+p4
 I519
-sVdo appro pal, 100
+sV_ipshell.sys_displayhook_ori
+p5
+I1544
+sVdreload(v2py)
 p6
-I250
-sVdo i = int((p-1)/(nc*nn))
+I1014
+sVdo appro pal, 100
 p7
-I526
+I250
+sVcallDict
+p8
+I1873
+sVdo move shift(pal by -130, -30, -30)
+p9
+I273
 s.

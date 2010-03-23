@@ -2,25 +2,34 @@
 Va = {}
 p2
 I838
-sVdis trace
+sVtry: del a except: pass
 p3
-I1386
-sVdo type a=2
+I1918
+sVdel calltest.v2
 p4
-I636
-sVstring.join(["1","2"],"")
+I1577
+sVeval
 p5
-I1177
-sVdo move trans(0,0,940,0,0,0)
+I417
+sVdo type a=2
 p6
-I787
+I636
 sVdo moves e
 p7
 I233
-sVa = [(1,2), (3,4)]
+sVdis trace
 p8
-I1443
-sVeval
+I1386
+sVdo move trans(0,0,940,0,0,0)
 p9
-I417
+I787
+sVtranslate_statement(".PROGRAM calltest()", 1)
+p10
+I1730
+sVa = [(1,2), (3,4)]
+p11
+I1443
+sVstring.join(["1","2"],"")
+p12
+I1177
 s.

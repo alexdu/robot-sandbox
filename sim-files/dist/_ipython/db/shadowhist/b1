@@ -1,20 +1,29 @@
 (dp1
-Vtool tool
+Vsplit_comment('ana are; mere')
 p2
-I627
-sVsplit_comment('ana are; mere')
-p3
 I1168
-sVsplit_comment("ana are; mere")
+sVeval("symbol.and_expr")
+p3
+I1637
+sVdir 1
 p4
-I1178
-sVc = compile(cod, "casuta.v2", "exec")
+I1855
+sVsplit_comment("ana are; mere")
 p5
-I1091
-sVhelp _ip.options
-p6
-I829
+I1178
 sVdic["__file__"] = "cucu"
-p7
+p6
 I916
+sVtool tool
+p7
+I627
+sVvarf_stv_a = globalVplusNames["varf_stv_a"]
+p8
+I1921
+sVhelp _ip.options
+p9
+I829
+sVc = compile(cod, "casuta.v2", "exec")
+p10
+I1091
 s.

@@ -2,16 +2,22 @@
 V%bg run -i EXECUTE("paletizare.v2")
 p2
 I969
-sVenv stive
-p3
-I18
-sVdo moves shift(pal by 130, 400, -40)
-p4
-I307
 sVdo case x = 4
-p5
+p3
 I562
-sVset p_world = bs:p
+sVspeed 20
+p4
+I1984
+sVdo moves shift(pal by 130, 400, -40)
+p5
+I307
+sVt[1][1]
 p6
+I1682
+sVenv stive
+p7
+I18
+sVset p_world = bs:p
+p8
 I211
 s.

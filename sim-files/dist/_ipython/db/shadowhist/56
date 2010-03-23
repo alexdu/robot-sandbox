@@ -1,29 +1,44 @@
 (dp1
-Vre.match("dx\u005C *\u005C(", "dx (")
+Vdx
 p2
-I171
-sVdx
-p3
 I167
-sVbeautify_line('print "shift(x by dx(5)"')
+sVre.match("dx\u005C *\u005C(", "dx (")
+p3
+I171
+sVtoken.main
 p4
-I1197
-sVdo set new.tool = old.tool:inverse(loc):ref.loc
+I1643
+sVbeautify_line('print "shift(x by dx(5)"')
 p5
-I732
-sVa = "vucsd"
+I1197
+sVsee pal.env
 p6
-I507
-sVs.index('x')
+I1804
+sVdo set new.tool = old.tool:inverse(loc):ref.loc
 p7
-I1162
-sVdo moves trans(10,-300,800,0,0,0)
+I732
+sVsee hanoi.env
 p8
-I816
-sVdo move shift(pal by -100, 20, -30)
+I1805
+sVa = "vucsd"
 p9
-I268
+I507
 sVdo moves bs:shift(here by 0,0,-10)
 p10
 I384
+sVdo moves trans(10,-300,800,0,0,0)
+p11
+I816
+sVdo move shift(pal by -100, 20, -30)
+p12
+I268
+sVfunc
+p13
+I1743
+sVs.index('x')
+p14
+I1162
+sVdir(_ip)
+p15
+I1508
 s.

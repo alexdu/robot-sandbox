@@ -1,13 +1,22 @@
 (dp1
-Vhelp re.match
+V)
+I912
+sVload hanoi_main
 p2
-I82
+I1837
 sVdo moves bs:shift(aux by 0,0,100)
 p3
 I390
-sVsys.call_tracing
+sVsee /g -1 hanoi_main
 p4
+I1827
+sVsys.call_tracing
+p5
 I1357
-sV)
-I912
+sVconvert_parse_tree(l[1][1])
+p6
+I1664
+sVhelp re.match
+p7
+I82
 s.

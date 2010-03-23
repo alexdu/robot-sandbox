@@ -17,13 +17,19 @@ I1013
 sVdo move shift(pal by 0,200,100)
 p7
 I358
-sVdo appro a, 200
+sVexec main
 p8
+I1427
+sVdo appro a, 200
+p9
 I647
 sVcopy?
-p9
-I1314
-sVexec main
 p10
-I1427
+I1314
+sV1//2
+p11
+I1812
+sVvplus._flush_completed_jobs
+p12
+I1491
 s.

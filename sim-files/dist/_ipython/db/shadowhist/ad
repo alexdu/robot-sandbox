@@ -1,14 +1,20 @@
 (dp1
-Vdo moves bs:shift(aux by 0,0,-90)
+Vdo move bs:shifT(ry(180) by -150,-100,0)
 p2
-I392
-sVdo wait.event , 4
-p3
-I711
+I1797
 sVexec paletizar
-p4
+p3
 I1429
-sVdo moves shift(pal by -100, 100, -40)
+sVdo moves bs:shift(aux by 0,0,-90)
+p4
+I392
+sVdel top
 p5
+I1906
+sVdo moves shift(pal by -100, 100, -40)
+p6
 I298
+sVdo wait.event , 4
+p7
+I711
 s.

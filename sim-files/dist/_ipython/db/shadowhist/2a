@@ -1,23 +1,32 @@
 (dp1
-Vls *.env
+Vmagic_tb
 p2
-I575
-sVnotstring = '([^"])'
+I952
+sVdo param hand.time = 5
 p3
-I1131
+I625
 sVdo move e
 p4
 I375
-sVdo param hand.time = 5
+sVt= translate_program("calltest.v2")
 p5
-I625
-sVprint (a=5)
+I1723
+sVtop
 p6
+I1817
+sVnotstring = '([^"])'
+p7
+I1131
+sVl = parser.expr("a+b")
+p8
+I1631
+sVprint (a=5)
+p9
 I1227
 sVsys.platform
-p7
+p10
 I1361
-sVmagic_tb
-p8
-I952
+sVls *.env
+p11
+I575
 s.

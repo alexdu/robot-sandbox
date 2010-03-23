@@ -1,29 +1,38 @@
 (dp1
-VTRANS(1,2,3,4,"3",6)
+Vhelp sys.settrace
 p2
-I1268
-sVhelp sys.settrace
-p3
 I1354
-sVdo set pick = shift(a by 1,2,3,-h*int(I/2)
+sV!del call.v2
+p3
+I1584
+sVTRANS(1,2,3,4,"3",6)
 p4
-I655
-sVbeautify_line("cucu Bau:rz(45):rz(45):dx,dy,dz(4)")
+I1268
+sVdo set pick = shift(a by 1,2,3,-h*int(I/2)
 p5
-I1062
+I655
 sVdo auto x,y,z
 p6
 I1079
-sVdo .program cucu(a,b)
+sVbeautify_line("cucu Bau:rz(45):rz(45):dx,dy,dz(4)")
 p7
-I543
-sVc.x
+I1062
+sVa = [1]
 p8
+I1957
+sVc.x
+p9
 I860
 sV_ip.
-p9
-I946
-sVre.split('("[^"]*")', '"ana are " + 5 ; + " mere')
 p10
+I946
+sVcompiler.parse("a,b,c")
+p11
+I1757
+sVdo .program cucu(a,b)
+p12
+I543
+sVre.split('("[^"]*")', '"ana are " + 5 ; + " mere')
+p13
 I1121
 s.

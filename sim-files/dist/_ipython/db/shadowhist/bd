@@ -1,26 +1,29 @@
 (dp1
-Vdo type "cucu"
+Vrm "calltest.v2"
 p2
-I1205
-sVdo move shift(pal by 100,120,100)
+I1580
+sVdo type "cucu"
 p3
-I337
-sVpprint.pprint((a,b))
+I1205
+sVdo move here:rz(43)
 p4
-I754
+I727
 sVhelp _ip.to_user_ns
 p5
 I844
-sVdo appro dx + 10
+sVdo move shift(pal by 100,120,100)
 p6
-I177
-sVhere b:c
+I337
+sVpprint.pprint((a,b))
 p7
-I486
-sVa = "   "
+I754
+sVdo appro dx + 10
 p8
-I1032
-sVdo move here:rz(43)
+I177
+sVa = "   "
 p9
-I727
+I1032
+sVhere b:c
+p10
+I486
 s.

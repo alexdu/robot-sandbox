@@ -1,8 +1,17 @@
 (dp1
-V1 |MOD| 1.5
+Vsee hanoi_main /g -1
 p2
+I1826
+sV1 |MOD| 1.5
+p3
 I1291
 sV0 % 4
-p3
+p4
 I1285
+sV(found, vars) = match_subtree(pattern, t)
+p5
+I1658
+sVfind_params_passable_by_ref("a+b,c")
+p6
+I1706
 s.

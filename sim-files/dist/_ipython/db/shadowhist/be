@@ -1,23 +1,26 @@
 (dp1
-Venable trace
+VprogramDict["pick_place"][3](1,1)
 p2
-I1384
-sV1.2 |MOD| 1.5
+I1862
+sVdo moves shift(pal by 0,0,0)
 p3
+I258
+sV1.2 |MOD| 1.5
+p4
 I1297
 sVdo move shift(pal by -125, -30, -30)
-p4
-I274
-sVdo end
 p5
-I548
+I274
 sVdo type SHIFT(Here by 2,3,4)
 p6
 I1307
-sVdo speed 50
+sVenable trace
 p7
-I651
-sVdo moves shift(pal by 0,0,0)
+I1384
+sVdo speed 50
 p8
-I258
+I651
+sVdo end
+p9
+I548
 s.

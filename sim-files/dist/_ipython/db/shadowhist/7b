@@ -1,23 +1,29 @@
 (dp1
-Vfor i in s: print i
+Vdo move shift(pal by 100,200,200)
 p2
-I101
+I357
 sVdo move trans(10,100,900,0,0,0)
 p3
 I808
 sVRZ(RZ(32))
 p4
 I1242
-sVdo move shift(pal by 100,200,200)
-p5
-I357
 sVs = re.search("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#])", "cucu bau + bau+c")
-p6
+p5
 I85
-sV%%bg EXECUTE("paletizare.v2")
+sVdef cucu():
+p6
+I1752
+sVt = parser.expr("a,b+c,d").totuple()
 p7
-I965
-sVa[1:3]
+I1680
+sV%%bg EXECUTE("paletizare.v2")
 p8
+I965
+sVfor i in s: print i
+p9
+I101
+sVa[1:3]
+p10
 I667
 s.

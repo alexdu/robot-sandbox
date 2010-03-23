@@ -5,13 +5,16 @@ I237
 sVdo call x
 p3
 I641
-sVjobs.traceback(0)
-p4
-I960
-sVvplus._flush_completed_jobs()
-p5
-I1343
 sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code
-p6
+p4
 I935
+sVmatch_subtree(pattern, t[1])
+p5
+I1679
+sVvplus._flush_completed_jobs()
+p6
+I1343
+sVjobs.traceback(0)
+p7
+I960
 s.

@@ -17,13 +17,19 @@ I797
 sVpprint(lin)
 p7
 I1010
-sVtb.tb_frame.f_code
+sVpattern = (symbol.eval_input, (symbol.testlist, ['spanac']))
 p8
-I1367
-sVlistl rz(34)
+I1655
+sVtb.tb_frame.f_code
 p9
+I1367
+sVaort
+p10
+I1792
+sVlistl rz(34)
+p11
 I738
 sVdo move shift(pal by 100, 10, 100)
-p10
+p12
 I262
 s.

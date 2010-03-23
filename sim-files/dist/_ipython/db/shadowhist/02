@@ -1,8 +1,11 @@
 (dp1
-Vdo set a = rz(45)
+Vtranslate_program("hanoi.v2")
 p2
+I1866
+sVdo set a = rz(45)
+p3
 I866
 sVEXECUTE
-p3
+p4
 I995
 s.

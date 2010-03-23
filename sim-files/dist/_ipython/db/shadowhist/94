@@ -1,20 +1,29 @@
 (dp1
-Vre.match("\u005C *", a)
+Vre.find("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu baFu + bau+c")
 p2
-I1033
-sVlistl new.tool
-p3
-I737
-sVre.find("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu baFu + bau+c")
-p4
 I112
+sVdo moves shift(here by 10,0,50)
+p3
+I1926
 sVnumpy.mod(1, 1.5)
-p5
+p4
 I1292
-sVa = {3:5; 5:6}
-p6
-I1378
+sVlistl new.tool
+p5
+I737
 sVSHIFT(a,1,2,3)
-p7
+p6
 I1261
+sVtry: del a; except:
+p7
+I1913
+sVre.match("\u005C *", a)
+p8
+I1033
+sVt = parser.expr("a,c").totuple()
+p9
+I1700
+sVa = {3:5; 5:6}
+p10
+I1378
 s.

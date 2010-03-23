@@ -1,14 +1,23 @@
 (dp1
-Vdeepcopy(a)
+Vdo appro varf_stv_b, 100
 p2
-I1462
-sVdo a = 5
-p3
-I696
+I1923
 sVdo wait.event 0,3
-p4
+p3
 I716
-sVdo appros safe, 200
+sVsys.old_stdout
+p4
+I1511
+sVdo a = 5
 p5
+I696
+sVdeepcopy(a)
+p6
+I1462
+sVdo appros safe, 200
+p7
 I768
+sVargs = m.groups()[1].strip()
+p8
+I1744
 s.

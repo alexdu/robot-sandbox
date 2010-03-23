@@ -1,5 +1,11 @@
 (dp1
-Vre.findall("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu baFu +#bau+c")
+Vfind_params_passable_by_ref("a,b,c")
 p2
+I1704
+sVre.findall("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu baFu +#bau+c")
+p3
 I115
+sVsymbol.__hash__
+p4
+I1622
 s.

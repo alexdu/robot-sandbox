@@ -1,20 +1,26 @@
 (dp1
-Vdo auto x,y,z[3],z
+Vparser.expr("2+2")
 p2
-I1085
+I1589
 sVrange(10,1,-1)
 p3
 I672
-sVhelp print
+sVre.match("(\u005C *)", a).groups()[0]
 p4
-I745
+I1037
 sVdo move shift(pal by -129, -20, -40)
 p5
 I281
-sVre.match("(\u005C *)", a).groups()[0]
-p6
-I1037
 sVdo SeT p = TrANS(0,0,0)
-p7
+p6
 I208
+sVhelp print
+p7
+I745
+sVdo auto x,y,z[3],z
+p8
+I1085
+sVtranslate_line(".PROGRAM calltest()")
+p9
+I1725
 s.

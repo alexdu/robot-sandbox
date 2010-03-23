@@ -1,20 +1,29 @@
 (dp1
-Vprint_tb
+Vlists
 p2
-I942
-sVbs*pal
-p3
-I58
-sVlists
-p4
 I506
-sVhelp os.popen
-p5
-I513
-sVprint?
-p6
-I746
+sVconvert_parse_tree(l[1][3])
+p3
+I1669
+sV_ipshell.IP.interact_prompt()
+p4
+I1560
 sVdo j = int((p-1)/nn) mod nc
-p7
+p5
 I529
+sVhelp os.popen
+p6
+I513
+sVbs*pal
+p7
+I58
+sVprint?
+p8
+I746
+sVprint_tb
+p9
+I942
+sVworldObject("Box2").getMaterial().diffuse
+p10
+I1944
 s.

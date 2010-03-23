@@ -1,20 +1,35 @@
 (dp1
-Vdo set e = bs:ry(180)
+V_ipshell.IP.var_expand()
 p2
-I228
-sVa[1:2]
-p3
-I666
-sVstring.join(["x", "y"])help string.join
-p4
-I130
+I1546
 sVdo moves bs:shift(aux by -150,-100,-90)
-p5
+p3
 I402
+sVtype(TRANS)
+p4
+I1790
+sVpattern = (test, (or_test, (and_test, (not_test, (comparison, (expr, (xor_expr, (and_expr, (shift_expr, (arith_expr, (term, (factor, (power, (atom, (NAME, ['a'])))))))))))))))
+p5
+I1677
 sVvar
 p6
 I1191
-sVnotstring = '[^"]*'
+sVprint(translate_program("calltest.v2")[0])
 p7
+I1749
+sVstring.join(["x", "y"])help string.join
+p8
+I130
+sVa[1:2]
+p9
+I666
+sVnotstring = '[^"]*'
+p10
 I1151
+sVdo set e = bs:ry(180)
+p11
+I228
+sVsymbol.expr
+p12
+I1616
 s.

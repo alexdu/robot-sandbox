@@ -8,22 +8,31 @@ I362
 sVraise SyntaxError
 p4
 I595
-sVhere bs:x
+sVa = "\u005Ctfds"
 p5
+I1715
+sVhere bs:x
+p6
 I200
 sVdo move bs:shift(aux by 0,0,100)
-p6
+p7
 I389
 sVdo auto z[4]
-p7
-I1087
-sVbeautify_line("cucu bau")
 p8
-I1059
+I1087
 sVRobotSim.debug
 p9
 I698
-sVsys
+sVbeautify_line("cucu bau")
 p10
+I1059
+sVpprint(vplus._dic_locals["pick_place"])
+p11
+I1780
+sVsys
+p12
 I1356
+sVenv hanoi(-3)
+p13
+I1976
 s.

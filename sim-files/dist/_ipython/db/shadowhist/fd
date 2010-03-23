@@ -1,26 +1,35 @@
 (dp1
-VrandomizeBoxes()
+Vdo print here
 p2
+I638
+sVrandomizeBoxes()
+p3
 I17
 sVdo set b = shift(a by 0,0,0)
-p3
+p4
 I1467
 sVdo set bs = frame(a,b,c,d)
-p4
+p5
 I215
 sVre.match(nostring, test)
-p5
+p6
 I1134
 sVre.sub("([a-z])", r"x", "cucu-Bau")
-p6
-I78
-sVdo move safe
 p7
-I283
-sVdo n = 5
+I78
+sVp.getChildNodes().getChildNodes()
 p8
-I653
-sVdo print here
+I1766
+sVdo move safe
 p9
-I638
+I283
+sV_ipshell.banner
+p10
+I1515
+sVl = p.tolist()
+p11
+I1605
+sVdo n = 5
+p12
+I653
 s.

@@ -1,17 +1,23 @@
 (dp1
-Vdo speed 100 always
+Vp.tolist
 p2
-I521
-sVglobal x
+I1591
+sVdo speed 100 always
 p3
-I1048
-sVmode con
-p4
-I1415
-sVj = jobs.jobs_all[0]
-p5
-I1329
+I521
 sVre.match("(\u005C *)", a).groups()
-p6
+p4
 I1035
+sVdelete calltest.v2
+p5
+I1578
+sVmode con
+p6
+I1415
+sVglobal x
+p7
+I1048
+sVj = jobs.jobs_all[0]
+p8
+I1329
 s.

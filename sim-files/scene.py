@@ -79,7 +79,7 @@ def changePose(m, P):
     #if int(scene._timer.frame) |MOD| 30 == 0:
         oldPos = m.body.pos
         (pos,b,c) = P.decompose()
-        dt = 1/RobotSim.fps
+        dt = 1.5/RobotSim.fps
         vel = (pos - oldPos).__div__(dt)
         m.setLinearVel(vel)
         
@@ -89,6 +89,8 @@ def changePose(m, P):
         angle = rotDif[0]
         axis = rotDif[1]
         v = angle/dt
+        
+        
         
         #m.setPos(pos)
         
@@ -153,7 +155,7 @@ def changeRobotPos(J):
 
 
 def setGripperForces(open, close):
-    gripForce = 100
+    gripForce = 1000
     slider_finger1.motorfmax = gripForce
     slider_finger2.motorfmax = gripForce
     slider_finger1.fudgefactor = 0

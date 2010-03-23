@@ -5,16 +5,22 @@ I109
 sVtool new_tool
 p3
 I238
-sVdo move trans(0,0,988.6,0,0,0)
-p4
-I803
 sVsee casuta
-p5
+p4
 I1047
-sVparam hand.time = 0.5
-p6
-I596
 sVATAN2(2,3)
-p7
+p5
 I1252
+sVdo move trans(0,0,988.6,0,0,0)
+p6
+I803
+sVm = re.match("^([^\u005C(]+)\u005C(([^\u005C(]*)\u005C)$", expr)
+p7
+I1740
+sVparam hand.time = 0.5
+p8
+I596
+sVpprint convert_parse_tree(l)
+p9
+I1639
 s.

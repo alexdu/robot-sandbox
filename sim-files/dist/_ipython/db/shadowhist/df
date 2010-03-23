@@ -1,14 +1,17 @@
 (dp1
-V%bg print 1
+Vdo appro pal, 50
 p2
-I973
+I251
 sVjobs.jobs_all[0].status
 p3
 I1347
-sVdo tool:rz(34)
+sVconvert_parse_tree(l[1][6])
 p4
-I720
-sVdo appro pal, 50
+I1672
+sVdo tool:rz(34)
 p5
-I251
+I720
+sV%bg print 1
+p6
+I973
 s.

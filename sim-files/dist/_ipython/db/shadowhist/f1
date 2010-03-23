@@ -1,20 +1,29 @@
 (dp1
-Vdo auto x
+Vjobs.jobs_all[0].stat_running_c
 p2
+I1349
+sVdo set c = here:rz(45)
+p3
+I470
+sVx in ["x", "y"]
+p4
+I121
+sVenv hanoi(4)
+p5
+I1963
+sVdo auto x
+p6
 I1075
 sVsee stiva
-p3
-I516
-sVline = "(" + string + "?" + notstring + "?" + ")"
-p4
-I1140
-sVjobs.jobs_all[0].stat_running_c
-p5
-I1349
-sVx in ["x", "y"]
-p6
-I121
-sVdo set c = here:rz(45)
 p7
-I470
+I516
+sV_ip1
+p8
+I1570
+sVline = "(" + string + "?" + notstring + "?" + ")"
+p9
+I1140
+sVvplus._dic_locals
+p10
+I1776
 s.

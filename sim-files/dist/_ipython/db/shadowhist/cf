@@ -1,11 +1,23 @@
 (dp1
-Vhere bs:test
+Vhelp execfile
 p2
-I225
+I834
 sVEXECUTE("casuta.v2")
 p3
 I1093
-sVhelp execfile
+sVcompiler.parse("(a,b+1,c)")
 p4
-I834
+I1759
+sVworldObject("Box1")
+p5
+I1934
+sV_ipshell.IP.interact_with_readline
+p6
+I1558
+sVhere bs:test
+p7
+I225
+sVl = parser.expr("a+b").tolist()
+p8
+I1634
 s.

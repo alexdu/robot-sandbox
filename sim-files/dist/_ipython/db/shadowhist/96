@@ -1,26 +1,38 @@
 (dp1
-V%bg print hello
+Vl = parser.expr("(a,b,c)").tolist()
 p2
-I972
-sVenv pal-inc
-p3
-I30
-sVMOVE(bs*SHIFT(a,-80,0,-100))
-p4
-I49
+I1649
 sVdo appros c, 100
-p5
+p3
 I366
-sVindent_program("paletizare.v2")
+sVenv pal-inc
+p4
+I30
+sV%bg print hello
+p5
+I972
+sVMOVE(bs*SHIFT(a,-80,0,-100))
 p6
-I1030
-sVdo type "cucu" bau rz(45)
-p7
-I1210
-sVprint "%5.3g" % 53232
-p8
-I499
+I49
 sVdo type "cucu
-p9
+p7
 I1208
+sVmatch_subtree(pattern, t[1], )
+p8
+I1678
+sVsys.stdout = sys.old_stdout
+p9
+I1512
+sVdo type "cucu" bau rz(45)
+p10
+I1210
+sVindent_program("paletizare.v2")
+p11
+I1030
+sVprint "%5.3g" % 53232
+p12
+I499
+sVdo move bs:shift(ry(180) by -100,100,0)
+p13
+I1480
 s.

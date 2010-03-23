@@ -1,17 +1,23 @@
 (dp1
-VEXECUTE("paletizare.py")
+Vsys.last_traceback
 p2
-I961
-sVsys.last_traceback.tb_frame.f_lineno
-p3
-I921
-sVsys.last_traceback
-p4
 I919
 sVdo moves shift(pal by 128, 400, -20)
-p5
+p3
 I311
 sVa = "xsad"
-p6
+p4
 I579
+sVrobotPrograms
+p5
+I1838
+sVEXECUTE("paletizare.py")
+p6
+I961
+sVsys.last_traceback.tb_frame.f_lineno
+p7
+I921
+sVtype(SIN)
+p8
+I1788
 s.

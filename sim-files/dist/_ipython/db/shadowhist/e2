@@ -1,10 +1,19 @@
 (dp1
-V1 % "fds"
+Vt[1][0]
 p2
-I1230
+I1698
 sVc
 I372
-sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_restricted
+sVdo moves shift(here by 10,0,0)
 p3
+I1925
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_restricted
+p4
 I932
+sV1 % "fds"
+p5
+I1230
+sVl[4]
+p6
+I1628
 s.

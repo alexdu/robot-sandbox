@@ -1,20 +1,23 @@
 (dp1
-Vline = "(" + string + "?" + notstring + "?" + ")*"
+Va = {3:4}
 p2
-I1138
-sVdo set a = #ppoint(b)
-p3
-I874
-sVa = {3:4}
-p4
 I1439
-sVc = tb.tb_frame.f_code
+sVline = "(" + string + "?" + notstring + "?" + ")*"
+p3
+I1138
+sVhere 4
+p4
+I849
+sVdo set a = #ppoint(b)
 p5
+I874
+sVprint translate_program("hanoi_main.v2")
+p6
+I1820
+sVc = tb.tb_frame.f_code
+p7
 I1368
 sVv2py.beautify_line("cucu bau")
-p6
+p8
 I1057
-sVhere 4
-p7
-I849
 s.

@@ -1,14 +1,17 @@
 (dp1
-Vdo appros b, 100
+Vc.x = 400
 p2
-I365
-sVwhile not (x == 1): wait
-p3
-I705
-sVc.x = 400
-p4
 I861
 sVdo move shift(pal by -120, -30, -30)
-p5
+p3
 I272
+sVdo appros b, 100
+p4
+I365
+sVenv hanoi(8)
+p5
+I1969
+sVwhile not (x == 1): wait
+p6
+I705
 s.

@@ -1,20 +1,23 @@
 (dp1
-Vdo param hand.time = 0.5
+Vexcept Error as e:
 p2
-I597
-sVstatu
+I1390
+sVdo set a = a
 p3
-I1344
-sVRZ("43")
+I867
+sVstatu
 p4
-I1241
+I1344
 sVx = _ip.runlines("RZ(45")
 p5
 I205
-sVdo set a = a
+sVdo param hand.time = 0.5
 p6
-I867
-sVexcept Error as e:
+I597
+sVglob["CALL"]
 p7
-I1390
+I1892
+sVRZ("43")
+p8
+I1241
 s.

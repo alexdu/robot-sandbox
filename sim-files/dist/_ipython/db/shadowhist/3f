@@ -2,10 +2,16 @@
 Vre.match('"[^"]*"', 'ana are "453" mere')
 p2
 I1106
-sVdo appro dx(3), 100
+sVconvert_parse_tree(l[0])
 p3
-I192
-sVdo flip
+I1667
+sVdo appro dx(3), 100
 p4
+I192
+sVdo appro varf_stv_a, 100
+p5
+I1920
+sVdo flip
+p6
 I572
 s.

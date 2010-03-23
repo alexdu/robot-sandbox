@@ -1,26 +1,35 @@
 (dp1
-Vvar = "31/2"
+Vjobs.jobs_run.remove(1)
 p2
-I1020
-sVdo type rx(45
-p3
-I288
+I1342
 sVcopy([1,2,3])
-p4
+p3
 I1463
-sVdo if i mod 2 == 0 then
+sVdo type cucu
+p4
+I1821
+sVdo move bs:shift(ry(180) by -100,0,0)
 p5
-I556
+I1478
 sVdo move shift(pal by -130, -20, -30)
 p6
 I275
-sVdo appro pal, 0
+sVdo type rx(45
 p7
-I460
-sVjobs.jobs_run.remove(1)
+I288
+sVvar = "31/2"
 p8
-I1342
-sVtranslate_statement("type a, 5")
+I1020
+sVload spanac
 p9
+I1877
+sVdo if i mod 2 == 0 then
+p10
+I556
+sVdo appro pal, 0
+p11
+I460
+sVtranslate_statement("type a, 5")
+p12
 I1193
 s.

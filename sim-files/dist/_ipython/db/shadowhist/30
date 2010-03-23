@@ -1,5 +1,26 @@
 (dp1
-Vreduce((n)+(1))
+Vexec(loader) in glob
 p2
+I1889
+sVp.getChildNodes()[0].getChildNodes()[0].getChildNodes()[0].GetChildNodes()
+p3
+I1774
+sVtranslate_statement(".PROGRAM calltest()")
+p4
+I1728
+sVreduce((n)+(1))
+p5
 I683
+sVsys.stdout = Term.cout
+p6
+I1496
+sVsee hanoi.
+p7
+I1959
+sVa = "\u005Ct\u005Cnfds"
+p8
+I1716
+sVrobotProgramFiles
+p9
+I1839
 s.

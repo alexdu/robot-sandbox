@@ -1,17 +1,20 @@
 (dp1
-Vcheck_args([1,2,3], ['int', 'int', 'float'])
+Vjobs.jobs_all[0].stat_running
 p2
-I1226
+I1348
 sVdo move shift(pal by 105,170,48)
 p3
 I352
-sVvplus._color_dic
+sVexec calltest.v2
 p4
+I1720
+sVcheck_args([1,2,3], ['int', 'int', 'float'])
+p5
+I1226
+sVvplus._color_dic
+p6
 I1417
 sVdo moves bs:shift(aux by -150,0,-90)
-p5
+p7
 I396
-sVjobs.jobs_all[0].stat_running
-p6
-I1348
 s.

@@ -2,31 +2,37 @@
 Vstring.upper(["x"])
 p2
 I678
-sVlsmagic
-p3
-I898
-sVcode
-p4
-I1095
-sVdo move #safe
-p5
-I284
-sVsplit_strings('a"1;2"; bla')
-p6
-I1187
-sVdo move shift(pal by -100, 10, -30)
-p7
-I267
 sVa.endswith(".env")
-p8
+p3
 I580
-sVtranslate_program("casuta.v2")
+sVdo move shift(pal by -100, 10, -30)
+p4
+I267
+sVlsmagic
+p5
+I898
+sVp.getChildNodes()[1]
+p6
+I1768
+sVsplit_strings('a"1;2"; bla')
+p7
+I1187
+sVdo move #safe
+p8
+I284
+sVdo move bs:shift(ry(180) by -130,-100,-90)
 p9
+I1485
+sVcode
+p10
+I1095
+sVtranslate_program("casuta.v2")
+p11
 I1044
 sVdo SET p = TRANS(dx,dy,0)
-p10
+p12
 I206
 sVpprint(cod)
-p11
+p13
 I909
 s.

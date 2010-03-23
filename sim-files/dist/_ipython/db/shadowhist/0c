@@ -1,20 +1,26 @@
 (dp1
-VAPPRO(safe,100)
+V(a,a) = match_subtree(pattern, t[1][3])
 p2
-I444
-sVdo type i,",",j,",",k
+I1703
+sVAPPRO(safe,100)
 p3
-I620
-sVdo timer -1 = 0
-p4
-I606
+I444
 sVdo moves shift(pal by -129, 100, -40)
-p5
+p4
 I297
 sVdo speed 30 always
-p6
+p5
 I648
-sVx=0
+sVdo type i,",",j,",",k
+p6
+I620
+sVwhos i
 p7
+I1521
+sVdo timer -1 = 0
+p8
+I606
+sVx=0
+p9
 I1050
 s.

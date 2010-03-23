@@ -1,14 +1,17 @@
 (dp1
-Vpprint.pprint(vplus._build_dictionary())
+V_ip.get_options
 p2
-I842
-sVdo move shift(pal by 100,0,100)
-p3
-I335
+I1540
 sVtb = sys.last_traceback
-p4
+p3
 I1365
-sVe = Exception
+sVdo move shift(pal by 100,0,100)
+p4
+I335
+sVpprint.pprint(vplus._build_dictionary())
 p5
+I842
+sVe = Exception
+p6
 I1393
 s.

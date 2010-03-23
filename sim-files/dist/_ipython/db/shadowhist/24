@@ -1,11 +1,14 @@
 (dp1
-Venv random
+Vdo move shift(pal by 0,0,10)
 p2
-I64
-sVdo move shift(pal by 0,0,10)
-p3
 I333
-sVprint "%20.3g", 5
+sVenv random
+p3
+I64
+sVworldObject("Box3").mass
 p4
+I1947
+sVprint "%20.3g", 5
+p5
 I495
 s.

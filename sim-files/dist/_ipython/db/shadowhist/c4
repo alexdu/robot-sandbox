@@ -2,22 +2,25 @@
 Vdo move shift(pal by -130, -20, -35)
 p2
 I276
-sVpprint.pprint "cucu"
+sVjobs
 p3
-I749
-sVrun
+I1102
+sVtype(x).__name__
 p4
+I856
+sVimport ipy_system_conf
+p5
+I4
+sVrun
+p6
 I1003
 sVdo moves shift(pal by 120, 400, -40)
-p5
-I306
-sVjobs
-p6
-I1102
-sVimport ipy_system_conf
 p7
-I4
-sVtype(x).__name__
+I306
+sVpprint.pprint "cucu"
 p8
-I856
+I749
+sVp.getChildNodes()[0]
+p9
+I1767
 s.

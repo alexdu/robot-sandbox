@@ -2,13 +2,19 @@
 Vc = compile(cod, "spanac", "exec")
 p2
 I980
-sVdo type 3 mod 4
+sVINT(RZ(4))
 p3
-I1301
+I1306
 sVjobs.flush_finished()
 p4
 I1318
-sVINT(RZ(4))
+sVdo type 3 mod 4
 p5
-I1306
+I1301
+sVm = worldObject("Box1").getMaterial().diffuse
+p6
+I1942
+sVpprint(callDict())
+p7
+I1875
 s.

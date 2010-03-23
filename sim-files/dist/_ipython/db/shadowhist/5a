@@ -1,29 +1,32 @@
 (dp1
-Va  = "cucu \u005Cr\u005Cn"
+VRX(RZ(3))
 p2
-I1046
-sVlocals()["b"]
-p3
-I479
+I1240
 sVdo wait.event,5
-p4
+p3
 I872
-sVATAN2(3.3,3)
+sVeval((n)+(1))
+p4
+I682
+sVd = dir(symbol)
 p5
-I1250
+I1630
 sVQuit()
 p6
 I2
-sVline
-p7
-I1141
 sVstring.split("a,b,cdsfs,dew[]", ",")
-p8
+p7
 I1067
-sVRX(RZ(3))
+sVATAN2(3.3,3)
+p8
+I1250
+sVa  = "cucu \u005Cr\u005Cn"
 p9
-I1240
-sVeval((n)+(1))
+I1046
+sVline
 p10
-I682
+I1141
+sVlocals()["b"]
+p11
+I479
 s.

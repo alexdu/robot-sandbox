@@ -2,7 +2,13 @@
 Vdo speed 10 always
 p2
 I232
-sVdo call pick.place(1,2)
+sVa = 3.4
 p3
+I1903
+sVdo call pick.place(1,2)
+p4
 I660
+sV!dir
+p5
+I1583
 s.

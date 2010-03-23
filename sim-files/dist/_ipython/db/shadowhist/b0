@@ -1,20 +1,23 @@
 (dp1
-Vdo moves e:rz(90):TRANS(10,10,100)
+Vdo set ref.loc = ((dx(a)+dx(b))/2, (dy(a)+dy(b))2, dz(a)):a.rot
 p2
-I381
-sVdo set ref.loc = ((dx(a)+dx(b))/2, (dy(a)+dy(b))2, dz(a)):a.rot
-p3
 I734
-sVEXECUTE("casuta")
-p4
-I1388
 sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_lineno
-p5
+p3
 I929
 sVsys.last_traceback.tb_lineno
-p6
+p4
 I923
+sVprogdecl
+p5
+I1736
 sVelem = "(" + string + "|" + notstring + "|" + ")"
-p7
+p6
 I1144
+sVdo moves e:rz(90):TRANS(10,10,100)
+p7
+I381
+sVEXECUTE("casuta")
+p8
+I1388
 s.

@@ -1,19 +1,28 @@
 (dp1
-Vdo .PROGRAM CUCUcu(a,b)
+Vy
+I1052
+sVdo .PROGRAM CUCUcu(a,b)
 p2
 I675
-sVa = "23 df"
-p3
-I1405
-sVhelp re.template
-p4
-I108
 sVexec stiva
-p5
+p3
 I1465
-sVs = re.search('("[^"]*")', 'ana are "453" mere').groups()
+sVprogramDict()
+p4
+I1874
+sVdir x
+p5
+I1854
+sVhelp re.template
 p6
+I108
+sVa = "23 df"
+p7
+I1405
+sVprint 1,
+p8
+I1471
+sVs = re.search('("[^"]*")', 'ana are "453" mere').groups()
+p9
 I1111
-sVy
-I1052
 s.

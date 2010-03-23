@@ -1,14 +1,23 @@
 (dp1
-Vdo moves pick
+Vdo while a do
 p2
-I552
-sVglobal a, b
+I697
+sVsymbol.sym_name["314"]
 p3
+I1647
+sVglobal a, b
+p4
 I616
 sVprint "ana are "" mere"
-p4
-I1123
-sVdo while a do
 p5
-I697
+I1123
+sVdo moves pick
+p6
+I552
+sVsymbol.power
+p7
+I1627
+sVenv hanoi
+p8
+I1809
 s.

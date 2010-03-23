@@ -1,14 +1,26 @@
 (dp1
-Vdo parameter hand.time = 0.5
+Vvplus._build_dictionary()
 p2
-I520
-sVvplus._build_dictionary()
-p3
 I840
 sVc.co_name
-p4
+p3
 I1369
-sVsys.last_traceback.tb_next.tb_next.tb_lineno
+sVp.getChildNodes()[0].getChildNodes()[0].getChildNodes()[0][1]
+p4
+I1775
+sVNone > 0
 p5
+I1794
+sVdo parameter hand.time = 0.5
+p6
+I520
+sVp.isexpr()
+p7
+I1596
+sVdo move bs:shift(ry(180) by -120,-100,-90)
+p8
+I1484
+sVsys.last_traceback.tb_next.tb_next.tb_lineno
+p9
 I927
 s.

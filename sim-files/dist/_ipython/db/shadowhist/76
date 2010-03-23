@@ -1,20 +1,23 @@
 (dp1
-Ven trace
+Vdo moves shift(pal by -100, 200, -40)
 p2
-I1385
-sVdo for p = 1 to n step -1
-p3
-I525
-sVdo move trans(0,0,984,0,0,0)
-p4
-I793
-sVdo move ppoint(0+10,-171,226,180,55.4,18010)
-p5
-I777
-sVdo moves shift(pal by -100, 200, -40)
-p6
 I301
-sVbeautify_line('print "shift(x by dx(5)" ; shift(x by dx(4))')
+sVdo move ppoint(0+10,-171,226,180,55.4,18010)
+p3
+I777
+sVdo for p = 1 to n step -1
+p4
+I525
+sVa = {3,4}
+p5
+I1784
+sVdo move trans(0,0,984,0,0,0)
+p6
+I793
+sVen trace
 p7
+I1385
+sVbeautify_line('print "shift(x by dx(5)" ; shift(x by dx(4))')
+p8
 I1199
 s.

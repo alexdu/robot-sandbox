@@ -1,17 +1,20 @@
 (dp1
-Vdo move shift(pal by 105,170,50)
+Va|b
 p2
+I1787
+sVdo move shift(pal by 105,170,50)
+p3
 I348
 sVdo  ang = atan2(dy(a))
-p3
+p4
 I725
 sVhelp jobs.traceback
-p4
+p5
 I958
 sVc.co_varnames
-p5
+p6
 I1436
 sVbg exec(c) in dic
-p6
+p7
 I983
 s.

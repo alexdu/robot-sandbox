@@ -1,26 +1,32 @@
 (dp1
-Vdo move shift(pal by 105,170,45)
+Vp.getChildNodes()[0].getChildNodes()[0].getChildNodes()[0]
 p2
-I350
-sVpprint([a,b])
+I1772
+sVdo move shift(pal by 105,170,45)
 p3
-I752
-sVlin
+I350
+sVsee pal-inc
 p4
-I1009
-sVfor i,s in enumerate(vs): print i,s
+I517
+sVpprint([a,b])
 p5
-I138
-sV%bg execfile("paletizare.py", dic)
-p6
-I900
+I752
 sVexec trace
-p7
+p6
 I1428
+sV%bg execfile("paletizare.py", dic)
+p7
+I900
 sVdo set p = trans(10,10,0)
 p8
 I168
-sVsee pal-inc
+sVlin
 p9
-I517
+I1009
+sVdo move bs:shift(ry(180) by -100,-80,-90)
+p10
+I1482
+sVfor i,s in enumerate(vs): print i,s
+p11
+I138
 s.

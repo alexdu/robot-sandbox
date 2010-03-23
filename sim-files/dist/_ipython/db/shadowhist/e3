@@ -1,29 +1,32 @@
 (dp1
-Vdo moves shift(pal by 100, 100, -40)
+Vfrom token import *
 p2
-I299
-sVmod(s.count('"'), 3)
+I1674
+sVdo set e = d
 p3
+I880
+sVmod(s.count('"'), 3)
+p4
 I1128
 sVdo set c = b
-p4
-I875
-sVwhos mod
 p5
-I1171
+I875
 sVb = a
 p6
 I858
-sVdo set e = d
+sVwhos mod
 p7
-I880
+I1171
 sVjobs.traceback(1)
 p8
 I959
-sVa.endswith("d")
+sVdo moves shift(pal by 100, 100, -40)
 p9
+I299
+sVa.endswith("d")
+p10
 I582
 sVs = re.search("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#])", "cucu bau + bau+c").groups()
-p10
+p11
 I88
 s.

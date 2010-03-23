@@ -1,14 +1,23 @@
 (dp1
-Vdo move shift(pal by 100,120,60)
+Vl = parser.expr("(a,b+0,c)").tolist()
 p2
-I339
+I1650
 sVprint 0,a
 p3
 I570
-sVdo auto x, y
+sV(kw, rest, vs) = split_after_keyword(var)
 p4
-I1082
-sVbeautify_line("cucu Bau:rz(45)")
+I1732
+sVdo auto x, y
 p5
+I1082
+sV_ipshell.IP.interact
+p6
+I1564
+sVdo move shift(pal by 100,120,60)
+p7
+I339
+sVbeautify_line("cucu Bau:rz(45)")
+p8
 I1061
 s.

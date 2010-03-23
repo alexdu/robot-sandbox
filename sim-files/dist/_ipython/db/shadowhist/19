@@ -1,14 +1,17 @@
 (dp1
-Va[3:]
+V_ipshell.IP.buffer.count()
 p2
-I1167
-sVrange(1,10,2)
+I1557
+sVa[3:]
 p3
-I670
+I1167
 sVx = 1
 p4
 I707
 sVdo move trans(0,0,989,0,0,0)
 p5
 I798
+sVrange(1,10,2)
+p6
+I670
 s.

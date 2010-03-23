@@ -1,17 +1,20 @@
 (dp1
-Vdo appro a,0
+Vs.start
 p2
-I323
-sVdo break
-p3
-I523
-sVRX(56)
-p4
-I1353
-sVs.start
-p5
 I1109
+sVRX(56)
+p3
+I1353
+sVdo break
+p4
+I523
 sVINT(4)
-p6
+p5
 I1278
+sVTerm
+p6
+I1488
+sVdo appro a,0
+p7
+I323
 s.

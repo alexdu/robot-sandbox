@@ -1,23 +1,26 @@
 (dp1
-Vsafe
+Vsplit_comment("   wfew;fs")
 p2
+I1719
+sVsafe
+p3
 I443
 sVre.sub("([a-z])", r"\u005C1", "cucu-bau")
-p3
+p4
 I73
 sVdo moves bs:shift(aux by -150,-70,-90)
-p4
-I401
-sVdo wait x == 1
 p5
-I709
+I401
 sVdo move shift(pal by 100,100,100)
 p6
 I336
 sVdo appro #safe, 100
 p7
 I452
-sVdo move shift(pal by 100,140,60)
+sVdo wait x == 1
 p8
+I709
+sVdo move shift(pal by 100,140,60)
+p9
 I342
 s.

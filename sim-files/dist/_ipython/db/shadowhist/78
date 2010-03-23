@@ -5,19 +5,25 @@ I1425
 sV_ip.user_ns.keys()
 p3
 I846
-sVTAN(3.3)
-p4
-I1248
 sVtype(r)
-p5
+p4
 I854
-sVj=2
+sVexec calltest
+p5
+I1585
+sVexec null.env
 p6
+I1539
+sVTAN(3.3)
+p7
+I1248
+sVj=2
+p8
 I622
 sVdo move shift(pal by 100,170,48)
-p7
+p9
 I367
 sVfor i in dic: print i
-p8
+p10
 I1431
 s.

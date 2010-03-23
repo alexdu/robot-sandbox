@@ -2,25 +2,31 @@
 Vjobs.remove("#0")
 p2
 I1326
-sVdo lefty
+sVdo appros a, 600
 p3
-I617
+I766
 sVbeautify_line("3 mod4")
 p4
 I1303
-sVexec paletizare
-p5
-I21
 sVjob[0]
-p6
+p5
 I1322
+sVdo lefty
+p6
+I617
 sVdo SeT p = TrANS(dx,dy,0)
 p7
 I207
-sVdo appros a, 600
+sVpprint(l)
 p8
-I766
-sVdo move trans(0,0,987,0,0,0)
+I1614
+sVi.jobs
 p9
+I1533
+sVexec paletizare
+p10
+I21
+sVdo move trans(0,0,987,0,0,0)
+p11
 I796
 s.

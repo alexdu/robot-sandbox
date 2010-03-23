@@ -1,14 +1,17 @@
 (dp1
-Vdo auto x,y
+V_ipshell.IP.var_expand("3+3")
 p2
-I1078
-sVvplus.beautify_line("cucu bau")
-p3
-I1056
+I1548
 sVlistl tool, rz(45)
-p4
+p3
 I755
 sVhelp list
-p5
+p4
 I1072
+sVvplus.beautify_line("cucu bau")
+p5
+I1056
+sVdo auto x,y
+p6
+I1078
 s.

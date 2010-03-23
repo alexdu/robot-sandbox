@@ -1,7 +1,7 @@
 (dp1
-Vvplus._convert_to_trans(saf)
+V"c" in "abc"
 p2
-I446
+I1712
 sVdo set p.world = bs:p
 p3
 I213
@@ -11,7 +11,16 @@ I453
 sVdo SET P.WORLD = BS:P
 p5
 I218
-sVdo appro pick,100
+sVdo     TYPE "Inceput pick_place_adap:", DX(vf_stv_src), " ", DZ(vf_stv_src), " => ", DX(vf_stv_dst), " ", DZ(vf_stv_dst)
 p6
+I1824
+sVvars
+p7
+I1660
+sVvplus._convert_to_trans(saf)
+p8
+I446
+sVdo appro pick,100
+p9
 I550
 s.

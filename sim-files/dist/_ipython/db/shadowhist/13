@@ -5,22 +5,28 @@ I476
 sVdo type 3
 p3
 I289
-sVa.strip("\u005Cn")
+sVre.match("dx\u005C *\u005C(", "x + dx (")
 p4
-I1409
+I174
 sVprint >> Term.cout, tc.DarkGray + "fds"
 p5
 I1454
 sVlistl d, e
 p6
 I229
-sVd = RZ(45)
+sVa.strip("\u005Cn")
 p7
-I877
-sVre.match("dx\u005C *\u005C(", "x + dx (")
+I1409
+sVload pal
 p8
-I174
+I1850
 sVpprint.pprint "cucu", "bau"
 p9
 I750
+sVd = RZ(45)
+p10
+I877
+sVglobals
+p11
+I1894
 s.

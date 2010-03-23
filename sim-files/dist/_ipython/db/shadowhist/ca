@@ -1,20 +1,29 @@
 (dp1
-Vre.sub("([a-z])", r"\u005C1".upper(), "cucu-bau")
+Vhelp jobs
 p2
-I76
-sVhelp jobs
-p3
 I1320
-sVdo appro c, 100
+sVstr(t[1][3])
+p3
+I1693
+sVpprint(vplus._dic_locals["casuta"])
 p4
-I354
-sVdo move trans(0,0,988.4,0,0,0)
-p5
-I802
+I1779
 sVre.match(elem, test).groups()
-p6
+p5
 I1146
+sVglob
+p6
+I1891
 sVsys.last_traceback.tb_next
 p7
 I924
+sVdo move trans(0,0,988.4,0,0,0)
+p8
+I802
+sVdo appro c, 100
+p9
+I354
+sVre.sub("([a-z])", r"\u005C1".upper(), "cucu-bau")
+p10
+I76
 s.

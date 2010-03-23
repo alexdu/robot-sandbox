@@ -8,22 +8,34 @@ I137
 sVprint >> Term.cout, tc.DarkGray, "fds"
 p4
 I1453
-sV%bg spanac()
+sVre.match(line, test)
 p5
-I998
-sVdo move trans(0,0,985,0,0,0)
+I1143
+sV!ls
 p6
-I794
-sVTOOL rx(45)
+I1793
+sV%bg spanac()
 p7
-I241
-sVstring.split
+I998
+sVl[1]
 p8
+I1607
+sVdo move trans(0,0,985,0,0,0)
+p9
+I794
+sVstring.split
+p10
 I1065
 sVdo moves shift(pal by 136, 408, -20)
-p9
+p11
 I316
-sVre.match(line, test)
-p10
-I1143
+sVIndentationError
+p12
+I1576
+sVTOOL rx(45)
+p13
+I241
+sVworldObject("Box1").material
+p14
+I1937
 s.

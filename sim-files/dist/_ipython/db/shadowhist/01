@@ -5,13 +5,16 @@ I1247
 sVk = locals().keys()
 p3
 I483
-sVsplit_after_keyword(line)
-p4
-I1077
 sVdo move trans(0,0,981,0,0,0)
-p5
+p4
 I790
 sVdo wait
-p6
+p5
 I564
+sVsplit_after_keyword(line)
+p6
+I1077
+sVfind_params_passable_by_ref("a+b")
+p7
+I1705
 s.

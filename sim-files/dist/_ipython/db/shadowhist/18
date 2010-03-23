@@ -1,7 +1,7 @@
 (dp1
-Venv st
+Vpprint(convert_parse_tree(l))
 p2
-I571
+I1640
 sVhere d
 p3
 I359
@@ -11,13 +11,19 @@ I1159
 sVpprint(vplus._build_dictionary())
 p5
 I847
-sVdo moves bs:shift(here by 0,0,10)
+sVimport symbol
 p6
+I1615
+sVraise "cucu"
+p7
+I591
+sVdo moves bs:shift(here by 0,0,10)
+p8
 I385
 sV__dict__
-p7
+p9
 I420
-sVraise "cucu"
-p8
-I591
+sVenv st
+p10
+I571
 s.

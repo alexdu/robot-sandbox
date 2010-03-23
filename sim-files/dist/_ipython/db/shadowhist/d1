@@ -2,13 +2,19 @@
 Vdo moves b
 p2
 I361
-sVdo moves bs:shift(aux by -150,-10,-90)
+sVstring.split("a , b , cdsfs  ,   dew[]", ",")
 p3
-I397
+I1069
 sVjobs.remove(0)
 p4
 I1325
-sVstring.split("a , b , cdsfs  ,   dew[]", ",")
+sVsymbol.decorators
 p5
-I1069
+I1625
+sVdo move bs:shift(ry(180) by 100,0,0)
+p6
+I1475
+sVdo moves bs:shift(aux by -150,-10,-90)
+p7
+I397
 s.

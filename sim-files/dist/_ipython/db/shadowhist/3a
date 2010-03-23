@@ -2,13 +2,19 @@
 Ve.__name__
 p2
 I1402
-sVre.match("dx\u005C *\u005C(", "dx +fdsfdsf")
+sVa = [1,2]
 p3
-I185
-sVlocals()["Out"]
-p4
-I477
+I1871
 sVstring = '"[^"]*"'
-p5
+p4
 I1150
+sVdo TYPE "Inceput pick_place_adap:", DX(vf_stv_src), " ", DZ(vf_stv_src), " => ", DX(vf_stv_dst), " ", DZ(vf_stv_dst)
+p5
+I1823
+sVlocals()["Out"]
+p6
+I477
+sVre.match("dx\u005C *\u005C(", "dx +fdsfdsf")
+p7
+I185
 s.

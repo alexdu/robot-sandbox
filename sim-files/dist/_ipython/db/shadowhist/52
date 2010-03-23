@@ -1,23 +1,26 @@
 (dp1
-Va.strip(" ")
+Vre.split("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu(baFu + #bau+c")
 p2
-I1406
-sVk.sort()
-p3
-I485
+I120
 sVjobs.jos_all
-p4
+p3
 I1103
 sVv2py.translate_program
-p5
+p4
 I1011
-sVre.split("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu(baFu + #bau+c")
-p6
-I120
+sVa.strip(" ")
+p5
+I1406
 sVa  = HERE()
-p7
+p6
 I15
-sV_ip.load
+sVboxes
+p7
+I1965
+sVk.sort()
 p8
+I485
+sV_ip.load
+p9
 I948
 s.

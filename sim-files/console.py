@@ -69,6 +69,9 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("env", vplus._CM_ENV)
         IPython.ipapi.get().expose_magic("do", vplus._CM_DO)
         IPython.ipapi.get().expose_magic("abort", vplus._CM_ABORT)
+        IPython.ipapi.get().expose_magic("dir", vplus._CM_DIR)
+        IPython.ipapi.get().expose_magic("load", vplus._CM_LOAD)
+        IPython.ipapi.get().expose_magic("zero", vplus._CM_ZERO)
         
         print
         print "Type 'mc' to see a list of monitor commands."

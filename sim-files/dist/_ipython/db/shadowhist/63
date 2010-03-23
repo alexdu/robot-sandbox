@@ -1,22 +1,31 @@
 (dp1
-Vc.co_consts
+Vi.savehist()
 p2
-I1376
-sVdo moves trans(10,-100,900,0,0,0)
+I1536
+sVload paletizare.v2
 p3
-I809
+I1851
 sVdo moves shift(pal by -100, -100, -40)
 p4
 I300
-sVb
-I371
-sVbeautify_program("paletizare.v2")
+sVc.co_consts
 p5
-I1203
+I1376
 sVexec(cod in dic)
 p6
 I913
-sVsplit_comment('ana "are ; 5" ;mere')
+sVbeautify_program("paletizare.v2")
 p7
+I1203
+sVload hani
+p8
+I1919
+sVdo moves trans(10,-100,900,0,0,0)
+p9
+I809
+sVb
+I371
+sVsplit_comment('ana "are ; 5" ;mere')
+p10
 I1184
 s.

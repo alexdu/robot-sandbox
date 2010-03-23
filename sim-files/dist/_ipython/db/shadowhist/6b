@@ -1,10 +1,19 @@
 (dp1
-Vdo move shift(pal by 10, 10, 100)
+V_ipshell.IP.buffer
 p2
+I1555
+sVenv hanoi(2)
+p3
+I1979
+sVdo auto x, y[4], z
+p4
+I1084
+sVsys.stdou
+p5
+I1505
+sVdo move shift(pal by 10, 10, 100)
+p6
 I261
 sVj
 I1331
-sVdo auto x, y[4], z
-p3
-I1084
 s.

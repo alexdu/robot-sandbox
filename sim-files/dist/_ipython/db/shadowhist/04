@@ -1,32 +1,38 @@
 (dp1
-V_ip.runlines("EXECUTE('paletizare.py'))
+Vd = c*NUL
 p2
-I1005
-sVINVERSE(a)
+I863
+sVfind_params_passable_by_ref("a+b,c,de")
 p3
-I1257
-sVraise Exception
+I1707
+sVdo parameter hand.time = 1
 p4
-I1396
+I599
 sVhere x
 p5
 I57
-sVdo parameter hand.time = 1
+sVINVERSE(a)
 p6
-I599
-sVd = c*NUL
+I1257
+sVprogramDict["hanoi_main"][1]
 p7
-I863
-sV_ip.user_ns
+I1981
+sV_ip.runlines("EXECUTE('paletizare.py'))
 p8
+I1005
+sVraise Exception
+p9
+I1396
+sV_ip.user_ns
+p10
 I419
 sVa = 5
-p9
+p11
 I504
 sVfor i,j in jobs.jobs_all: print i,j
-p10
+p12
 I1340
 sVk=3
-p11
+p13
 I623
 s.

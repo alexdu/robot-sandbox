@@ -1184,41 +1184,39 @@ def exec_end():
     sys.stdout = sys.sys_stdout
     # daca nu dau ENTER, ramane consola "ametita"
 
-def EXECUTE(file, dic=None):
+
+
+def EXECUTE(prog):
     """
     Executes a robot program.
     """
     
-    exec_init()
-    try:
+    (func, args, args_ref) = parse_function_call(prog)
+    if func in programDict:
 
+        # auto-reload
+        _LOAD(programDict[func][1], True)
 
-        if dic==None:
-            glob = _build_dictionary()
+        exec_init()
+        try:
+            _build_dictionary()
             if RobotSim.debug:
-                _list_dictionary(glob)
-
-        code = translate_program(file)
-        code = compile(code, file, "exec")
-        
-        (name,ext) = os.path.splitext(file)
-        name = translate_expression(name)
-        bootloader = compile("%s()\n" % name, "<exec loader>", "exec")
-        loc = {}
-
-        exec(code) in glob, loc
-        
-        for v in loc:
-            glob[v] = loc[v]
+                _list_dictionary()
             
-        exec(bootloader) in glob
+            loader_code = "CALL['%s'](%s)" % (func, args)
+            loader = compile(loader_code, "<exec loader>", "exec")
+            loc = {}
+            
+            exec(loader) in globalVplusNames
+        except UserAbort:
+            print "Robot program aborted by user."
+        except:
+            raise
+        finally:
+            exec_end()
+    else:
+        print "Program '%s' not loaded." % func
         
-    except UserAbort:
-        print "Robot program aborted by user."
-    except:
-        raise
-    finally:
-        exec_end()
         
 
 def _flush_completed_jobs():
@@ -1249,7 +1247,88 @@ def _CM_ABORT(self, arg):
         print "No robot program is running."
         RobotSim.abort_flag = False
 
+
+
+def _CM_DIR(self, arg):
+    programe = programDict.keys()
+    programe.sort()
+
+    print "Loaded programs:"
+    print "================"
+    for v in programe:
+        args = programDict[v][0]
+        file = programDict[v][1]
+        lineno = programDict[v][2]
+        slineno = str(lineno).ljust(3)
+        if len(args) > 0:
+            print "%15s : %s  =>  .PROGRAM %s(%s)" % (file, slineno, v, args)
+        else:
+            print "%15s : %s  =>  .PROGRAM %s" % (file, slineno, v)
+
+def _LOAD(file, reload=False):
+    ip = IPython.ipapi.get()
+
+    progfiles = []
+    if file.strip() == "":
+        files = os.listdir(".")
+        for f in files:
+            if f.lower().endswith(".v2"):
+                progfiles.append(f)
+        progfiles.sort()
+        print "Robot programs in current directory:"
+        for e in progfiles:
+            print "  * ", e[:-3]
+        return
+        
+
+    if not re.match("^.*\.[^.]*$", file): # fara extensie, ii adaug .v2
+        file = file + ".v2" 
     
+    if not reload:
+        print "Loading %s ..." % file
+    else:
+        print "Reloading %s ..." % file
+    code = translate_program(file)
+    code = compile(code, file, "exec")
+
+    _build_dictionary()
+    loc = {}
+    exec(code) in globalVplusNames, loc
+
+    # programele din fisierul incarcat apar in loc
+
+    locale = loc.keys()
+    locale.sort()
+    
+    for v in locale:
+        if type(loc[v]).__name__ == 'function':
+            vplus_name = programMangleP2V[v]
+            args = programDict[vplus_name][0]
+            programDict[vplus_name][3] = loc[v]
+            
+            if not reload:
+                if len(args) > 0:
+                    print "   .PROGRAM %s(%s)" % (vplus_name, args)
+                else:
+                    print "   .PROGRAM %s" % vplus_name
+
+
+def _CM_LOAD(self, file):
+    """
+        
+    Monitor command for loading a file containing robot programs.
+
+    Example:
+
+    load hanoi
+    """
+
+    
+
+    _LOAD(file)
+
+
+
 def _CM_EXEC(self, prog):
     """
         
@@ -1263,9 +1342,6 @@ def _CM_EXEC(self, prog):
 
     ip = IPython.ipapi.get()
 
-    if not re.match("^.*\.[^.]*$", prog): # fara extensie, ii adaug .v2
-        prog = prog + ".v2" 
-
 
     _flush_completed_jobs()
     if len(jobs.jobs_all) > 0:
@@ -1274,9 +1350,9 @@ def _CM_EXEC(self, prog):
             return
     
 
-    dic = _build_dictionary()   # workaround... sper sa mearga :)
+    _build_dictionary() 
     if RobotSim.debug:
-        _list_dictionary(dic)
+        _list_dictionary()
 
     ip.runlines("%%bg _ip.runlines(\"EXECUTE('%s')\")" % prog)
 
@@ -1476,13 +1552,24 @@ def _CM_SPEED(self, var):
     print "Setting monitor speed to %d" % spd
     SPEED(spd, "MONITOR")
 
-def _list_dictionary(dic):
+def _list_dictionary():
+    dic = globalVplusNames
     K = dic.keys()
     K.sort()
     for k in K:
         if k.lower() == k:
             print k,
     print ""
+
+
+globalVplusNames = {}
+
+
+def callDict():
+    d = {}
+    for p in programDict:
+        d[p] = programDict[p][3]
+    return d
 
 def _build_dictionary():
     code = """
@@ -1501,120 +1588,147 @@ def _build_dictionary():
             if type(_v).__name__ in ['str', 'int', 'float']:
                 if _k.lower() == _k:
                     _vars.append(_k)
-    _dic = {}
+    
     for _k in _vars:
-        _dic[_k] = eval(_k)
+        globalVplusNames[_k] = eval(_k)
+        
     for _k in vplus.__dict__.keys():
          if _k[0] != '_': 
             if _k.upper() == _k:
-                _dic[_k] = eval(_k)
+                globalVplusNames[_k] = eval(_k)
     
-    _dic["vplus"] = vplus
+    #_dic["vplus"] = vplus
+    globalVplusNames["CALL"] = callDict()
+    
+    
     """
     
     ip = IPython.ipapi.get()
     ip.runlines(code)
     
+def _CM_ZERO(self, var):
+
+    _build_dictionary()
+    names = globalVplusNames.keys()
+    ip = IPython.ipapi.get()
+
+    TOOL(NULL)
+
+    for var in names:
+        if var[0] != "_" and var.lower() == var:
+            value = globalVplusNames[var]
+            if type(value).__name__ == 'instance':
+                if value.__class__.__name__ in ['TRANS', 'PPOINT']:
+                    ip.runlines("try: del " + var + "\nexcept: pass")
+            if type(value).__name__ in ['int', 'float', 'str', 'list']:
+                ip.runlines("try: del " + var + "\nexcept: pass")
     
-    return ip.user_ns["_dic"]
+    globalVplusNames.clear()
+    programDict.clear()
+    programMangleP2V.clear()
+    programMangleV2P.clear()
+    
+    _build_dictionary()
     
 def _CM_LISTL(self, var):
     """
 
     Lists location variables (TRANS and PPOINT).
     """
-
-    ip = IPython.ipapi.get()
+    
     if len(var) > 0:
+        ip = IPython.ipapi.get()
         var = translate_expression(var)
         ip.runlines("pprint.pprint([" + var + "])")
         return
-    code = """
-        _k = 0
-        _v = 0
-        _K = list(set(locals().keys() + globals().keys()))
-        _K.sort()
 
-        print "Location variables:"
-        print "==================="
-        print ""
-        print "Transformations:"
-        for _k in _K:
-            _v = eval(_k)
-            if type(_v).__name__ == 'instance':
-                if _v.__class__.__name__ == 'TRANS':
-                    if _k[0] != '_': 
-                        print "%10s = " % _k, _v
-        print ""
-        print "Precision points:"
-        for _k in _K:
-            _v = eval(_k)
-            if type(_v).__name__ == 'instance':
-                if _v.__class__.__name__ == 'PPOINT':
-                    if _k[0] != '_': 
-                        print "%10s =" % ("#" + _k), _v
-        print ""
-        print "Tool transformation:"
-        print "             ", TOOL()
-    """
-    ip.runlines(code)
+    _build_dictionary()
+    names = globalVplusNames.keys()
+    names.sort()
+
+    print "Location variables:"
+    print "==================="
+    print ""
+    print "Transformations:"
+    print
+    for var in names:
+        if var[0] != "_" and var.lower() == var:
+            value = globalVplusNames[var]
+            if type(value).__name__ == 'instance':
+                if value.__class__.__name__ == 'TRANS':
+                    print "%10s = " % var, value
+    print
+    print "Precision points:"
+    print
+    for var in names:
+        if var[0] != "_" and var.lower() == var:
+            value = globalVplusNames[var]
+            if type(value).__name__ == 'instance':
+                if value.__class__.__name__ == 'PPOINT':
+                        print "%10s =" % ("#" + var), value
+    print ""
+    print "Tool transformation:"
+    print "             ", TOOL()
 
 def _CM_LISTR(self, var):
     """
 
     Lists real and integer variables.
     """
-    code = """
-        _k = 0
-        _v = 0
-        _K = list(set(locals().keys() + globals().keys()))
-        _K.sort()
 
-        print "Real and integer variables:"
-        print "==========================="
-        print ""
-        print "Reals:"
-        for _k in _K:
-            _v = eval(_k)
-            if type(_v).__name__ == 'float':
-                if _k[0] != '_': 
-                    if _k.lower() == _k:
-                        print "%10s = " % _k, _v
-        print ""
-        print "Integers:"
-        for _k in _K:
-            _v = eval(_k)
-            if type(_v).__name__ == 'int':
-                if _k[0] != '_': 
-                    if _k.lower() == _k:
-                        print "%10s = " % _k, _v
-    """
-    ip = IPython.ipapi.get()
-    ip.runlines(code)
+    if len(var) > 0:
+        ip = IPython.ipapi.get()
+        var = translate_expression(var)
+        ip.runlines("pprint.pprint([" + var + "])")
+        return
+
+    _build_dictionary()
+    names = globalVplusNames.keys()
+    names.sort()
+
+    print "Real and integer variables:"
+    print "==========================="
+    print ""
+    print "Reals:"
+    print
+    for var in names:
+        if var[0] != "_" and var.lower() == var:
+            value = globalVplusNames[var]
+            if type(value).__name__ == 'float':
+                    print "%10s = " % var, value
+    print
+    print "Integers:"
+    print
+    for var in names:
+        if var[0] != "_" and var.lower() == var:
+            value = globalVplusNames[var]
+            if type(value).__name__ == 'int':
+                    print "%10s = " % var, value
             
 def _CM_LISTS(self, var):
     """
 
     Lists string variables.
     """
-    code = """
-        _k = 0
-        _v = 0
-        _K = list(set(locals().keys() + globals().keys()))
-        _K.sort()
 
-        print "String variables:"
-        print "================="
-        print ""
-        for _k in _K:
-            _v = eval(_k)
-            if type(_v).__name__ == 'str':
-                if _k[0] != '_': 
-                    if _k.lower() == _k:
-                        print "%10s = " % _k, _v
-    """
-    ip = IPython.ipapi.get()
-    ip.runlines(code)
+    if len(var) > 0:
+        ip = IPython.ipapi.get()
+        var = translate_expression(var)
+        ip.runlines("pprint.pprint([" + var + "])")
+        return
+
+    _build_dictionary()
+    names = globalVplusNames.keys()
+    names.sort()
+
+    print "String variables:"
+    print "================="
+    print ""
+    for var in names:
+        if var[0] != "_" and var.lower() == var:
+            value = globalVplusNames[var]
+            if type(value).__name__ == 'str':
+                    print "%10s = " % var, value
 
 
 
@@ -1640,10 +1754,16 @@ def _CM_ENV(self, prog):
         
     if not re.match("^.*\.env$", prog):
         prog = prog + ".env" 
+    
         
+    (func, args, args_ref) = parse_function_call(prog[:-4])
+    prog = func + ".env"
+    
+    print args
+
     print "setting work environment (%s)..." % prog
     print " "
-    
+    ip.runlines("_env_args = [" + args + "]")
     ip.runlines("resetBoxes()")
 
     RobotSim.pauseTick = True

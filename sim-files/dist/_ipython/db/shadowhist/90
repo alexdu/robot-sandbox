@@ -1,20 +1,32 @@
 (dp1
-Vre.match("dx\u005C *\u005C(", "dx(fdsfdsf")
+Vrange(4, (1)+())
 p2
-I183
-sVdo moves shift(pal by 136, 409, -20)
-p3
-I317
-sVdo noflip
-p4
-I619
-sVprint >> Term.cout, tc.Black, "fsd"
-p5
-I1450
-sVraise Exception, "cucu"
-p6
-I593
-sVrange(4, (1)+())
-p7
 I688
+sVdo noflip
+p3
+I619
+sVdo moves shift(pal by 136, 409, -20)
+p4
+I317
+sVraise Exception, "cucu"
+p5
+I593
+sVtransl
+p6
+I1721
+sVprint >> Term.cout, tc.Black, "fsd"
+p7
+I1450
+sVload spirala
+p8
+I1983
+sVre.match("dx\u005C *\u005C(", "dx(fdsfdsf")
+p9
+I183
+sVsys.st
+p10
+I1504
+sVp = compiler.parse("(a,b,c)")
+p11
+I1760
 s.

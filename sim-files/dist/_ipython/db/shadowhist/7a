@@ -1,14 +1,20 @@
 (dp1
-Vquit()
+V_ipshell.IP.buffer.count
 p2
+I1556
+sVquit()
+p3
 I1
 sVdo move shift(pal by 110,120,60)
-p3
-I340
-sVsys.last_traceback.tb_next.tb_next
 p4
+I340
+sVdo move bs:shift(ry(180) by -100,-100,-90)
+p5
+I1483
+sVsys.last_traceback.tb_next.tb_next
+p6
 I926
 sVjobs.jobs_all[0].stat_code
-p5
+p7
 I1350
 s.

@@ -1,14 +1,20 @@
 (dp1
-Vexec(cod) in dic
+Vprint 1
 p2
-I914
-sVprint 1
-p3
 I820
+sVdo departs 1
+p3
+I1951
 sVbeautify_line('print "shift(x by dx(5)" dz(4) ; shift(x by dx(4))')
 p4
 I1202
-sVdo global x
+sVsys.stdout.writelines
 p5
+I1494
+sVexec(cod) in dic
+p6
+I914
+sVdo global x
+p7
 I615
 s.

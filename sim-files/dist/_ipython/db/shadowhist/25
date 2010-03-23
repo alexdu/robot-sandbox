@@ -1,17 +1,29 @@
 (dp1
-Va = "23 df \u005Cn"
+Vconvert_parse_tree(l[1][0])
 p2
-I1408
-sVstring.join(["1","2"])
-p3
-I1176
+I1666
 sV%bg SIN(4)
-p4
+p3
 I1346
-sVdo total.ang = 232
+sVcompiler.parse("(a,b,c)")
+p4
+I1758
+sVaborta
 p5
+I1783
+sVa = "23 df \u005Cn"
+p6
+I1408
+sVtype(RZ)
+p7
+I1847
+sVstring.join(["1","2"])
+p8
+I1176
+sVdo total.ang = 232
+p9
 I652
 sVimport traceback
-p6
+p10
 I943
 s.

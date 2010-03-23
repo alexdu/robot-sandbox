@@ -8,16 +8,28 @@ I1459
 sVdo if a == b then
 p4
 I691
-sVdo type "cucu" bau
-p5
-I1209
 sVdo print "cucu"
-p6
+p5
 I1204
+sVdo type "cucu" bau
+p6
+I1209
 sVSIN(4)
 p7
 I1243
 sV%bg a=4
 p8
 I988
+sV(code,comment) = split_comment(".PROGRAM calltest()")
+p9
+I1726
+sVsys.spanac
+p10
+I1509
+sVa = "32"
+p11
+I1710
+sVmatch_subtree(pattern, t[1][2])
+p12
+I1688
 s.

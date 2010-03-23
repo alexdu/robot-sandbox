@@ -1,3 +1,5 @@
+
+
 #       v2py.py
 #       
 #       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>
@@ -28,6 +30,12 @@ import symbol
 import token
 
 from types import ListType, TupleType
+
+programMangleP2V = {}     # numele programului in Python (mangled) => numele in V+ (initial)
+programMangleV2P = {}     # numele programului in V+ => numele "mangled" (in Python) (pe dos)
+programDict = {}          # p
+# vplus_progname -> [args, file, lineno, function]
+
 
 def match_subtree(pattern, data, vars=None):
     #~ print pattern
@@ -69,7 +77,7 @@ def convert_parse_tree(l):
 def find_params_passable_by_ref(args):
     pattern = (symbol.test, (symbol.or_test, (symbol.and_test, (symbol.not_test, (symbol.comparison, (symbol.expr, (symbol.xor_expr, (symbol.and_expr, (symbol.shift_expr, (symbol.arith_expr, (symbol.term, (symbol.factor, (symbol.power, (symbol.atom, (token.NAME, ['name'])))))))))))))))
     t = parser.expr(args).totuple()
-    num_args = len(t[1]) / 2
+    num_args = len(t[1]) // 2
     
     args = []
     for i in range(num_args):
@@ -179,16 +187,24 @@ def beautify_block(var):
 
 
 
+_currentFile = ""
+_currentLineNo = 0
 def translate_program(file):
     
+    global _currentFile, _currentLineNo
+    _currentFile = file
+    
     beautify_program(file)
+    
+    global programDict
     
     f = open(file)
     code = f.readlines()
     f.close()
     
     newcode = []
-    for line in code:        
+    for (i, line) in enumerate(code):
+        _currentLineNo = i + 1
         spaces = re.match("(\ *)", line).groups()[0]
         line = line.strip()
         lt = translate_line(line, len(spaces))
@@ -215,9 +231,9 @@ def parse_function_call(expr):
     if m:
         func = m.groups()[0].strip()
         args = m.groups()[1].strip()
-        if len(args) > 0:
+        try:
             args_ref = find_params_passable_by_ref(args)
-        else:
+        except:
             args_ref = []
         return (func, args, args_ref)
     else:
@@ -305,12 +321,13 @@ def translate_statement(var, indent):
         vs = []
         callexpr = translate_expression(rest).strip()
         (func, args, args_ref) = parse_function_call(callexpr)
+        (vplus_func, __, __) = parse_function_call(rest.strip())
 
         if len(args) > 0:
             arg_ref = find_params_passable_by_ref(args)
-            vs = ["(", string.join(arg_ref, ", "), ") = ", func, "(", args, ")"]
+            vs = ["(", string.join(arg_ref, ", "), ") = CALL['", vplus_func, "'](", args, ")"]
         else:
-            vs = [callexpr, "()"]
+            vs = ["CALL['", vplus_func, "']()"]
 
     elif kw == "EXIT":
         vs = ['break']
@@ -339,6 +356,13 @@ def translate_statement(var, indent):
         
         progdecl = translate_expression(rest).strip()
         (name, args, args_ref) = parse_function_call(progdecl)
+
+        (name_vplus, __, __) = parse_function_call(rest.strip())
+
+        programDict[name_vplus] = [args, _currentFile, _currentLineNo, None]
+        programMangleP2V[name] = name_vplus
+        programMangleV2P[name_vplus] = name
+        
         if "__" in args_ref:
             raise SyntaxError, "Invalid .PROGRAM declaration"
         vs = ["def ", name, "(", args, "):"]

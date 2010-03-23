@@ -1,11 +1,19 @@
 (dp1
-Vc.co_lnotab
+Vl
+I1611
+sVlistBoxes()
 p2
-I1434
-sVhere rz(45):b
-p3
-I467
+I1932
 sVjobs.remove?
-p4
+p3
 I1324
+sVworldObject("Box1").getMaterial().diffuse
+p4
+I1943
+sVhere rz(45):b
+p5
+I467
+sVc.co_lnotab
+p6
+I1434
 s.

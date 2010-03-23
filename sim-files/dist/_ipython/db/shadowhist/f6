@@ -1,17 +1,23 @@
 (dp1
-Vre.match(notstring, test)
+Vl = parser.expr("a,b+c,d").tolist()
 p2
-I1135
-sVos.path.splitext("gigelv2")
-p3
-I1420
+I1668
 sVdo for p = 1 to n
-p4
+p3
 I524
-sVdo set a = 5
+sVos.path.splitext("gigelv2")
+p4
+I1420
+sVsys.stdin
 p5
-I630
-sVsys.version
+I1503
+sVdo set a = 5
 p6
+I630
+sVre.match(notstring, test)
+p7
+I1135
+sVsys.version
+p8
 I1362
 s.

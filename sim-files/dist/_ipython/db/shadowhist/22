@@ -2,4 +2,7 @@
 Vdo moves shift(pal by 100, 400, -40)
 p2
 I304
+sVdo move bs:shift(ry(180) by -150,0,0)
+p3
+I1479
 s.

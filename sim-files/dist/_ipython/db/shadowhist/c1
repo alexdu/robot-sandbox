@@ -1,11 +1,26 @@
 (dp1
-Vvplus._convert_to_trans(a)
+Ve=4
 p2
-I445
+I1902
 sVtype(e)
 p3
 I1401
-sVimport subprocess
+sVsymbol.decorator
 p4
+I1624
+sV_ipshell.sys_displayhook_embed
+p5
+I1543
+sVconvert_parse_tree(l[1][4])
+p6
+I1670
+sVvplus._convert_to_trans(a)
+p7
+I445
+sVconvert_parse_tree(l[2])
+p8
+I1663
+sVimport subprocess
+p9
 I514
 s.

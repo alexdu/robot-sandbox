@@ -1,20 +1,26 @@
 (dp1
-V" "*2
+Vdo set c = here()
 p2
-I1028
-sVdo here bs:test
-p3
-I226
-sVdo set c = here()
-p4
 I468
-sVtool trans(0,0,100)
+sVenv paletizare.v2
+p3
+I1571
+sVdo here bs:test
+p4
+I226
+sV1+2
 p5
-I247
-sVpprint dic.keys()
-p6
-I893
+I1497
 sVdo for i = 1 to n step -1
-p7
+p6
 I680
+sVpprint dic.keys()
+p7
+I893
+sVtool trans(0,0,100)
+p8
+I247
+sV" "*2
+p9
+I1028
 s.

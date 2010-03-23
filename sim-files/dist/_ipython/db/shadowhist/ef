@@ -1,32 +1,38 @@
 (dp1
-Vdo k = 2
+Vp.totuple()
 p2
-I538
+I1594
 sV_ip
 p3
 I418
-sV__globals__
-p4
-I404
-sVdo appro dy(201), 200
-p5
-I197
-sVjobs.remove("0")
-p6
-I1327
 sVprint "%5.3g" % 5323
-p7
+p4
 I500
+sV__globals__
+p5
+I404
+sVa.index("c")
+p6
+I1711
+sVdo k = 2
+p7
+I538
 sV"x" in ["x", "y"]
 p8
 I122
-sVvplus._build_dictionary
+sVjobs.remove("0")
 p9
+I1327
+sVdo appro dy(201), 200
+p10
+I197
+sVvplus._build_dictionary
+p11
 I882
 sV__builtins__.dict
-p10
+p12
 I413
 sVTRANS(10)
-p11
+p13
 I7
 s.

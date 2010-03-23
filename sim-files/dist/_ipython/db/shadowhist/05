@@ -5,25 +5,31 @@ I1445
 sVsys.callstats
 p3
 I1359
-sVboxloc
+sVhelp
 p4
-I430
+I1531
 sVa = 4
 p5
 I857
 sV%bg sin(4)
 p6
 I993
-sVdo set bs = frame(b,a,c,d)
+sVs = re.findall("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c")
 p7
+I97
+sVx = "cucu"
+p8
+I1904
+sVdo set bs = frame(b,a,c,d)
+p9
 I376
 sVhelp mod
-p8
+p10
 I1173
 sVMOVE(bs*SHIFT(a,100,0,0))
-p9
+p11
 I41
-sVs = re.findall("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c")
-p10
-I97
+sVboxloc
+p12
+I430
 s.

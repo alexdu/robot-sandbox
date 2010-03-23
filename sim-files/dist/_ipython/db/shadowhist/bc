@@ -1,11 +1,17 @@
 (dp1
-Vpal
+VIPython.Shell.KBINT
 p2
-I65
-sVIPython.Shell.KBINT
-p3
 I1100
 sVdo moves e:rz(90):TRANS(100,10,90)
-p4
+p3
 I383
+sVfind_params_passable_by_ref("a+b,c,d_e")
+p4
+I1708
+sVenv hanoi(3.4)
+p5
+I1978
+sVpal
+p6
+I65
 s.

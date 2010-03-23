@@ -1,14 +1,20 @@
 (dp1
-V(1.2  % 1.5)
+Vp.getChildNodes()[0].getChildNodes()[0].getChildNodes()[0].GetChildNodes()[0]
 p2
-I1296
-sVi = 4
+I1773
+sVdo move bs:shift(ry(180) by -80,0,0)
 p3
-I561
+I1477
 sVdo moves trans(10,300,900,0,0,0)
 p4
 I813
 sVhere a
 p5
 I157
+sVi = 4
+p6
+I561
+sV(1.2  % 1.5)
+p7
+I1296
 s.

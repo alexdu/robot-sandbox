@@ -2,16 +2,22 @@
 Vsee paletizare
 p2
 I23
-sVprint "%40s" % "x032e"
+sV'4' in a
 p3
-I494
+I1383
 sVtool tool:rz(45)
 p4
 I628
-sV'4' in a
+sV_ipshell.IP.outputcache.prompt1
 p5
-I1383
+I1568
 sVhelp _ip.runlines
 p6
 I825
+sVprint "%40s" % "x032e"
+p7
+I494
+sV2.3
+p8
+I1814
 s.

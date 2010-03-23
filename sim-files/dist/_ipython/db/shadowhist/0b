@@ -5,28 +5,37 @@ I1025
 sVa[1:]
 p3
 I1019
-sVdo depart 100
+sVrm calltest.v2
 p4
-I329
-sVlen(a)
-p5
-I665
+I1579
 sVdo global a, b
-p6
+p5
 I631
-sVdo moves shift(pal by 135, 410, -20)
-p7
-I314
 sVfor k,v in locals().iteritems():
-p8
+p6
 I428
-sVdo pick = shift(st by 0,0,dz*(n-p))
+sVlen(a)
+p7
+I665
+sVprint translate_program("calltest.v2")
+p8
+I1722
+sVdo moves shift(pal by 135, 410, -20)
 p9
+I314
+sVdo depart 100
+p10
+I329
+sVdo pick = shift(st by 0,0,dz*(n-p))
+p11
 I532
 sV__builtins__()
-p10
+p12
 I412
+sVMOVE
+p13
+I1881
 sVa = {3:5}
-p11
+p14
 I1377
 s.

@@ -8,19 +8,22 @@ I416
 sV#end program
 p4
 I1214
-sVdo appro safe, 1000
-p5
-I448
 sVdo appro 100, 100
-p6
+p5
 I441
-sVprint >> Term.cout, tc.LightGray, "fds"
-p7
-I1452
-sV1 |MOD| 2
-p8
-I1265
 sVc.co_filename
-p9
+p6
 I1370
+sVdo appro safe, 1000
+p7
+I448
+sVprint >> Term.cout, tc.LightGray, "fds"
+p8
+I1452
+sVmatch_subtree(pattern, t[1][1])
+p9
+I1687
+sV1 |MOD| 2
+p10
+I1265
 s.

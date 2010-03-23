@@ -1,20 +1,23 @@
 (dp1
-Vsee pal_inc
+V"xx" in ["x", "y"]
 p2
-I54
-sV"xx" in ["x", "y"]
-p3
 I123
-sVjobs.traceback?
+sVfrom copy import copy
+p3
+I1464
+sVmatch_subtree(pattern, t[3][5])
 p4
+I1695
+sVsee pal_inc
+p5
+I54
+sVjobs.traceback?
+p6
 I957
 sVdo set a = 3
-p5
-I640
-sVfrom copy import copy
-p6
-I1464
-sVhelp jobs.flush_finished
 p7
+I640
+sVhelp jobs.flush_finished
+p8
 I1319
 s.

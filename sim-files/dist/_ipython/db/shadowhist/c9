@@ -1,29 +1,35 @@
 (dp1
-Vdo move shift(pal by 90,170,48)
+V_ip.meta
 p2
-I369
-sVa = [1,2,3]
+I947
+sVMOVE(bs*SHIFT(a,-80,0,0))
 p3
-I148
-sVexec cod in dic
+I45
+sVsplit_comment(" wfew;fs")
 p4
-I910
+I1718
 sVdo call pick.place
 p5
 I642
-sV_ip.meta
-p6
-I947
-sVdo appro b, 100
-p7
-I330
-sVMOVE(bs*SHIFT(a,-80,0,0))
-p8
-I45
 sVhere bs:a
-p9
+p6
 I33
-sVdo move shift(pal by -100, 10, 0)
+sVexec cod in dic
+p7
+I910
+sVdo appro b, 100
+p8
+I330
+sVa = [1,2,3]
+p9
+I148
+sVdo move shift(pal by 90,170,48)
 p10
+I369
+sVdo move shift(pal by -100, 10, 0)
+p11
 I264
+sVa = {1,2,3}
+p12
+I1908
 s.

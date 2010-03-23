@@ -14,19 +14,25 @@ I236
 sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "a:rz(45):rx(45):c").groups()
 p6
 I436
-sVs = "x"
-p7
-I75
 sVdo appros safe, 100
-p8
+p7
 I767
 sVdo appro bs:loc, 100
-p9
+p8
 I224
-sVx = "dsufs"
+sVs = "x"
+p9
+I75
+sV_ipshell.IP.user_config_ns
 p10
+I1552
+sVx = "dsufs"
+p11
 I855
 sVreload vplus
-p11
+p12
 I141
+sVa+b
+p13
+I1786
 s.

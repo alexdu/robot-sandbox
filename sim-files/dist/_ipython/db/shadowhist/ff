@@ -2,10 +2,16 @@
 Vdo while 1
 p2
 I700
-sVre.split(elem, 'cucu bau cucu "bal""u" cucu dfds "fsd"')
-p3
-I1158
 sVdic["__file__"] = cucu
-p4
+p3
 I915
+sVprogramDict
+p4
+I1849
+sVre.split(elem, 'cucu bau cucu "bal""u" cucu dfds "fsd"')
+p5
+I1158
+sVsymbol.sym_name[314]
+p6
+I1648
 s.

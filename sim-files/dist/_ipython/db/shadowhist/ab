@@ -1,38 +1,44 @@
 (dp1
-Vauto x
+Vtry: del a, except: pass
 p2
-I1081
-sVre.search('("[^"]*")', 'ana are " + 5 + " mere').groups()
+I1915
+sVdo wait 4
 p3
-I1118
-sVtc.Normal
+I873
+sVvplus._dic_locals.keys()
 p4
-I1414
-sVprint i
+I1777
+sVre.search('("[^"]*")', 'ana are " + 5 + " mere').groups()
 p5
-I558
-sVa.upper()
+I1118
+sVprint i
 p6
+I558
+sVauto x
+p7
+I1081
+sVa.upper()
+p8
 I191
 sVprint "%5.3g" % 53.3
-p7
+p9
 I502
 sVlen(A)
-p8
+p10
 I1412
 sVexec bg
-p9
+p11
 I986
 sVdic = vplus._build_dictionary()
-p10
-I886
-sVlocals().sort()
-p11
-I471
-sVdo SET BS = TRANS(XBS,YBS,DZ):RZ(ANG)
 p12
-I220
-sVdo wait 4
+I886
+sVtc.Normal
 p13
-I873
+I1414
+sVdo SET BS = TRANS(XBS,YBS,DZ):RZ(ANG)
+p14
+I220
+sVlocals().sort()
+p15
+I471
 s.

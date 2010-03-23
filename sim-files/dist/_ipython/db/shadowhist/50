@@ -5,13 +5,22 @@ I16
 sVrange(1,10,1)
 p3
 I669
-sVexec casuta.v2
+sVt = parser.expr("a+b").totuple()
 p4
-I1466
-sVwhile not (x == 1):print i
+I1661
+sVexec casuta.v2
 p5
-I706
-sVbreak
+I1466
+sVprint globals
 p6
+I1895
+sVbreak
+p7
 I1456
+sVsymbol.arglist
+p8
+I1618
+sVwhile not (x == 1):print i
+p9
+I706
 s.

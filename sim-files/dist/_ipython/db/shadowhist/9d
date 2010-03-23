@@ -1,26 +1,29 @@
 (dp1
-V[x]*10
+Vhere a,b
 p2
-I1073
-sVstr(RZ(45))
+I741
+sVi.usage
 p3
-I1442
-sVtool rx(45)
+I1528
+sVstr(RZ(45))
 p4
-I239
+I1442
 sVdx = 45
 p5
 I166
-sVhere a,b
-p6
-I741
-sVdo set bs = frame(a,b,C,d)
-p7
-I216
 sVre.match("dx\u005C *\u005C(", "dx+fdsfdsf")
-p8
+p6
 I184
-sV%bg _ip.runlines("EXECUTE('paletizare.py')")
+sV[x]*10
+p7
+I1073
+sVdo set bs = frame(a,b,C,d)
+p8
+I216
+sVtool rx(45)
 p9
+I239
+sV%bg _ip.runlines("EXECUTE('paletizare.py')")
+p10
 I1007
 s.

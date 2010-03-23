@@ -5,16 +5,25 @@ I40
 sVre.match?
 p3
 I81
-sVdo appro #safe, 200
-p4
-I509
 sVstring.split("a , b , cdsfs  ,   dew[]", ", ")
-p5
+p4
 I1070
-sVprint "%40s" % "x"
+sVvar = ".PROGRAM calltest()"
+p5
+I1733
+sVdo departs 10
 p6
+I1948
+sVexec cucu
+p7
+I1472
+sVdo appro #safe, 200
+p8
+I509
+sVprint "%40s" % "x"
+p9
 I493
 sVenv paletizare.py
-p7
+p10
 I822
 s.

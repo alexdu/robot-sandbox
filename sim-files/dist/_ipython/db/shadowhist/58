@@ -1,23 +1,26 @@
 (dp1
-Vc = tb.tb_next.tb_frame.f_code
+Vstring.split("a , b , cdsfs  ,   dew[]", " ,")
 p2
-I1433
-sVline = "" + string + "?" + notstring + "?" + ""
+I1071
+sVhelp _ip.load
 p3
-I1142
-sVdo .program CUCUcu(a,b)
+I828
+sVexec paletizare.v2
 p4
-I674
+I1572
 sVEXECUTE("paletizare")
 p5
 I963
-sVhelp _ip.load
+sVline = "" + string + "?" + notstring + "?" + ""
 p6
-I828
-sVstring.split("a , b , cdsfs  ,   dew[]", " ,")
+I1142
+sVdo .program CUCUcu(a,b)
 p7
-I1071
-sVstring.join
+I674
+sVc = tb.tb_next.tb_frame.f_code
 p8
+I1433
+sVstring.join
+p9
 I1174
 s.

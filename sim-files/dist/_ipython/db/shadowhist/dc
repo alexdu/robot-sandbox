@@ -17,10 +17,16 @@ I152
 sVdo move trans(0,0,700,0,0,0)
 p7
 I773
-sVdo auto x,y,z[3],z,x
+sVTerm.cout
 p8
-I1086
-sVdo speed 30 mmps always
+I1489
+sVdo auto x,y,z[3],z,x
 p9
+I1086
+sVvplus._build_dictionary().keys()
+p10
+I1879
+sVdo speed 30 mmps always
+p11
 I650
 s.

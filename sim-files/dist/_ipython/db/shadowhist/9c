@@ -1,11 +1,14 @@
 (dp1
-Vsplit_comment('print "shift(x by dx(5)" ; shift(x by dx(4))')
+Va = [1,2,3,RZ(45)]
 p2
-I1200
-sVa = [1,2,3,RZ(45)]
-p3
 I1461
 sVsys.exc_value
-p4
+p3
 I1400
+sVsplit_comment('print "shift(x by dx(5)" ; shift(x by dx(4))')
+p4
+I1200
+sVvplus.robotPrograms
+p5
+I1843
 s.

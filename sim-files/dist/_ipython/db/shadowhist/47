@@ -1,14 +1,17 @@
 (dp1
-Vdeparts 100
+Vvplus._compactdisplay = True
 p2
-I1416
-sVa = dict()
-p3
-I472
-sVfor i in s: print i.start
-p4
-I104
-sVvplus._compactdisplay = True
-p5
 I744
+sVfor i in s: print i.start
+p3
+I104
+sVa = dict()
+p4
+I472
+sV(found, vars) = match(pattern, t)
+p5
+I1657
+sVdeparts 100
+p6
+I1416
 s.

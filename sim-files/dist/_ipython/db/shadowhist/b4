@@ -1,5 +1,17 @@
 (dp1
-Vlistl tool, rz(45), rz(56)
+Vdo move bs:shift(ry(180) by 0,0,0)
 p2
+I1476
+sVlistl tool, rz(45), rz(56)
+p3
 I756
+sVexpr = calltest()
+p4
+I1738
+sVenv hanoi(3)
+p5
+I1962
+sVexec hanoi
+p6
+I1800
 s.

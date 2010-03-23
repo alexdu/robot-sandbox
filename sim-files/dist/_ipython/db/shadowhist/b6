@@ -1,26 +1,38 @@
 (dp1
-V1 |TO| 5*5
+Vglob = vplus._build_dictionary()
 p2
-I1023
-sVvplus._convert_to_trans(safe)
+I1890
+sVdo moves shift(pal by -129, -20, -40)
 p3
-I447
+I296
 sVenv
 p4
 I573
-sVsys.callstats()
-p5
-I1360
-sVdo moves shift(pal by -129, -20, -40)
-p6
-I296
-sVp = subprocess.Popen(vplus._editor)
-p7
-I515
-sVdo move trans(0,0,988.52,0,0,0)
-p8
-I805
 sVdo for i = n to 1 step
-p9
+p5
 I685
+sVsys.callstats()
+p6
+I1360
+sVdo move bs:shifT(ry(180) by -100,100,0)
+p7
+I1795
+sVvplus._convert_to_trans(safe)
+p8
+I447
+sV1 |TO| 5*5
+p9
+I1023
+sVp.getChildren
+p10
+I1762
+sVdo move trans(0,0,988.52,0,0,0)
+p11
+I805
+sVp = subprocess.Popen(vplus._editor)
+p12
+I515
+sVprint MOVE
+p13
+I1882
 s.

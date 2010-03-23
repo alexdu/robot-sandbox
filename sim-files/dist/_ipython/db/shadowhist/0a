@@ -1,20 +1,29 @@
 (dp1
-Vdo appro dy, 201, 200
+Vv2py.pro
 p2
-I196
-sVdo speed 100  monitor
-p3
-I611
-sVbeautify_line("5")
-p4
-I1195
+I1840
 sVre.findall("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu baFu+#bau+c")
-p5
+p3
 I116
-sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_globals
-p6
-I934
 sVfor i in s(): print i.start
-p7
+p4
 I105
+sVdo speed 100  monitor
+p5
+I611
+sVdo appro dy, 201, 200
+p6
+I196
+sVenv hanoi(11)
+p7
+I1970
+sV_ipshell.IP.lsmagic
+p8
+I1554
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_globals
+p9
+I934
+sVbeautify_line("5")
+p10
+I1195
 s.

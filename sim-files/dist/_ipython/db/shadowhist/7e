@@ -1,8 +1,20 @@
 (dp1
-Va["4"] = 8
+Vload paletizare
 p2
-I1379
-sVdir
+I1852
+sVfrom __future__ import division
 p3
+I1813
+sV!del calltest.v2
+p4
+I1582
+sVdir
+p5
 I1316
+sVp.getChildNodes()[0].getChildNodes()
+p6
+I1769
+sVa["4"] = 8
+p7
+I1379
 s.

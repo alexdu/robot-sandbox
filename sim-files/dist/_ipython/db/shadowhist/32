@@ -1,17 +1,23 @@
 (dp1
-Vlistl a,b
+Vdo appro b,100
 p2
+I324
+sVworldObject["Box1"].pos
+p3
+I1933
+sVre.findall("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu(baFu+#bau+c")
+p4
+I117
+sVlistl a,b
+p5
 I740
 sVdo appro dx, 100
-p3
-I187
-sVdo appro b,100
-p4
-I324
-sVre.findall("([a-zA-Z\u005C#][a-zA-Z0-9_\u005C.]*)", "cucu(baFu+#bau+c")
-p5
-I117
-sVvplus.RZ(45)
 p6
+I187
+sVvplus.RZ(45)
+p7
 I1001
+sVenv hanoi(5)
+p8
+I1953
 s.

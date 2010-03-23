@@ -2,22 +2,31 @@
 Vcod = read(f)
 p2
 I979
-sV%bg %run -i EXECUTE("paletizare.v2")
+sVdel jobs.jobs_all[0]
 p3
-I970
-sVfor i,j in a: print i,j
+I1338
+sV%bg %run -i EXECUTE("paletizare.v2")
 p4
+I970
+sVb = 7
+p5
+I1911
+sVhelp os.listdir
+p6
+I578
+sVfor i,j in a: print i,j
+p7
 I1444
 sVdo moves bs:shift(aux by -150,-50,-90)
-p5
-I399
-sVdo set place = SHIFT(c BY 0, 0, h*i) : RZ(total.ang * i / (n-1))
-p6
-I658
-sVdel jobs.jobs_all[0]
-p7
-I1338
-sVhelp os.listdir
 p8
-I578
+I399
+sVpprint(v2py.programDict)
+p9
+I1842
+sVdo set place = SHIFT(c BY 0, 0, h*i) : RZ(total.ang * i / (n-1))
+p10
+I658
+sVexec hanoi_main
+p11
+I1802
 s.

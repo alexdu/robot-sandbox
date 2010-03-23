@@ -1,11 +1,26 @@
 (dp1
-Va[:-4]
+Vabc()
 p2
-I588
-sVc.co_argcount
-p3
-I1374
-sVabc()
-p4
 I821
+sVdo move bs:ry(180)
+p3
+I1474
+sVsee /g 28 hanoi_main
+p4
+I1828
+sVc.co_argcount
+p5
+I1374
+sVsymbol._name
+p6
+I1619
+sVb = worldObject("Box1")
+p7
+I1938
+sVmatch_subtree(pattern, t[1][3])
+p8
+I1689
+sVa[:-4]
+p9
+I588
 s.

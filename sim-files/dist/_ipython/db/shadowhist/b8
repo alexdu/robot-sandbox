@@ -2,10 +2,22 @@
 V__builtins
 p2
 I410
-sVdo align
-p3
-I724
 sVprint
-p4
+p3
 I751
+sVdo print 1/2
+p4
+I1811
+sVtype(SIN).__name__
+p5
+I1789
+sVenv hanoi(7)
+p6
+I1968
+sVdo align
+p7
+I724
+sVconvert_parse_tree(l)
+p8
+I1635
 s.

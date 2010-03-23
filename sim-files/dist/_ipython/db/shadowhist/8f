@@ -1,8 +1,11 @@
 (dp1
-Vdo set ref.loc = trans((dx(a)+dx(b))/2, (dy(a)+dy(b))2, dz(a)):a.rot
+Vdo move a:inverse(tool):b
 p2
-I735
-sVdo move a:inverse(tool):b
-p3
 I723
+sVtry: del a
+p3
+I1916
+sVdo set ref.loc = trans((dx(a)+dx(b))/2, (dy(a)+dy(b))2, dz(a)):a.rot
+p4
+I735
 s.

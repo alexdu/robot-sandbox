@@ -5,25 +5,28 @@ I475
 sVdo appro dx ( 10)
 p3
 I178
-sVif i |MOD| 2 == 0: print i
+sVsee /g 1 hanoi_main
 p4
+I1829
+sVif i |MOD| 2 == 0: print i
+p5
 I560
 sVa = {1:2}
-p5
-I1411
-sVmod(s.count('"'), 2)
 p6
-I1129
-sVglobals()
+I1411
+sVdo total.ang = 321
 p7
+I632
+sVglobals()
+p8
 I403
 sVdo type a:1
-p8
-I1273
-sVdo total.ang = 321
 p9
-I632
-sVcompile("sin(1)", "x", "eval")
+I1273
+sVmod(s.count('"'), 2)
 p10
+I1129
+sVcompile("sin(1)", "x", "eval")
+p11
 I992
 s.

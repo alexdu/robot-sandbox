@@ -1,26 +1,41 @@
 (dp1
-Vsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_names
+Vcucu
 p2
-I937
-sVdo moves bs:shift(aux by 0,0,-80)
+I1538
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_names
 p3
-I393
-sVe.message()
+I937
+sVtest2 = '"do print "a;b; c'
 p4
-I1395
-sVcod = translate_program("casuta.v2")
+I1147
+sVdo moves bs:shift(aux by 0,0,-80)
 p5
+I393
+sVargs_ref = find_params_passable_by_ref(args)
+p6
+I1746
+sVl[2]
+p7
+I1608
+sVp.issuite()
+p8
+I1598
+sVprint "%5.3g" % 532.3
+p9
+I501
+sVcod = translate_program("casuta.v2")
+p10
 I1090
 sVMIN(3,4)
-p6
+p11
 I1254
+sVe.message()
+p12
+I1395
+sVexpr = "calltest()"
+p13
+I1739
 sVjobs.jobs_all[0]
-p7
+p14
 I1328
-sVprint "%5.3g" % 532.3
-p8
-I501
-sVtest2 = '"do print "a;b; c'
-p9
-I1147
 s.

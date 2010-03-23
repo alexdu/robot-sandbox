@@ -1,8 +1,14 @@
 (dp1
-Vfor i in s: print i.start()
+Vi.filename
 p2
+I1522
+sVspeed 25
+p3
+I1487
+sVfor i in s: print i.start()
+p4
 I106
 sVtool TRANS(0,0,1000)
-p3
+p5
 I28
 s.

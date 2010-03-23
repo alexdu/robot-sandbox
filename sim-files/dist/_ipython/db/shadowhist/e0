@@ -4,13 +4,22 @@ I12
 sVos.listdir("*.env")
 p2
 I577
-sVtc.Black
-p3
-I1447
 sVi=1
-p4
+p3
 I621
 sVsee pal_back
-p5
+p4
 I1310
+sVi.log
+p5
+I1532
+sVa.clear()
+p6
+I1909
+sVtc.Black
+p7
+I1447
+sVexec call
+p8
+I1573
 s.

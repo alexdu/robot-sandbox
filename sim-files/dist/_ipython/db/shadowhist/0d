@@ -2,25 +2,34 @@
 Vdo speed 100 mmps
 p2
 I609
-sVTAN(2,3)
+sVdel dir
 p3
+I1835
+sVTAN(2,3)
+p4
 I1251
 sVRZ("3")
-p4
+p5
 I1219
 sVa = HERE()
-p5
-I11
-sVjobs.jobs_dead
 p6
-I1332
+I11
 sV_ip.defmacro
 p7
 I831
-sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_lasti
+sVjobs.jobs_dead
 p8
+I1332
+sVscene
+p9
+I1506
+sVp.getChildNodes()[0].getChildNodes()[0].getChildNodes()
+p10
+I1771
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_lasti
+p11
 I933
 sVSPEED(100,4)
-p9
+p12
 I1270
 s.

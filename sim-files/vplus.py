@@ -1276,7 +1276,7 @@ def _CM_EXEC(self, prog):
 
     dic = _build_dictionary()   # workaround... sper sa mearga :)
     if RobotSim.debug:
-        _list_dictionary(glob)
+        _list_dictionary(dic)
 
     ip.runlines("%%bg _ip.runlines(\"EXECUTE('%s')\")" % prog)
 

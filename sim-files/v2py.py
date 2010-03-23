@@ -19,6 +19,7 @@
 
 # Translates from vplus syntax to python syntax
 
+from __future__ import division
 import re
 import string
 import math

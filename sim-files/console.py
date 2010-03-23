@@ -19,6 +19,7 @@
 
 
 # Comenzile monitor sunt implementate ca "magic commands" in IPython
+from __future__ import division
 import sys
 import os
 import threading
@@ -29,6 +30,7 @@ import IPython
 from IPython.Shell import IPShellEmbed
 from vplus import *
 import vplus
+import time
 
 
 # acum sunt in folderul cu sursele (src, sim-files)
@@ -82,4 +84,9 @@ class ConsoleThread ( threading.Thread ):
         raise SystemExit
 
 ConsoleThread().start()
+
+time.sleep(1)
+_ip = IPython.ipapi.get()
+_ip.runlines("from __future__ import division")
+
 

@@ -317,7 +317,7 @@ class Viewer(Tool):
         pygame.display.set_caption("OpenGL viewer")
         if self.stereo_mode==2:
             pygame.display.gl_set_attribute(pygame.GL_STEREO, 1)
-        flags = OPENGL | DOUBLEBUF
+        flags = OPENGL | DOUBLEBUF | RESIZABLE
         if self.options.full_screen:
             flags |= FULLSCREEN
         srf = pygame.display.set_mode((width,height), flags)
@@ -389,7 +389,8 @@ class Viewer(Tool):
                 #~ myguiapp.draw()
                 #gui_screen.refresh()
                 #gui_screen.display()
-                
+                (width, height) = pygame.display.get_surface().get_size()
+                #print (width, height)
                 self.draw(self.cam, width, height)
                 
                 
@@ -573,6 +574,9 @@ class Viewer(Tool):
 
                 if self.spacedevice!=None:
                     self.handleSpaceEvents(e)
+            elif e.type==VIDEORESIZE:
+                screen=pygame.display.set_mode(e.dict['size'], OPENGL | DOUBLEBUF | RESIZABLE)
+                
                 
     # handleSpaceEvents
     def handleSpaceEvents(self, e):

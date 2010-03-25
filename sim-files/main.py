@@ -1,3 +1,4 @@
+
 #       main.py
 #       
 #       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>
@@ -22,7 +23,9 @@ from __future__ import division
 print "robot-sandbox (development version) starting..."
 print " "
 
-
+import cellulose    # nu-l gaseste py2exe
+import cellulose.extra    # nu-l gaseste py2exe
+import cellulose.extra.restrictions    # nu-l gaseste py2exe
 
 import sys
 import os
@@ -59,11 +62,37 @@ from vplus import *
 import vplus
 
 
-vplus._editor = os.path.join(basepath, "notepad2", "Notepad2.exe")
-if not os.path.exists(vplus._editor):
-    vplus._editor = "notepad.exe"
+
+def which(program):
+    import os
+    def is_exe(fpath):
+        return os.path.exists(fpath) and os.access(fpath, os.X_OK)
+
+    fpath, fname = os.path.split(program)
+    if fpath:
+        if is_exe(program):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+
+    return None
+
+if sys.platform == 'win32':
+    vplus._editor = os.path.join(basepath, "notepad2", "Notepad2.exe")
+    if not os.path.exists(vplus._editor):
+        vplus._editor = "notepad.exe"
+    vplus._editor = '"' + vplus._editor + '"' 
+else:
+    editors = "gedit","kwrite", "vim", "vi"
+    for e in editors:
+        if which(e) != None:
+            vplus._editor = which(e)
+            break
+    print "Editor is %s." % vplus._editor
     
-vplus._editor = '"' + vplus._editor + '"' 
 
     
 
@@ -71,12 +100,12 @@ vplus._editor = '"' + vplus._editor + '"'
 #ipshell = IPShellEmbed()
 #ipshell() 
 
-import viewer 
+import viewer_gui
 
 
 sys.argv.append("--navigation-mode=Softimage")
 sys.argv.append("scene.py")
-V = viewer.Viewer()
+V = viewer_gui.Viewer()
 V.run()
 
 

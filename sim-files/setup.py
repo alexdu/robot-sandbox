@@ -17,7 +17,7 @@ import py2exe
 			#~ (".", ["scene.py", "vplus.py", "RobotSim.py", "viewer.py", "geom.py", "main.py"])]
              
 # TODO: sters fisierele sursa (vplus.py ... main.py) din library.zip
-
+# si apoi redenumit startup.exe => robot-sandbox.exe
 
 setup(
 	name='robot-sandbox',
@@ -32,7 +32,7 @@ setup(
         "py2exe": 
         { 
             "includes": ["main"],
-            "excludes": ["wx", "matplotlib"],
+            "excludes": ["wx", "matplotlib", "OpenGL", "gooeypy"],
             "dll_excludes": ["wintab32.dll", "MSVCP90.dll", 
                             "libgtk-win32-2.0-0.dll",
                             "libgdk-win32-2.0-0.dll",

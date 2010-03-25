@@ -1,3 +1,4 @@
+
 #       RobotSim.py
 #       
 #       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>
@@ -43,6 +44,7 @@ single = False
 debug = 0
 
 
+
 startJointPos = currentJointPos     # de unde am inceput miscarea
 destJointPos = currentJointPos      # unde ma opresc
 #intermedJointPos = currentJointPos  # punctul intermediar (pt MOVE-uri fara BREAK)
@@ -66,6 +68,8 @@ speed_next_motion_unit = "%"
 
 max_joint_speed = [328.0, 300.0, 375.0, 375.0, 375.0, 600.0]
 max_cartesian_speed = 2000.0
+lim_min = [-170, -190, -29, -190, -120, -360]
+lim_max = [ 170,   45, 256,  190,  120,  360]
 
 fps = 30.0
 
@@ -81,6 +85,7 @@ arm_trajectory_index = 0
 arm_trajectory = []
 
 abort_flag = False
+comp_mode = True
         
     
 def DK(J):
@@ -175,8 +180,6 @@ def IK(loc):
         raise IKError, "No solution."
 
     # Joint limits:
-    lim_min = [-170, -190, -29, -190, -120, -360]
-    lim_max = [ 170,   45, 256,  190,  120,  360]
 
     for i in range(0,5):
         if J[i] < lim_min[i]:
@@ -281,3 +284,70 @@ def jtraj(jdest):
     #print arm_trajectory
 
 
+def jog(mode, axis, signed_speed):
+    """
+    Jog the robot.
+    mode: "world", "tool", "joint"
+    axis: 1...6
+    signed_speed: -100...100
+    """
+    
+    try:
+        a0 = axis - 1
+        
+        global currentJointPos
+        
+        if mode.lower() == 'world':
+            here = DK(currentJointPos)
+            transl = [0,0,0]
+            d = signed_speed/100.0 * max_cartesian_speed / 3 / fps
+            
+            rot = NULL
+            scaleRot = 0.3
+            if axis <= 3:
+                transl[a0] = d
+            elif axis == 4:
+                rot = RX(d * scaleRot)
+            elif axis == 5:
+                rot = RY(d * scaleRot)
+            elif axis == 6:
+                rot = RZ(d * scaleRot)
+            
+            pos = SHIFT(here, transl[0], transl[1], transl[2])
+            rot = rot * SHIFT(here, -DX(here), -DY(here), -DZ(here))
+            dest = TRANS(DX(pos), DY(pos), DZ(pos)) * rot
+            
+            jdest = IK(dest)
+            currentJointPos = jdest.J
+        elif mode.lower() == 'tool':
+            here = DK(currentJointPos)
+            transl = [0,0,0]
+            d = signed_speed/100.0 * max_cartesian_speed / 3 / fps
+            
+            rot = NULL
+            scaleRot = 0.3
+            if axis <= 3:
+                transl[a0] = d
+            elif axis == 4:
+                rot = RX(d * scaleRot)
+            elif axis == 5:
+                rot = RY(d * scaleRot)
+            elif axis == 6:
+                rot = RZ(d * scaleRot)
+            
+            dest = here * TRANS(transl[0], transl[1], transl[2]) * rot
+            jdest = IK(dest)
+            currentJointPos = jdest.J
+                
+            
+        elif mode.lower() == 'joint':
+            currentJointPos[a0] = currentJointPos[a0] + signed_speed/100.0 * max_joint_speed[a0] / 3 / fps
+            currentJointPos[a0] = max(currentJointPos[a0], lim_min[a0])
+            currentJointPos[a0] = min(currentJointPos[a0], lim_max[a0])
+    except IKError:
+        ex = sys.exc_info()[1]
+        print "IKError:", ex
+    except:
+        tb = sys.exc_info()[0]
+        import traceback
+        traceback.print_tb(tb)

@@ -42,7 +42,7 @@
             pick = SHIFT(b BY 0, 0, -h * INT(i/2))
         END
         SET place = SHIFT(c BY 0, 0, h*i):RZ(total.ang * i / (n-1))
-        CALL pick_place(pick, place)
+        CALL pick.place(pick, place)
     END
     MOVE safe
     

@@ -519,7 +519,7 @@ def SPEED(spd, flag1=None, flag2=None):
     
     if MONITOR:
         if not ALWAYS and not MMPS and not IPS:
-            RobotSim.speed_monitor = max(0, min(spd, 100))
+            RobotSim.speed_monitor = max(1, min(spd, 100))
         else:
             raise SyntaxError, "Expected: SPEED xx MONITOR  (without ALWAYS or MMPS or IPS)"
     else:
@@ -627,7 +627,9 @@ def BREAK():
         if RobotSim.abort_flag:
             RobotSim.abort_flag = False
             raise UserAbort
-    time.sleep(0.2)
+        if not RobotSim.comp_mode:
+            raise CompModeDisabled
+    time.sleep(0.3)
     
     
 def OPENI():
@@ -938,6 +940,8 @@ import IPython.ipapi
 class UserAbort(Exception):
     pass
 
+class CompModeDisabled(Exception):
+    pass
 
 
 from IPython import ColorANSI
@@ -952,13 +956,13 @@ _spaces_last_line = ""
 def init_trace():
     global _code_tracing_cache, _color_dic, _dic_locals, _dic_globals, _spaces_last_line
     _code_tracing_cache = {}
-    _color_dic = {"<module>": tc.DarkGray}
+    _color_dic = {"<module>": tc.LightGray}
     _dic_locals = {}
     _dic_globals = {}
     _spaces_last_line = ""
     
 def get_color(func):
-    colors = [tc.DarkGray, tc.Normal, tc.Green, tc.Blue, tc.Red, tc.Brown, tc.Purple]
+    colors = [tc.LightGray, tc.Normal, tc.Green, tc.Blue, tc.Red, tc.Brown, tc.Purple]
     if func in _color_dic:
         return _color_dic[func]
     else:
@@ -981,15 +985,15 @@ def print_new_vars(func, newvars, flags):
     
     for name, val in newvars:
         if (type(val).__name__ == 'instance') and (val.__class__.__name__ == 'TRANS'):
-            print "%s%snew %svariable: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
+            print "%s%snew %svariable: %s%s = %s%s" % (_spaces_last_line, tc.LightGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
             
     for name, val in newvars:
         if (type(val).__name__ == 'instance') and (val.__class__.__name__ == 'PPOINT'):
-            print "%s%snew %svariable: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
+            print "%s%snew %svariable: %s%s = %s%s" % (_spaces_last_line, tc.LightGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
 
     for name, val in newvars:
         if type(val).__name__ == 'list':
-            print "%s%snew %sarray: %s%s = %s%s" % (_spaces_last_line, tc.DarkGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
+            print "%s%snew %sarray: %s%s = %s%s" % (_spaces_last_line, tc.LightGray, globstr, get_color(func), name, str_compact(val), tc.Normal)
     
     smallchanges = []
     for name, val in newvars:
@@ -998,7 +1002,7 @@ def print_new_vars(func, newvars, flags):
                 smallchanges.append("%s%s = %s" % (get_color(func), name, str(val)))
                 
     if len(smallchanges):
-        print _spaces_last_line + tc.DarkGray + "new " + globstr + "variables: " + string.join(smallchanges, ", ") + tc.Normal
+        print _spaces_last_line + tc.LightGray + "new " + globstr + "variables: " + string.join(smallchanges, ", ") + tc.Normal
     
 def print_changed_vars(func, changedvars, flags):
     
@@ -1011,23 +1015,23 @@ def print_changed_vars(func, changedvars, flags):
     
     for name, old_val, new_val in changedvars:
         if (type(new_val).__name__ == 'instance') and (new_val.__class__.__name__ == 'TRANS'):
-            print "%s%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), globstr, name, str_compact(new_val), _spaces_last_line, tc.DarkGray, str_compact(old_val), tc.Normal)
+            print "%s%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), globstr, name, str_compact(new_val), _spaces_last_line, tc.LightGray, str_compact(old_val), tc.Normal)
             
     for name, old_val, new_val in changedvars:
         if (type(new_val).__name__ == 'instance') and (new_val.__class__.__name__ == 'PPOINT'):
-            print "%s%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), globstr, name, str_compact(new_val), _spaces_last_line, tc.DarkGray, str_compact(old_val), tc.Normal)
+            print "%s%s%s%s changed to: %s\n%s%s(previous value: %s)%s" % (_spaces_last_line, get_color(func), globstr, name, str_compact(new_val), _spaces_last_line, tc.LightGray, str_compact(old_val), tc.Normal)
 
     
     smallchanges = []
     for name, old_val, new_val in changedvars:
         if (type(new_val).__name__ != 'instance') or not(new_val.__class__.__name__ in ['TRANS', 'PPOINT']):
-            smallchanges.append("%s%s = %s %s(was %s)" % (get_color(func), name, str(new_val), tc.DarkGray, str(old_val)))
+            smallchanges.append("%s%s = %s %s(was %s)" % (get_color(func), name, str(new_val), tc.LightGray, str(old_val)))
     
     if len(smallchanges):
         if len(globstr) > 0:
-            print _spaces_last_line + tc.DarkGray + "global%s changed: " % ("s" if len(smallchanges) != 1 else "") + string.join(smallchanges, ", ") + tc.Normal
+            print _spaces_last_line + tc.LightGray + "global%s changed: " % ("s" if len(smallchanges) != 1 else "") + string.join(smallchanges, ", ") + tc.Normal
         else:
-            print _spaces_last_line + tc.DarkGray + "changed: " + string.join(smallchanges, ", ") + tc.Normal
+            print _spaces_last_line + tc.LightGray + "changed: " + string.join(smallchanges, ", ") + tc.Normal
 
 def make_list_of_new_and_changed_variables(func, dic, prev_dic):
     global _dic_locals, _dic_globals
@@ -1126,6 +1130,8 @@ def trace_calls(frame, event, arg):
     if RobotSim.abort_flag:
         RobotSim.abort_flag = False
         raise UserAbort
+    if not RobotSim.comp_mode:
+        raise CompModeDisabled
 
     if event == 'return':
         co = frame.f_code
@@ -1171,6 +1177,7 @@ def trace_calls(frame, event, arg):
 
 def exec_init():
     init_trace()
+    sys.stdout.flush()
     sys.stdout = sys.ipy_stdout
     sys.settrace(trace_calls)
     
@@ -1181,6 +1188,7 @@ def exec_end():
     print
     print "Press ENTER to continue "
     sys.settrace(None)
+    sys.stdout.flush()
     sys.stdout = sys.sys_stdout
     # daca nu dau ENTER, ramane consola "ametita"
 
@@ -1210,6 +1218,8 @@ def EXECUTE(prog):
             exec(loader) in globalVplusNames
         except UserAbort:
             print "Robot program aborted by user."
+        except CompModeDisabled:
+            print "COMP mode disabled."
         except:
             raise
         finally:
@@ -1348,7 +1358,9 @@ def _CM_EXEC(self, prog):
         if RobotSim.abort_flag:
             print "Please wait for previous robot program to finish."
             return
-    
+    if not RobotSim.comp_mode:
+        print "COMP mode disabled."
+        return
 
     _build_dictionary() 
     if RobotSim.debug:
@@ -1535,7 +1547,7 @@ def _CM_SEE(self, prog):
         prog = prog + ".v2" 
     
     print "editing %s ..." % prog
-    subprocess.Popen('%s %s' % (_editor, prog))
+    subprocess.Popen([_editor, prog])
 
 def _CM_SPEED(self, var):
     """
@@ -1779,7 +1791,12 @@ def _CM_ENV(self, prog):
 
     
 def _CM_DO(self, var):
+    if not RobotSim.comp_mode:
+        print "COMP mode disabled."
+        return
+
     var = translate_line(var)
+    
     if RobotSim.debug:
         print "(debug) " + var
     

@@ -35,7 +35,7 @@ import time
 
 # acum sunt in folderul cu sursele (src, sim-files)
 _dir = os.getcwd()
-_args = ['-pi1','. ','-po','=> ', '-colors', 'LightBG', '-xmode', 'Plain']
+_args = ['-pi1','. ','-po','=> ', '-colors', 'LightBG', '-xmode', 'Plain', '-autocall', '0']
 _ipshell = IPShellEmbed(_args, banner="V+ simulation console ready.")
 
 

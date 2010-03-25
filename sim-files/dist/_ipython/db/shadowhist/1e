@@ -5,34 +5,37 @@ I1623
 sVMOVE(bs*pal)
 p3
 I60
-sVdo move bs:shifT(ry(180) by -100,-100,0)
+sV%bg EXECUTE("paletizare.py")
 p4
-I1796
-sVhere b
+I994
+sVa  = "cucu \u005Cn"
 p5
-I319
-sVsys.stdion
+I1045
+sVlistl rz(43), rz(23)
 p6
-I1502
-sVdo type "cucu" bau; rz(45)
+I739
+sVcam.projection(640,480
 p7
+I1993
+sVdo type "cucu" bau; rz(45)
+p8
 I1211
 sVenv hanoi(15)
-p8
-I1971
-sVlistl rz(43), rz(23)
 p9
-I739
-sVa  = "cucu \u005Cn"
+I1971
+sVsys.stdion
 p10
-I1045
-sVprint translate_program("paletizare.v2")
+I1502
+sVdo move bs:shifT(ry(180) by -100,-100,0)
 p11
+I1796
+sVprint translate_program("paletizare.v2")
+p12
 I1212
 sVexcept: pass
-p12
-I1917
-sV%bg EXECUTE("paletizare.py")
 p13
-I994
+I1917
+sVhere b
+p14
+I319
 s.

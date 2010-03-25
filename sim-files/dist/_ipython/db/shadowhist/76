@@ -1,13 +1,13 @@
 (dp1
-Vdo moves shift(pal by -100, 200, -40)
+Vcam
 p2
-I301
-sVdo move ppoint(0+10,-171,226,180,55.4,18010)
-p3
-I777
+I1986
 sVdo for p = 1 to n step -1
-p4
+p3
 I525
+sVdo moves shift(pal by -100, 200, -40)
+p4
+I301
 sVa = {3,4}
 p5
 I1784
@@ -20,4 +20,7 @@ I1385
 sVbeautify_line('print "shift(x by dx(5)" ; shift(x by dx(4))')
 p8
 I1199
+sVdo move ppoint(0+10,-171,226,180,55.4,18010)
+p9
+I777
 s.

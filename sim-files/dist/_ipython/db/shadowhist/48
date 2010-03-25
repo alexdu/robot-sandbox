@@ -2,22 +2,25 @@
 Va = {3:4}
 p2
 I1439
-sVline = "(" + string + "?" + notstring + "?" + ")*"
-p3
-I1138
 sVhere 4
-p4
+p3
 I849
 sVdo set a = #ppoint(b)
-p5
+p4
 I874
+sVline = "(" + string + "?" + notstring + "?" + ")*"
+p5
+I1138
 sVprint translate_program("hanoi_main.v2")
 p6
 I1820
-sVc = tb.tb_frame.f_code
+sVfar
 p7
+I1997
+sVc = tb.tb_frame.f_code
+p8
 I1368
 sVv2py.beautify_line("cucu bau")
-p8
+p9
 I1057
 s.

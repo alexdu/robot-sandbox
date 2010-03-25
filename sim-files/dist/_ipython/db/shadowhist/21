@@ -1,26 +1,29 @@
 (dp1
-Vre.match("dx\u005C *\u005C(.*", "dx (fdsfdsf")
+V(a,b) = match_subtree(pattern, t[1][3])
 p2
-I181
-sVdis dry.run
-p3
-I1430
-sVdo auto x,y[2],z
-p4
-I1080
-sVEXEC("paletizare")
-p5
-I962
-sV(a,b) = match_subtree(pattern, t[1][3])
-p6
 I1702
+sVre.match("dx\u005C *\u005C(.*", "dx (fdsfdsf")
+p3
+I181
+sVcam.viewTransformation().toList()
+p4
+I1991
+sVdo auto x,y[2],z
+p5
+I1080
 sVd = c*NULL
-p7
+p6
 I864
 sV__builtins__.vars
-p8
+p7
 I415
-sVre.match(line, test).groups()
+sVdis dry.run
+p8
+I1430
+sVEXEC("paletizare")
 p9
+I962
+sVre.match(line, test).groups()
+p10
 I1139
 s.

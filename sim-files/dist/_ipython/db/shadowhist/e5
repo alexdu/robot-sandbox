@@ -1,23 +1,26 @@
 (dp1
-Vp.tolist
+Vnear, far = cam.getNearFar()
 p2
-I1591
+I1994
 sVdo speed 100 always
 p3
 I521
-sVre.match("(\u005C *)", a).groups()
-p4
-I1035
 sVdelete calltest.v2
-p5
+p4
 I1578
-sVmode con
-p6
-I1415
+sVp.tolist
+p5
+I1591
 sVglobal x
-p7
+p6
 I1048
 sVj = jobs.jobs_all[0]
-p8
+p7
 I1329
+sVmode con
+p8
+I1415
+sVre.match("(\u005C *)", a).groups()
+p9
+I1035
 s.

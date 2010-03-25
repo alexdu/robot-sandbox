@@ -1,23 +1,26 @@
 (dp1
-Vl = parser.expr("(a,b+0,c)").tolist()
+Vdo move shift(pal by 100,120,60)
 p2
-I1650
-sVprint 0,a
+I339
+sVl = parser.expr("(a,b+0,c)").tolist()
 p3
-I570
-sV(kw, rest, vs) = split_after_keyword(var)
+I1650
+sVs = pygame.display.get_surface
 p4
-I1732
+I2006
 sVdo auto x, y
 p5
 I1082
 sV_ipshell.IP.interact
 p6
 I1564
-sVdo move shift(pal by 100,120,60)
+sV(kw, rest, vs) = split_after_keyword(var)
 p7
-I339
+I1732
 sVbeautify_line("cucu Bau:rz(45)")
 p8
 I1061
+sVprint 0,a
+p9
+I570
 s.

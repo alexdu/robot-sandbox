@@ -1,11 +1,14 @@
 (dp1
-Vtb.tb_frame
+Vcam = worldObject("TargetCamera")
 p2
-I1366
+I1988
 sVdo wait.event 43
 p3
 I567
-sVstring.split("a, b,cdsfs,dew[]", ",")
+sVtb.tb_frame
 p4
+I1366
+sVstring.split("a, b,cdsfs,dew[]", ",")
+p5
 I1068
 s.

@@ -8,16 +8,19 @@ I1330
 sVdo set #a = here
 p4
 I643
-sVre.match("\u005C *", a).groups()
+sVpygame.display.get_wm_info()
 p5
+I2004
+sVre.match("\u005C *", a).groups()
+p6
 I1034
 sVp.tolist()
-p6
+p7
 I1592
 sVprint "%5.3g" % 5
-p7
+p8
 I497
 sVreturn ()
-p8
+p9
 I1751
 s.

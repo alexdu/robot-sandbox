@@ -5,16 +5,19 @@ I1646
 sVsymbol._value
 p3
 I1620
-sV_ip.itpl
-p4
-I1566
-sVbs = rz(45)
-p5
-I439
 sVsplit_comment('ana "are ; 5" mere')
-p6
+p4
 I1181
 sVplot(4)
-p7
+p5
 I10
+sVbs = rz(45)
+p6
+I439
+sVgar
+p7
+I1996
+sV_ip.itpl
+p8
+I1566
 s.

@@ -2,16 +2,19 @@
 Vdo departs -100
 p2
 I249
-sVhelp _ipshell.IP.interact_prompt
+sVimport pygame
 p3
-I1562
-sVsafe?
-p4
-I456
+I2000
 sVdo move shift(pal by 0,0,100)
-p5
+p4
 I334
 sVa[:3]
-p6
+p5
 I1163
+sVhelp _ipshell.IP.interact_prompt
+p6
+I1562
+sVsafe?
+p7
+I456
 s.

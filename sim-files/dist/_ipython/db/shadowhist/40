@@ -23,4 +23,7 @@ I778
 sVx=0;y=5;
 p9
 I1051
+sVpygame.display.get_surface()
+p10
+I2005
 s.

@@ -1,23 +1,26 @@
 (dp1
-VATAN2(3,4)
+Vbeautify_line("3 mod 4")
 p2
-I1253
-sVdo move trans(0,10,900,0,0,0)
+I1302
+sVmod(s.count('"'), 0)
 p3
-I806
+I1127
 sVMOVE(bs*SHIFT(a,0,0,0))
 p4
 I42
-sVprint translate_program("casuta.v2")
+sVATAN2(3,4)
 p5
-I1213
-sVbeautify_line("3 mod 4")
+I1253
+sVdo move trans(0,10,900,0,0,0)
 p6
-I1302
-sVmod(s.count('"'), 0)
+I806
+sVs.get_size()
 p7
-I1127
-sVvplus.__dict__
+I2008
+sVprint translate_program("casuta.v2")
 p8
+I1213
+sVvplus.__dict__
+p9
 I889
 s.

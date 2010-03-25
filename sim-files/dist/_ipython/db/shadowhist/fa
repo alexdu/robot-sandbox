@@ -5,19 +5,22 @@ I919
 sVdo moves shift(pal by 128, 400, -20)
 p3
 I311
-sVa = "xsad"
+sVcam.projection(640,480,near,far)
 p4
-I579
-sVrobotPrograms
+I1998
+sVtype(SIN)
 p5
+I1788
+sVrobotPrograms
+p6
 I1838
 sVEXECUTE("paletizare.py")
-p6
+p7
 I961
 sVsys.last_traceback.tb_frame.f_lineno
-p7
-I921
-sVtype(SIN)
 p8
-I1788
+I921
+sVa = "xsad"
+p9
+I579
 s.

@@ -2,34 +2,37 @@
 Vdo move #ppoint(0,-90,90,0,0,0)
 p2
 I325
-sV(1)+()
+sVdo move shift(pal by 100, 10, 100)
 p3
+I262
+sV(1)+()
+p4
 I687
 sVa.index(4)
-p4
+p5
 I664
 sVa[:8]
-p5
+p6
 I1165
 sVdo move trans(0,0,988,0,0,0)
-p6
-I797
-sVpprint(lin)
 p7
+I797
+sVnear
+p8
+I1995
+sVpprint(lin)
+p9
 I1010
 sVpattern = (symbol.eval_input, (symbol.testlist, ['spanac']))
-p8
+p10
 I1655
 sVtb.tb_frame.f_code
-p9
-I1367
-sVaort
-p10
-I1792
-sVlistl rz(34)
 p11
-I738
-sVdo move shift(pal by 100, 10, 100)
+I1367
+sVlistl rz(34)
 p12
-I262
+I738
+sVaort
+p13
+I1792
 s.

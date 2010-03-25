@@ -1,17 +1,20 @@
 (dp1
-Vc.co_nlocals
+Vx.replace(":", "|")
 p2
-I1435
-sVx.replace(":", "|")
-p3
 I161
 sV3+3
-p4
+p3
 I9
 sVhelp dict
-p5
+p4
 I837
-sVdo openi
+sVs = pygame.display.get_surface()
+p5
+I2007
+sVc.co_nlocals
 p6
+I1435
+sVdo openi
+p7
 I150
 s.

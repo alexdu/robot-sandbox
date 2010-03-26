@@ -437,7 +437,7 @@ class LaminaPartialScreenSurface(LaminaPanelSurface):
         height2 = pow2(height)
             
         
-        print "Allocating texture: ", (width2, height2)
+        #print "Allocating texture: ", (width2, height2)
         raw = pygame.Surface((width2, height2), pygame.SRCALPHA, 32)
         self._surfTotal = raw.convert_alpha()
         #~ print "surfTotal:", (width2, height2)

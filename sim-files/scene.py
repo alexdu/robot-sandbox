@@ -12,8 +12,44 @@ import sys
 import os
 import RobotSim
 import ode
-        
-        
+
+
+# Materiale pentru randare si contact properties
+
+matRobot = GLMaterial(name="robot", diffuse=(1,0.95,0.9))
+matFloor = GLMaterial(name="floor", diffuse=(0,1,1))
+matGripper = GLMaterial(name="gripper", diffuse=(0.5,0.5,0.5))
+matPallet = GLMaterial(name="pallet", diffuse=(1,1,1))
+
+matRedBox = GLMaterial(name="RedBox", diffuse=(1,0,0))
+matYellowBox = GLMaterial(name="YellowBox", diffuse=(1,1,0))
+matGreenBox = GLMaterial(name="GreenBox", diffuse=(0,1,0))
+matBlueBox = GLMaterial(name="BlueBox", diffuse=(0,0,1))
+matPinkBox = GLMaterial(name="PinkBox", diffuse=(1,0,1))
+matBoxes = [matRedBox, matYellowBox, matGreenBox, matBlueBox, matPinkBox]
+
+defaultContactProps = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-4)
+contactProps_BoxBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.1, soft_cfm=1E-5)
+contactProps_PalBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-5)
+contactProps_FloorBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-5)
+
+contactProps_GripBox = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.1, soft_cfm=0.002)
+
+odeSim = ODEDynamics(gravity=9.81/5, substeps=1, cfm=1E-5, erp=0.5, defaultcontactproperties = defaultContactProps,
+               show_contacts=1, contactmarkersize=1E-3, contactnormalsize=0.01)
+
+odeSim.world.setLinearDamping(0.1)
+odeSim.world.setAngularDamping(0.1)
+
+for matBox in matBoxes:
+    odeSim.setContactProperties((matGripper, matBox), contactProps_GripBox)
+    odeSim.setContactProperties((matFloor, matBox), contactProps_FloorBox)
+    odeSim.setContactProperties((matPallet, matBox), contactProps_PalBox)
+
+for matBox1 in matBoxes:
+    for matBox2 in matBoxes:
+        odeSim.setContactProperties((matBox1, matBox2), contactProps_BoxBox)
+
 
 def load_robot_link(file, name):
     print "Loading %s ..." % name
@@ -21,7 +57,6 @@ def load_robot_link(file, name):
     obj = worldObject("vcg")
     obj.name = name
     obj.mass = 0.1
-    matRobot = GLMaterial(diffuse=(1,0.95,0.9))
     obj.setMaterial(matRobot)
 
 
@@ -42,12 +77,14 @@ link4 = worldObject("Robot Link 4")
 link5 = worldObject("Robot Link 5-6")
 link6 = Box("Gripper Mounting Support", lx = 50E-3, ly = 30E-3, lz = 30E-3, mass=0.1)
 #gripper = Box(lx = 15, ly = 15, lz = 30, mass=1)
-gripper = Box("Gripper", lx = 20E-3, ly = 30E-3, lz = 100E-3, mass=1)
-finger1 = Box("Gripper Finger 1", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.001)
-finger2 = Box("Gripper Finger 2", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.001)
+gripper = Box("Gripper", lx = 20E-3, ly = 30E-3, lz = 100E-3, mass=1, material=matGripper)
+finger1 = Box("Gripper Finger 1", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.001, material=matGripper)
+finger2 = Box("Gripper Finger 2", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.001, material=matGripper)
 
 
-matFloor = GLMaterial(diffuse=(0,1,1))
+
+
+
 floor = Box("Floor", lx=1500E-3, ly=1500E-3, lz=50E-3, material=matFloor)
 floor.mass = 1
 floor.pos = (0,0,-25E-3)
@@ -61,6 +98,58 @@ floor.pos = (0,0,-25E-3)
 
 
 
+
+
+RobotSim.gripForce = 10
+def setGripperForces(open, close):
+    gripForce = RobotSim.gripForce
+    
+    slider_finger1.motorfmax = gripForce
+    slider_finger2.motorfmax = gripForce
+    slider_finger1.fudgefactor = 0.0001
+    slider_finger2.fudgefactor = 0.0001
+
+    
+    if open:
+        slider_finger1.motorvel = 0.1
+        slider_finger2.motorvel = -0.1
+        slider_finger1.histop = 40E-3
+        slider_finger2.lostop = -40E-3
+    if close:
+        slider_finger1.motorvel = -0.1
+        slider_finger2.motorvel = 0.1
+        
+        pos = abs(slider_finger2.position)
+        pos = min(pos, 40E-3)
+        pos = max(pos, 10E-3)
+        slider_finger1.histop = pos + 0.1E-3
+        slider_finger1.lostop = pos - 5E-3
+        slider_finger2.histop = -pos + 5E-3
+        slider_finger2.lostop = -pos - 0.1E-3
+        
+        #slider_finger2.lostop = -pos-0.01E-3
+        
+    #~ if open:
+        #~ M["finger1"].addForce((0,0,gripForce), True)
+        #~ M["finger2"].addForce((0,0,-gripForce), True)
+        #~ slider_finger1.histop = 40
+        #~ slider_finger2.lostop = -40
+        
+    #~ if close:
+        #~ M["finger1"].addForce((0,0,-gripForce), True)
+        #~ M["finger2"].addForce((0,0,gripForce), True)
+        #~ pos = (slider_finger1.position - slider_finger2.position)/2
+        #~ pos = min(pos, 40)
+        #~ pos = max(pos, 10)
+        #~ slider_finger1.histop = pos+0.1
+        #~ slider_finger2.lostop = -pos-0.1
+
+    #~ M["finger1"].setLinearVel((0,0,0))
+    #~ M["finger2"].setLinearVel((0,0,0))
+    #~ M["finger1"].setAngularVel((0,0,0))
+    #~ M["finger2"].setAngularVel((0,0,0))
+    
+#~ 
 
             
 
@@ -76,10 +165,10 @@ def enforcePose(m, P):
         m.odebody.setGravityMode(False)
 
 def changePose(m, P):
-    #if int(scene._timer.frame) |MOD| 30 == 0:
+    #if int(scene._timer.frame) % 30 == 0:
         oldPos = m.body.pos
         (pos,b,c) = P.decompose()
-        dt = 1.5/RobotSim.fps
+        dt = 1/RobotSim.fps
         vel = (pos - oldPos).__div__(dt)
         m.setLinearVel(vel)
         
@@ -154,56 +243,6 @@ def changeRobotPos(J):
 
 
 
-def setGripperForces(open, close):
-    gripForce = 10
-    slider_finger1.motorfmax = gripForce
-    slider_finger2.motorfmax = gripForce
-    slider_finger1.fudgefactor = 0
-    slider_finger2.fudgefactor = 0
-    
-    if open:
-        gripForce = 0.1
-        slider_finger1.motorvel = 0.1
-        slider_finger2.motorvel = -0.1
-        slider_finger1.histop = 40E-3
-        slider_finger2.lostop = -40E-3
-    if close:
-        slider_finger1.motorvel = -0.5
-        slider_finger1.motorfmax = gripForce
-
-        slider_finger2.motorvel = 0.5
-        slider_finger2.motorfmax = gripForce
-        
-        pos = abs(slider_finger2.position)
-        pos = min(pos, 40E-3)
-        pos = max(pos, 10E-3)
-        slider_finger1.histop = pos + 0.1E-3
-        slider_finger1.lostop = pos - 5E-3
-        slider_finger2.histop = -pos + 5E-3
-        slider_finger2.lostop = -pos - 0.1E-3
-        
-        #slider_finger2.lostop = -pos-0.01E-3
-        
-    #~ if open:
-        #~ M["finger1"].addForce((0,0,gripForce), True)
-        #~ M["finger2"].addForce((0,0,-gripForce), True)
-        #~ slider_finger1.histop = 40
-        #~ slider_finger2.lostop = -40
-        
-    #~ if close:
-        #~ M["finger1"].addForce((0,0,-gripForce), True)
-        #~ M["finger2"].addForce((0,0,gripForce), True)
-        #~ pos = (slider_finger1.position - slider_finger2.position)/2
-        #~ pos = min(pos, 40)
-        #~ pos = max(pos, 10)
-        #~ slider_finger1.histop = pos+0.1
-        #~ slider_finger2.lostop = -pos-0.1
-
-    #~ M["finger1"].setLinearVel((0,0,0))
-    #~ M["finger2"].setLinearVel((0,0,0))
-    #~ M["finger1"].setAngularVel((0,0,0))
-    #~ M["finger2"].setAngularVel((0,0,0))
-    #~ 
 
 RobotSim.pauseTick = False
 
@@ -221,6 +260,7 @@ def tick():
 
     while RobotSim.pauseTick:
         time.sleep(0.1)
+
 
     #print RobotSim.currentJointPos
     setGripperForces(RobotSim.sig_open, RobotSim.sig_close)
@@ -240,11 +280,6 @@ eventmanager.connect(STEP_FRAME, tick)
     
 
 
-prop = ODEContactProperties(bounce = 0, mu = 1, soft_erp=0.1, soft_cfm=1E-4)
-odeSim = ODEDynamics(gravity=9.81/5, substeps=2, cfm=1E-3, erp=0.5, defaultcontactproperties = prop,
-               show_contacts=0, contactmarkersize=1E-3, contactnormalsize=0.1)
-odeSim.world.setLinearDamping(0.1)
-odeSim.world.setAngularDamping(0.1)
 
 # category bits:
 # 1 = robot (se ciocneste de piese)
@@ -275,7 +310,7 @@ def createBoxes():
     global boxes
     boxes = []
     for i in range(20):
-        b = Box("Box1", lx=100E-3,ly=30E-3,lz=15E-3,material=GLMaterial(diffuse=(random.uniform(0,1), random.uniform(0,0.5), random.uniform(0,1))))
+        b = Box("Box1", lx=100E-3,ly=30E-3,lz=15E-3,material=matRedBox)
         b.mass = 1E-2
         b.pos = (0.5, 0.5, -0.01)
         boxes.append(b)

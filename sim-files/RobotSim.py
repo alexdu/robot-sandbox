@@ -57,6 +57,7 @@ switch = dict()
 switch["POWER"] = True
 switch["TRACE"] = True
 switch["DRY.RUN"] = False
+switch["GUI"] = True
 
 global speed_monitor, speed_always, speed_next_motion
 speed_monitor = 25.0

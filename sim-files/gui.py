@@ -25,13 +25,22 @@ import time
 #####################
 
 import RobotSim
-    
-gui_screen = None
-myguiapp = None
+
+
+processViewerEvents = True
+
+leftPanel = [None, None]
+rightPanel = [None, None]    # gui, surf    
+bottomPanel = [None, None]    # gui, surf    
+panels = [leftPanel, bottomPanel, rightPanel]
+
+
 
 speedPotMonitor = False
 speedMonitor = 25
 speedMCP = 50
+
+fps = 0
 
 modeswitch = None
 speedpot = None
@@ -43,8 +52,146 @@ jogAxis = 0
 jogMode = "world"
 jogSpeed = 100
 
+        
 
-processViewerEvents = True
+
+def initGUI():
+    global gui_screen, myguiapp, speedpot, speedlabel, modeswitch, opclo, fpsindic
+    
+    leftPanel[1] = lamina.LaminaPartialScreenSurface(100, 250, 10, -10)
+    rightPanel[1] = lamina.LaminaPartialScreenSurface(100, 300, -10, -10)
+    bottomPanel[1] = lamina.LaminaPartialScreenSurface(510, 30, 0.0, 10)
+    
+    leftPanel[0] = gui.Container(width=100, height=250, surface=leftPanel[1].surf)
+    rightPanel[0] = gui.Container(width=100, height=300, surface=rightPanel[1].surf)
+    bottomPanel[0] = gui.Container(width=510, height=30, surface=bottomPanel[1].surf)
+
+    leftPanel[0].style["bgimage"] = "none"
+    rightPanel[0].style["bgimage"] = "none"
+    bottomPanel[0].style["bgimage"] = "none"
+
+    adjust_panels()
+
+    labels = ["X", "Y", "Z", "RX", "RY", "RZ"]
+
+    modeswitch = gui.Switch(0, ["Comp", 'World', 'Tool', 'Joint'], [0,1,2,3], x=0, y=0, width=65)
+    modeswitch.label.style["color"] = (255,255,255)
+    modeswitch.style["align"] = "center"
+    modeswitch.label.style["font-size"] = 14
+    enableStealEvents([modeswitch])
+    modeswitch.connect(CHANGE, onModeSwitch)
+    rightPanel[0].add(modeswitch)
+
+    opclo = gui.Switch(0, ["OPEN", "CLOSE"], [0,1], x=0, y=35*7, width=65)
+    opclo.label.style["color"] = (255,255,255)
+    opclo.style["align"] = "center"
+    opclo.style["valign"] = "top"
+    opclo.label.style["font-size"] = 14
+    enableStealEvents([opclo])
+    opclo.connect(CHANGE, onOpenClose)
+    rightPanel[0].add(opclo)
+    
+
+
+
+    speedpot = gui.HSlider(value=50, min_value=1, length=99, x=0, y=0, width=300)
+    speedpot.style["align"] = "right"
+    speedpot.style["valign"] = "center"
+    enableStealEvents([speedpot])
+    bottomPanel[0].add(speedpot)
+
+    speedlabel = gui.Button("MCP Speed: 50", x=0, y=0, width=130)
+    speedlabel.style["align"] = "left"
+    speedlabel.style["valign"] = "center"
+    speedlabel.label.style["color"] = (255,255,255)
+    speedlabel.label.style["font-size"] = 14
+    speedlabel.connect(CLICK, onSpeedToggle)
+    #speedlabel.style["bgimage"] = "none"
+
+    enableStealEvents([speedlabel])
+    bottomPanel[0].add(speedlabel)
+
+    speedpot.connect(CHANGE, onSpeedChange)
+
+    #con = gui.TextBlock(value="spanac\ncastraveti", x=0, y=-50, width=300)
+    #con.style["align"] = "center"
+    #con.style["valign"] = "bottom"
+    #enableStealEvents([con])
+    #myguiapp.add(con)
+
+    for i, l in enumerate(labels):
+        addPlusMinus(rightPanel[0], l, i+1)
+
+
+    onModeSwitch()
+
+    fpsindic = gui.Button("0 fps", x=0, y=0, width=70)
+    fpsindic.style["align"] = "left"
+    fpsindic.style["valign"] = "top"
+    fpsindic.label.style["color"] = (255,255,255)
+    fpsindic.label.style["font-size"] = 14
+    leftPanel[0].add(fpsindic)
+
+
+
+def addPlusMinus(guiapp, text, i):
+    y0 = i * 35
+    wm = gui.Button("-", x=-30, y=y0, width=10)
+    wp = gui.Button("+", x=30, y=y0, width=10)
+    wl = gui.Button(text, x=0, y=y0, width=0)
+
+    wp.style["align"] = "center"
+    wm.style["align"] = "center"
+    wl.style["align"] = "center"
+    
+    wm.style["min-width"] = 0
+    wp.style["min-width"] = 0
+    wl.style["min-width"] = 0
+    
+    wl.stylesets["hover"]["bgimage"] = "none"
+    wl.stylesets["default"]["bgimage"] = "none"
+    wl.stylesets["down"]["bgimage"] = "none"
+    wl.stylesets["focused"]["bgimage"] = "none"
+    wp.label.style["font-size"] = 14
+    wm.label.style["font-size"] = 14
+    wl.label.style["font-size"] = 14
+
+    wl.label.style["color"] = (255,255,255)
+    wm.label.style["color"] = (255,255,255)
+    wp.label.style["color"] = (255,255,255)
+
+    wm.connect(MOUSEBUTTONDOWN, onJogStart, (i, -1))
+    wm.connect(MOUSEBUTTONUP, onJogEnd, (i, -1))    
+    wp.connect(MOUSEBUTTONDOWN, onJogStart, (i, 1))
+    wp.connect(MOUSEBUTTONUP, onJogEnd, (i, 1))    
+    
+    #enableStealEvents([wp, wm, wl])   # fur evenimentele separat aici
+    guiapp.add(wm,wl,wp)
+    
+    global plusminus
+    plusminus.append([wm,wl,wp])
+
+def adjust_panels():
+    for p in panels:
+        w = p[0]
+        s = p[1]
+        (top, bottom, left, right) = s.tblr
+        (W,H) = pygame.display.get_surface().get_size()
+        w.x = left
+        w.y = H - top
+
+
+def resizeGUI(w, h):
+    for panel in panels:
+        panel[1].setup()
+    adjust_panels()
+#    for panel in panels:
+#        panel[1].setup()
+#        panel[0].top_surface = panel[1].surf
+#        panel[0].dirty = True
+
+
+
 def stealEvents(steal):
     global processViewerEvents
     if steal: 
@@ -58,45 +205,6 @@ def enableStealEvents(widgets):
         w.connect(MOUSEBUTTONUP, stealEvents, False)
 
 
-def addPlusMinus(guiapp, text, i):
-    y0 = 30 + i * 35
-    wm = gui.Button("-", x=-65, y=y0, width=10)
-    wp = gui.Button("+", x=-10, y=y0, width=10)
-    wl = gui.Button(text, x=-52.5, y=y0, width=0)
-
-    wm.style["min-width"] = 0
-    wp.style["min-width"] = 0
-    wp.style["align"] = "right"
-    wm.style["align"] = "right"
-    wl.style["align"] = "right"
-    wl.style["padding"] = 0
-    wl.style["min-width"] = 0
-    wl.stylesets["hover"]["bgimage"] = "none"
-    wl.stylesets["default"]["bgimage"] = "none"
-    wl.stylesets["down"]["bgimage"] = "none"
-    wl.stylesets["focused"]["bgimage"] = "none"
-    wp.label.style["font-size"] = 14
-    wm.label.style["font-size"] = 14
-    wl.label.style["font-size"] = 14
-    wl.style["x"] = wl.style["x"] + wl.width/2
-    
-    
-
-    wl.label.style["color"] = (255,255,255)
-    wm.label.style["color"] = (255,255,255)
-    wp.label.style["color"] = (255,255,255)
-
-    wm.connect(MOUSEBUTTONDOWN, onJogStart, (i, -1))
-    wm.connect(MOUSEBUTTONUP, onJogEnd, (i, -1))    
-    wp.connect(MOUSEBUTTONDOWN, onJogStart, (i, 1))
-    wp.connect(MOUSEBUTTONUP, onJogEnd, (i, 1))    
-    
-
-    #enableStealEvents([wp, wm, wl])
-    guiapp.add(wm,wl,wp)
-    
-    global plusminus
-    plusminus.append([wm,wl,wp])
     
 def onJogStart(args):
     (i,sign) = args
@@ -154,16 +262,14 @@ def onModeSwitch():
             opclo.active = True
             wl = plusminus[i][1]
             wl.active = True
-            wl.style["x"] = wl.style["x"] - wl.width/2
             wl.label.value = labels[modeindex][i]
-            wl.style["x"] = wl.style["x"] + wl.width/2
         
         #plusminus[i][1].style["bgcolor"] = (0,0,0)
         
-    # fixme: chestia asta merge ca melcul pe windows
-    gui_screen.clear()
-    myguiapp.top_surface = gui_screen.surf
-    myguiapp.dirty = 1
+    # fixme: cum fac fara sa regenerez textura de la zero? (doar s-o sterg)
+    rightPanel[1].clear()
+    rightPanel[0].top_surface = rightPanel[1].surf
+    rightPanel[0].dirty = 1
 
 def onSpeedChange():
 
@@ -191,89 +297,41 @@ def onSpeedToggle():
     onSpeedChange()
     speedpot.dirty = True
     
-def resizeGUI(w, h):
-    gui_screen.setup()
-    myguiapp.top_surface = gui_screen.surf
-    myguiapp.style["width"] = w
-    myguiapp.style["height"] = h
     
 
-def refreshState():
-    global speedpot, speedMonitor
-    if speedMonitor != RobotSim.speed_monitor:
-        speedMonitor = RobotSim.speed_monitor
-        speedpot.value = speedMonitor
-        onSpeedChange()
+def refresh():
+    if RobotSim.switch["GUI"]:
+        global speedpot, speedMonitor
+        if speedMonitor != RobotSim.speed_monitor:
+            speedMonitor = RobotSim.speed_monitor
+            speedpot.value = speedMonitor
+            onSpeedChange()
 
-    if jogEnabled:
-        RobotSim.jog(jogMode, jogAxis, jogSpeed)
-        
-    # hack
-    global modeswitch, opclo
-    for w in [modeswitch, opclo]:
-        w.label.style["color"] = (255,255,255)
-        w.label.style["font-size"] = 14
+        if jogEnabled:
+            RobotSim.jog(jogMode, jogAxis, jogSpeed)
+            
+            
+        fpsindic.label.value = "%d fps" % fps
+        fpsindic.dirty = True
+            
+        # hack
+        global modeswitch, opclo
+        for w in [modeswitch, opclo]:
+            w.label.style["color"] = (255,255,255)
+            w.label.style["font-size"] = 14
 
 
-def initGUI():
-    global gui_screen, myguiapp, speedpot, speedlabel, modeswitch, opclo
+        for panel in panels:
+            panel[0].draw()
+            panel[1].refreshPosition()
+            panel[1].refresh()
+            panel[1].display()
+
+def run(events):
+    global processViewerEvents
     
-    gui_screen = lamina.LaminaScreenSurface(0.01)
-    
-    myguiapp = gui.Container(width=640, height=480, surface=gui_screen.surf)
-    myguiapp.style["bgimage"] = "none"
-
-    labels = ["X", "Y", "Z", "RX", "RY", "RZ"]
-
-    modeswitch = gui.Switch(0, ["Comp", 'World', 'Tool', 'Joint'], [0,1,2,3], x=-10, y=30, width=65)
-    modeswitch.label.style["color"] = (255,255,255)
-    modeswitch.style["align"] = "right"
-    modeswitch.label.style["font-size"] = 14
-    enableStealEvents([modeswitch])
-    modeswitch.connect(CHANGE, onModeSwitch)
-    myguiapp.add(modeswitch)
-
-    opclo = gui.Switch(0, ["OPEN", "CLOSE"], [0,1], x=-10, y=30+35*7, width=65)
-    opclo.label.style["color"] = (255,255,255)
-    opclo.style["align"] = "right"
-    opclo.style["valign"] = "top"
-    opclo.label.style["font-size"] = 14
-    enableStealEvents([opclo])
-    opclo.connect(CHANGE, onOpenClose)
-    myguiapp.add(opclo)
-    
-
-
-
-    speedpot = gui.HSlider(value=50, min_value=1, length=99, x=30, y=-20, width=300)
-    speedpot.style["align"] = "center"
-    speedpot.style["valign"] = "bottom"
-    enableStealEvents([speedpot])
-    myguiapp.add(speedpot)
-
-    speedlabel = gui.Button("MCP Speed: 50", x=10, y=-18, width=130)
-    speedlabel.style["align"] = "left"
-    speedlabel.style["valign"] = "bottom"
-    speedlabel.label.style["color"] = (255,255,255)
-    speedlabel.label.style["font-size"] = 14
-    speedlabel.connect(CLICK, onSpeedToggle)
-    #speedlabel.style["bgimage"] = "none"
-
-    enableStealEvents([speedlabel])
-    myguiapp.add(speedlabel)
-
-    speedpot.connect(CHANGE, onSpeedChange)
-
-    #con = gui.TextBlock(value="spanac\ncastraveti", x=0, y=-50, width=300)
-    #con.style["align"] = "center"
-    #con.style["valign"] = "bottom"
-    #enableStealEvents([con])
-    #myguiapp.add(con)
-
-    for i, l in enumerate(labels):
-        addPlusMinus(myguiapp, l, i+1)
-
-
-    onModeSwitch()
-
-
+    if RobotSim.switch["GUI"]:
+        for panel in panels:
+            panel[0].run(events)
+    else:
+        processViewerEvents = True

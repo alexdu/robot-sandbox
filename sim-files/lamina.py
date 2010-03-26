@@ -93,12 +93,15 @@ def overlay_texture(txtr, surf, r):
     @param surf: surface to copy from
     @param r: rectangle indicating area to overlay.
     """
+    
     subsurf = surf.subsurface(r)
     textureData = pygame.image.tostring(subsurf, "RGBA", 1) 
 
     hS, wS = surf.get_size()
-    rect = pygame.Rect(r.x,hS-(r.y+r.height),r.width,r.height)
-    
+    #~ print r
+    #rect = pygame.Rect(r.x,hS-(r.y+r.height),r.width,r.height)
+    rect = r
+    #~ print rect
     ogl.glEnable(ogl.GL_TEXTURE_2D)
     ogl.glBindTexture(ogl.GL_TEXTURE_2D, txtr)
     ogl.glTexSubImage2D(ogl.GL_TEXTURE_2D, 0, rect.x, rect.y, rect.width, rect.height,  
@@ -131,7 +134,6 @@ class LaminaPanelSurface(object):
         powerOfTwo = 64
         while powerOfTwo < max(*self._winSize):
             powerOfTwo *= 2
-        
         raw = pygame.Surface((powerOfTwo, powerOfTwo), pygame.SRCALPHA, 32)
         self._surfTotal = raw.convert_alpha()
         self._usable = 1.0*self._winSize[0]/powerOfTwo, 1.0*self._winSize[1]/powerOfTwo
@@ -149,12 +151,15 @@ class LaminaPanelSurface(object):
         @param dirty: list of rectangles to update, None for whole panel
         """
         if not self._txtr:
+            #~ print "loading texture"
             self._txtr = load_texture(self._surfTotal)
         else:
             wS, hS = self._surfTotal.get_size()
             if dirty is None:
+                #~ print "full refresh"
                 dirty = [pygame.Rect(0,0,wS,hS)]
             for r in dirty:
+                #~ print "refreshing", r
                 overlay_texture(self._txtr,self._surfTotal,r)
                 
     def convertMousePos(self, pos):
@@ -324,3 +329,130 @@ class LaminaScreenSurface3(LaminaScreenSurface):
                 self._qdims = topleft[0], topleft[1], width, height
                 self._depth = depth
         LaminaScreenSurface.display(self)
+
+
+
+
+
+
+
+
+
+
+
+
+
+class LaminaPartialScreenSurface(LaminaPanelSurface): 
+    """Surface for imagery to overlay.  Autofits to actual display. 
+    @ivar surf: surface
+    @ivar dims: tuple with corners of quad
+    """
+
+    def __init__(self, width=100, height=100, x = 0, y = 0, depth=0.01):
+        """
+        width, height: px
+        
+        float x: h-center
+        int x >= 0: left aligned
+        int x < 0: right aligned
+
+        float y: v-center
+        int y >= 0: bottom aligned
+        int y < 0: top aligned
+        
+        """
+        
+        self._txtr = None
+        self._depth = depth
+        self._whxy = (width, height, x, y)
+        self.setup()
+        self.clear()
+
+    def setup(self):
+        """Setup stuff, after pygame is inited. """
+        
+        self.regen()
+        
+        (width, height, x, y) = self._whxy
+        #~ print self._whxy
+        self._winSize = pygame.display.get_surface().get_size()
+        
+        (W, H) = self._winSize
+        if type(x).__name__ == 'float':
+            left = int(W/2 - width/2 + x)
+            right = int(W/2 + width/2 + x)
+        else:
+            if x > 0:
+                left = x
+                right = x + width
+            else:
+                left = W - abs(x) - width
+                right = W - abs(x)
+            
+        if type(y).__name__ == 'float':
+            bottom = int(H/2 - height/2 + y)
+            top = int(H/2 + height/2 + y)
+        else:
+            if y > 0:
+                bottom = y
+                top = y + height
+            else:
+                bottom = H - abs(y) - height
+                top = H - abs(y)
+
+        self.tblr = [top, bottom, left, right]
+        #~ print self.tblr
+        
+        self.refreshPosition()
+        #self.clear()
+        
+    def refreshPosition(self):
+        """Recalc where in modelspace quad needs to be to fill screen."""
+
+        depth = self._depth
+        (top, bottom, left, right) = self.tblr
+        
+        bottomleft = oglu.gluUnProject(left, bottom, depth)
+        bottomright = oglu.gluUnProject(right, bottom, depth)
+        topleft = oglu.gluUnProject(left, top, depth)
+        topright = oglu.gluUnProject(right, top, depth)
+        
+        self.dims = topleft, topright, bottomright, bottomleft 
+        width = topright[0] - topleft[0]
+        height = topright[1] - bottomright[1]
+        self._qdims = topleft[0], topleft[1], width, height
+
+
+        
+
+    def clear(self):
+        """Restore the total transparency to the surface. """
+        
+        (top, bottom, left, right) = self.tblr
+        width = right - left
+        height = top - bottom   
+        
+        #~ print "(w,h) = ", (width, height)
+        width2 = pow2(width)
+        height2 = pow2(height)
+            
+        
+        print "Allocating texture: ", (width2, height2)
+        raw = pygame.Surface((width2, height2), pygame.SRCALPHA, 32)
+        self._surfTotal = raw.convert_alpha()
+        #~ print "surfTotal:", (width2, height2)
+        
+        self._usable = 1.0*width/width2, 1.0*height/height2
+        self.surf = self._surfTotal.subsurface(0,0,width,height)
+
+
+        #~ print "usable:", self._usable
+        
+        self.regen()
+        
+        
+def pow2(x):
+    powerOfTwo = 2
+    while powerOfTwo < x:
+        powerOfTwo *= 2
+    return powerOfTwo

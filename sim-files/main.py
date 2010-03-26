@@ -104,6 +104,7 @@ import viewer_gui
 
 
 sys.argv.append("--navigation-mode=Softimage")
+sys.argv.append("--verbose")
 sys.argv.append("scene.py")
 V = viewer_gui.Viewer()
 V.run()

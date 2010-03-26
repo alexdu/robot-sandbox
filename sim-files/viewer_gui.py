@@ -377,7 +377,6 @@ class Viewer(Tool):
                 pygame.event.set_allowed(SYSWMEVENT)
 
         gui.initGUI()
-
         
         # Event loop...
         self.running = True
@@ -398,24 +397,17 @@ class Viewer(Tool):
                     
                 self.draw(self.cam, width, height) 
                 
-                gui.refreshState()
-                gui.myguiapp.draw()
-                
-                gui.gui_screen.refreshPosition()
-                gui.gui_screen.refresh()
-                gui.gui_screen.display()
-            
+                if cnt % 30 == 0:
+                    gui.fps = clk.get_fps()
+                    #~ print gui.fps
+                gui.refresh()
                 
                 pygame.display.flip()
-                #time.sleep(1)
-
 
                 # Handle events
 
-
                 events = pygame.event.get()
-                gui.myguiapp.run(events)
-                
+                gui.run(events)
                 if gui.processViewerEvents:
                     self.handleEvents(events)
 

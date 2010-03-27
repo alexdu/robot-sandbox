@@ -27,16 +27,23 @@ import threading
 sys.argv.pop()
 sys.argv.pop()
 import IPython
-from IPython.Shell import IPShellEmbed
+import pygame
+import time
+
 from vplus import *
 import vplus
-import time
 
 
 # acum sunt in folderul cu sursele (src, sim-files)
 _dir = os.getcwd()
 _args = ['-pi1','. ','-po','=> ', '-colors', 'LightBG', '-xmode', 'Plain', '-autocall', '0']
-_ipshell = IPShellEmbed(_args, banner="V+ simulation console ready.")
+_ipshell = IPython.Shell.IPShellEmbed(_args, banner="V+ simulation console ready.")
+
+
+def _onQuit():    
+    raise SystemExit
+
+eventmanager.connect("QUIT", _onQuit)
 
 
 class ConsoleThread ( threading.Thread ):
@@ -82,9 +89,7 @@ class ConsoleThread ( threading.Thread ):
 
         
         _ipshell() 
-        _ipshell.IP.savehist()
-        os.abort()
-        raise SystemExit
+        pygame.event.post(pygame.event.Event(pygame.locals.QUIT))
 
 ConsoleThread().start()
 

@@ -436,10 +436,9 @@ class Viewer(Tool):
 #                print "fps: %d"%clk.get_fps()
 #                print "Virtual time:",timer.time, "Real time:",timer.clock
 #                cnt=0
-        #print "Exiting..."
-        #raise SystemExit
-        print "Forced Quit..."
-        os.abort()        
+        print "Exiting..."
+        eventManager().event("QUIT")
+  
 
 
     # handleEvents

@@ -2,13 +2,16 @@
 Vdo speed 10 always
 p2
 I232
-sVa = 3.4
+sV!dir
 p3
+I1583
+sVa = 3.4
+p4
 I1903
 sVdo call pick.place(1,2)
-p4
-I660
-sV!dir
 p5
-I1583
+I660
+sVexec signal
+p6
+I2019
 s.

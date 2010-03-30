@@ -2,37 +2,40 @@
 Vp.totuple()
 p2
 I1594
-sV_ip
+sVvplus._build_dictionary
 p3
-I418
-sVprint "%5.3g" % 5323
+I882
+sVgc.collect()
 p4
-I500
-sV__globals__
+I2011
+sV_ip
 p5
-I404
-sVa.index("c")
+I418
+sVdo appro dy(201), 200
 p6
-I1711
+I197
 sVdo k = 2
 p7
 I538
-sV"x" in ["x", "y"]
-p8
-I122
 sVjobs.remove("0")
-p9
+p8
 I1327
-sVdo appro dy(201), 200
-p10
-I197
-sVvplus._build_dictionary
-p11
-I882
-sV__builtins__.dict
-p12
-I413
 sVTRANS(10)
-p13
+p9
 I7
+sVprint "%5.3g" % 5323
+p10
+I500
+sVa.index("c")
+p11
+I1711
+sV__globals__
+p12
+I404
+sV__builtins__.dict
+p13
+I413
+sV"x" in ["x", "y"]
+p14
+I122
 s.

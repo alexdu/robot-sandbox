@@ -28,18 +28,25 @@ matBlueBox = GLMaterial(name="BlueBox", diffuse=(0,0,1))
 matPinkBox = GLMaterial(name="PinkBox", diffuse=(1,0,1))
 matBoxes = [matRedBox, matYellowBox, matGreenBox, matBlueBox, matPinkBox]
 
-defaultContactProps = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-4)
-contactProps_BoxBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.1, soft_cfm=1E-5)
-contactProps_PalBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-5)
-contactProps_FloorBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-5)
+defaultContactProps = ODEContactProperties(bounce = 0, mu = 0.01, soft_erp=0.2, soft_cfm=1E-4)
+contactProps_BoxBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.1, soft_cfm=1E-4)
+contactProps_PalBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-6)
+contactProps_FloorBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-6)
 
-contactProps_GripBox = ODEContactProperties(bounce = 0, mu = ode.Infinity, soft_erp=0.1, soft_cfm=0.002)
+contactProps_GripBox = ODEContactProperties(bounce = 0, mu = 100, soft_erp=0.2, soft_cfm=0.0001)
 
-odeSim = ODEDynamics(gravity=9.81/5, substeps=1, cfm=1E-5, erp=0.5, defaultcontactproperties = defaultContactProps,
-               show_contacts=1, contactmarkersize=1E-3, contactnormalsize=0.01)
+odeSim = ODEDynamics(gravity=9.81/5, substeps=2, cfm=1E-5, erp=0.2, defaultcontactproperties = defaultContactProps,
+               show_contacts=1, contactmarkersize=1E-3, contactnormalsize=0.01, use_quick_step = False)
 
 odeSim.world.setLinearDamping(0.1)
 odeSim.world.setAngularDamping(0.1)
+odeSim.world.setContactMaxCorrectingVel(0.1)
+odeSim.world.setContactSurfaceLayer(1E-10)
+odeSim.world.setAutoDisableFlag(True)
+odeSim.world.setAutoDisableLinearThreshold(0.01)
+odeSim.world.setAutoDisableAngularThreshold(0.01)
+
+#odeSim.world.setMaxAngularSpeed(1)
 
 for matBox in matBoxes:
     odeSim.setContactProperties((matGripper, matBox), contactProps_GripBox)
@@ -77,9 +84,9 @@ link4 = worldObject("Robot Link 4")
 link5 = worldObject("Robot Link 5-6")
 link6 = Box("Gripper Mounting Support", lx = 50E-3, ly = 30E-3, lz = 30E-3, mass=0.1)
 #gripper = Box(lx = 15, ly = 15, lz = 30, mass=1)
-gripper = Box("Gripper", lx = 20E-3, ly = 30E-3, lz = 100E-3, mass=1, material=matGripper)
-finger1 = Box("Gripper Finger 1", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.001, material=matGripper)
-finger2 = Box("Gripper Finger 2", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.001, material=matGripper)
+gripper = Box("Gripper", lx = 20E-3, ly = 30E-3, lz = 100E-3, mass=100, material=matGripper)
+finger1 = Box("Gripper Finger 1", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.1, material=matGripper)
+finger2 = Box("Gripper Finger 2", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.1, material=matGripper)
 
 
 
@@ -100,14 +107,16 @@ floor.pos = (0,0,-25E-3)
 
 
 
-RobotSim.gripForce = 10
+RobotSim.gripForce = 1000
 def setGripperForces(open, close):
     gripForce = RobotSim.gripForce
     
     slider_finger1.motorfmax = gripForce
     slider_finger2.motorfmax = gripForce
-    slider_finger1.fudgefactor = 0.0001
-    slider_finger2.fudgefactor = 0.0001
+    slider_finger1.fudgefactor = 0.000001
+    slider_finger2.fudgefactor = 0.000001
+    slider_finger1.stopcfm = 1E-5
+    slider_finger2.stopcfm = 1E-5
 
     
     if open:
@@ -116,16 +125,22 @@ def setGripperForces(open, close):
         slider_finger1.histop = 40E-3
         slider_finger2.lostop = -40E-3
     if close:
-        slider_finger1.motorvel = -0.1
-        slider_finger2.motorvel = 0.1
+        
+        pos1 = abs(slider_finger1.position)
+        pos2 = abs(slider_finger1.position)
+        err = pos1 - pos2
+        k = 1
+        
+        slider_finger1.motorvel = -0.2 + err * k
+        slider_finger2.motorvel = 0.2 - err * k
         
         pos = abs(slider_finger2.position)
         pos = min(pos, 40E-3)
         pos = max(pos, 10E-3)
-        slider_finger1.histop = pos + 0.1E-3
-        slider_finger1.lostop = pos - 5E-3
-        slider_finger2.histop = -pos + 5E-3
-        slider_finger2.lostop = -pos - 0.1E-3
+        slider_finger1.histop = pos + 0.01E-3
+        slider_finger1.lostop = pos - 1E-3
+        slider_finger2.histop = -(pos - 1E-3)
+        slider_finger2.lostop = -(pos + 0.01E-3)
         
         #slider_finger2.lostop = -pos-0.01E-3
         
@@ -156,6 +171,9 @@ def setGripperForces(open, close):
 def enforcePose(m, P):
     #~ if int(scene._timer.frame) |MOD| 30 == 0:
     if True:
+        
+        m.odebody.enable()
+        
         oldPos = m.body.pos
         (pos,b,c) = P.decompose()
         m.setRot(P.getMat3().inverse().toList())
@@ -166,6 +184,9 @@ def enforcePose(m, P):
 
 def changePose(m, P):
     #if int(scene._timer.frame) % 30 == 0:
+    
+        m.odebody.enable()
+        
         oldPos = m.body.pos
         (pos,b,c) = P.decompose()
         dt = 1/RobotSim.fps
@@ -185,6 +206,7 @@ def changePose(m, P):
         
         m.setAngularVel((axis[0] * v, axis[1] * v, axis[2] * v))
 
+        
 
 
 def enforceRobotPos(J, grip_pos = -1):

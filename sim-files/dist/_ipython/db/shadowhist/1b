@@ -1,17 +1,20 @@
 (dp1
-Va.copy()
+Vexecfile("paletizare.py")
 p2
-I1441
-sVprint globals()
-p3
-I1896
-sVexecfile("paletizare.py")
-p4
 I885
 sVcp
-p5
+p3
 I1312
-sVwhile 1 == 3
+sVa.copy()
+p4
+I1441
+sVprint globals()
+p5
+I1896
+sVload signal
 p6
+I2018
+sVwhile 1 == 3
+p7
 I701
 s.

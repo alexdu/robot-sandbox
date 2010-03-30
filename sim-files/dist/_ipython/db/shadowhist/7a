@@ -1,20 +1,23 @@
 (dp1
-V_ipshell.IP.buffer.count
+Vdo move bs:shift(ry(180) by -100,-100,-90)
 p2
-I1556
+I1483
 sVquit()
 p3
 I1
-sVdo move shift(pal by 110,120,60)
-p4
-I340
-sVdo move bs:shift(ry(180) by -100,-100,-90)
-p5
-I1483
 sVsys.last_traceback.tb_next.tb_next
-p6
+p4
 I926
 sVjobs.jobs_all[0].stat_code
-p7
+p5
 I1350
+sVimport gc
+p6
+I2010
+sVdo move shift(pal by 110,120,60)
+p7
+I340
+sV_ipshell.IP.buffer.count
+p8
+I1556
 s.

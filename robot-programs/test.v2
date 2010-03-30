@@ -1,0 +1,124 @@
+.PROGRAM test()
+    AUTO a, x, number
+    GLOBAL b, cucu
+    
+    AUTO a[5]
+    
+    TYPE "V+ Language Tests"
+    
+    TYPE "ABS(-5) => ", ABS(-5)
+    TYPE "SIN(30) => ", SIN(30)
+    TYPE "COS(30) => ", COS(30)
+    TYPE "TAN(30) => ", TAN(30)
+    TYPE "SQRT(2) => ", SQRT(2)
+    TYPE "SQR(2) => ", SQR(2)
+    TYPE "ATAN2(1,1) =>", ATAN2(1,1)
+    TYPE "3 BAND 6 => ", 3 BAND 6
+    TYPE "3 BOR 6 => ", 3 BOR 6
+    TYPE "3 BXOR 6 => ", 3 BXOR 6
+    TYPE "3 AND 6 => ", 3 AND 6
+    TYPE "3 OR 6 => ", 3 OR 6
+    TYPE "3 XOR 6 => ", 3 XOR 6
+    TYPE "BMASK(1,5) => ", BMASK(1,5)
+    TYPE "SIGN(0) =>", SIGN(0)
+    
+    TYPE "SIGNAL 1,2,-3"
+    SIGNAL 1,2,-3
+    TYPE "SIG(1,2,3) => ", SIG(1,2,3)
+    TYPE "SIG(1,2,-3) => ", SIG(1,2,-3)
+    TYPE "SIG(-1,2,-3) => ", SIG(-1,2,-3)
+    
+    TYPE "array test [=> 0 1 2 3]"
+    FOR i = 0 TO 3
+        a[i] = i
+    END
+    
+    FOR i = 0 TO LAST(a[])
+        TYPE a[i]
+    END
+    
+    TYPE "case test"
+    FOR x = -1 TO 12
+        CASE x OF
+        VALUE 0, 2, 4, 6, 8, 10:
+            TYPE "The number", x, " is EVEN"
+        VALUE 1, 3, 5, 7, 9:
+            TYPE "The number", x, " is ODD"
+        ANY:
+            TYPE x, " is not an integer from 0 to 10"
+        END
+    END
+    
+    TYPE "case test 2"
+    
+    FOR number = 0 TO 3
+        CASE number OF
+        VALUE 1:
+            TYPE "one"
+        VALUE 2:
+            TYPE "two"
+        ANY
+            TYPE "Not one or two"
+        END
+    END
+    
+    
+    TYPE "do-until test [=> 11]"
+    a = 1
+    DO
+        a = a + 1
+    UNTIL a > 10
+    TYPE a
+    
+    TYPE "for test [=> 1 2 3 4 5]"
+    FOR i = 1 TO 5
+        TYPE i
+    END
+    
+    TYPE "while-next test [=> 5 6 7 8 9 10]"
+    i = 1
+    WHILE i < 10
+        i = i + 1
+        IF i < 5 THEN
+            NEXT
+        END
+        TYPE i
+    END
+    
+    TYPE "if-else test [=> ok]"
+    IF i < 20
+        TYPE "ok"
+    ELSE
+        TYPE "ups"
+    END
+    
+    
+    TYPE "for-exit test [=> 6]"
+    
+    FOR i = 1 TO 10
+        IF i > 5
+            EXIT
+        END
+    END
+    TYPE i
+    
+    
+    
+    TYPE "pass by reference test"
+    
+    a = 1
+    b = 1
+    cucu = 5
+    TYPE "main: ", a, b
+    CALL inc(a+0,b)
+    TYPE "main: ", a, b
+.END
+
+.PROGRAM inc(a,b)
+    TYPE "inc: ", a, b
+    a = a + 1
+    b = b + 1
+    TYPE "inc: ", a, b
+    RETURN
+.END
+

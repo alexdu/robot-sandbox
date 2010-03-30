@@ -30,7 +30,7 @@
     
     
     SPEED 70 ALWAYS             ;viteza de lucru
-    PARAMETER HAND.TIME = 0.2
+    PARAMETER HAND.TIME = 1
     
     OPEN
     MOVE #safe

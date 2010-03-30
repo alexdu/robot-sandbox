@@ -437,6 +437,7 @@ class Viewer(Tool):
 #                print "Virtual time:",timer.time, "Real time:",timer.clock
 #                cnt=0
         print "Exiting..."
+        pygame.display.quit()
         eventManager().event("QUIT")
   
 

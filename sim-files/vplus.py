@@ -356,7 +356,8 @@ def _TO(a,b):
     """
     Creates an interval to be used in FOR loops:
     _TO(1,5) = [1,2,3,4,5]
-    _TO(5,1) = [5,4,3,2,1]
+    _TO(1,1) = [1]
+    _TO(5,1) = []
     1 |TO| 5 is a shortcut for _TO(1,5)
     
     Usage in V+ program:
@@ -368,12 +369,21 @@ def _TO(a,b):
     """    
     check_args([a, b], [numeric])
 
-    if a < b:
-        return range(a, b+1)
-    else:
-        return range(a, b-1, -1)
+    return range(a, b+1)
+    
 TO = infix(lambda x,y: _TO(x,y))
 
+
+
+
+TO = infix(lambda x,y: _TO(x,y))
+def _XOR(a,b):
+    """
+    Logical XOR
+    """    
+    check_args([a, b], [numeric])
+    return bool(a) ^ bool(b)
+XOR = infix(lambda x,y: _XOR(x,y))
 
 class TRANS:
     """
@@ -629,7 +639,7 @@ def BREAK():
             raise UserAbort
         if not RobotSim.comp_mode:
             raise CompModeDisabled
-    time.sleep(0.3)
+    time.sleep(0.1)
     
     
 def OPENI():
@@ -898,7 +908,7 @@ def DEPARTS(h):
     check_args(h, numeric)
     MOVES(DEST() * TRANS(0, 0, -h))
 
-def PARAMETER(param_name, value):
+def PARAMETER(param_name, value = None):
     """
     PROGRAM INSTRUCTION and MONITOR COMMAND
     
@@ -912,9 +922,15 @@ def PARAMETER(param_name, value):
     
     PARAMETER HAND.TIME = 100
     """
-    check_args([param_name, value], ["str", numeric])
-    param_name = param_name.replace("_", ".")
-    RobotSim.param[param_name] = value
+    
+    if value == None:
+        check_args([param_name], ["str"])
+        param_name = param_name.replace("_", ".")
+        return RobotSim.param[param_name.upper()]
+    else:
+        check_args([param_name, value], ["str", numeric])
+        param_name = param_name.replace("_", ".")
+        RobotSim.param[param_name.upper()] = value
 
 def TOOL(t = None):
     """
@@ -925,11 +941,123 @@ def TOOL(t = None):
         RobotSim.tool_trans = t
     return RobotSim.tool_trans
 
+
+
+def _valid_signal(x, inp = False, out = False, soft = False):
+    if out and 0 < x and x <= 512:
+        return True
+    if inp and 1000 < x and x <= 1512:
+        return True
+    if soft and 2000 < x and x <= 2512:
+        return True
+    raise Exception, "Invalid signal address: %d" % x
+
+
+def SIGNAL(*X):
+    """
+
+    Sets or resets one or more digital signals (output or software).
+    
+    Output signals:      1 ... 512
+    Software signals: 2001 ... 2512
+    
+    Negative logic is achieved by changing the sign of the address:
+
+    SIGNAL 5              # sets the digital i/o line 5 to TRUE
+    SIGNAL -5             # resets line 5 (to FALSE)
+    SIGNAL 1,2,-3         # sets 1 and 2, resets 3
+
+    """
+    check_args(list(X), "int")
+    for x in X:
+        _valid_signal(abs(x), False, True, True)
+        RobotSim.signals[abs(x)] = (x > 0)
+        RobotSim.signals_dirty = True
+
+        
+def SIG(*X):
+    """
+
+    Reads the state of a digital signal.
+    
+    Input signals:    1001 ... 1512
+    Output signals:      1 ... 512
+    Software signals: 2001 ... 2512
+    
+    Negative logic is achieved by changing the sign of the address:
+    
+    SIG(1001)      returns -1 if digital i/o line 1001 is TRUE
+    SIG(-1001)     returns 0
+    
+    SIG(1001, -1002, 1003)  <=> SIG(1001) AND SIG(-1002) AND SIG(-1003)
+
+    """
+    check_args(list(X), "int")
+    bigval = True
+    for x in X:
+        _valid_signal(abs(x), True, True, True)
+
+        addr = abs(x)
+        if not (addr in RobotSim.signals): 
+            RobotSim.signals[addr] = False
+            RobotSim.signals_dirty = True
+        
+        val = RobotSim.signals[addr]
+        if x < 0:
+            val = not val
+        bigval = bigval and val
+    
+    return (-1 if bigval else 0)
+        
+def TIMER(x, value = None):
+    x = int(eval(str(x)))
+    if not (x in RobotSim.timers):
+        raise Exception, "Timer " + str(x) + " does not exist. Only timers from -3 to 15 are valid."
+    
+    if value == None:
+        return time.time() - RobotSim.timers[x]
+    else:
+        RobotSim.timers[x] = time.time() - value
+
+def WAIT_EVENT(unused, delay):
+    t0 = time.time()
+    while time.time() < t0 + delay:
+        time.sleep(0.01)
+        if RobotSim.abort_flag:
+            RobotSim.abort_flag = False
+            raise UserAbort
+        if not RobotSim.comp_mode:
+            raise CompModeDisabled
+
+
 safe = PPOINT(0,-90,180,0,0,0)
 
 
+def LAST(x):
+    """
+    Last index used (not None) in a 1-D array (list).
+    """
+    check_args([x], 'list')
+    for i in range(len(x)-1, 0, -1):
+        if x[i] != None:
+            return i
+    return -1
 
+def ASC(str, i=1):
+    check_args([str,i], ["str", numeric])
+    i = int(i)
+    return str[max(0, i-1)]
 
+def VAL(str):
+    check_args([str], ["str"])
+    return eval(str)
+
+def BMASK(*bits):
+    check_args(list(bits), [numeric])
+    val = 0
+    for b in bits:
+        val = val | (1 << (int(b)-1))
+    return val
 
 
 # comenzi monitor
@@ -1187,6 +1315,7 @@ def exec_init():
 def exec_end():
     print
     print "Press ENTER to continue "
+    print 
     sys.settrace(None)
     sys.stdout.flush()
     sys.stdout = sys.sys_stdout
@@ -1529,29 +1658,65 @@ def _CM_CALIBRATE(self, var):
     print "Simulated robots do not need calibration :)"
 
 
+def _edit(file, lineno = None):
+    if sys.platform == 'win32':
+        if lineno and ('notepad2.exe' in _editor.lower()):
+            subprocess.Popen("%s /g %d %s" % (_editor, lineno, file))
+        else:
+            subprocess.Popen("%s %s" % (_editor, file))
+    else:
+        subprocess.Popen([_editor, file])
+
 def _CM_SEE(self, prog):
     """
 
-    Edits a robot program.
+    Edits a robot program or a text file.
 
     Example:
-
-    see stiva
+    
+    see hanoi         ; edits program "hanoi" (it should be loaded first)
+    see hanoi.v2      ; edits file hanoi.v2
+    see hanoi.env     ; edits file hanoi.env
+    
 
     Editor is vplus._editor 
-    Default editor on Windows: notepad2 (included).
-    If not found, falls back to notepad.
-
-    """
-    if not re.match("^.*\.[^.]*$", prog): # fara extensie, ii adaug .v2
-        prog = prog + ".v2" 
     
-    print "editing %s ..." % prog
-    subprocess.Popen([_editor, prog])
+    At startup, vplus._editor is assigned to the first program 
+    found from the following list:
+    
+    Windows editors: notepad2 (included) or notepad.
+    Linux editors: gedit, kwrite, vim, vi
+    
+    
+    """
+    
+    if len(prog.strip()) == 0:
+        _CM_DIR(None, None)
+        return
+        
+    # mai intai vad daca e incarcat in memorie
+    if prog in programDict:
+        (file, lineno) = programDict[prog][1:3]
+        print "editing .PROGRAM %s() from file '%s:%d' ..." % (prog, file, lineno)
+        _edit(file, lineno)
+    elif re.match("^.*\.[^.]{1,3}$", prog): # ceva cu extensie => probabil e un fisier
+        print "editing file '%s' ..." % prog
+        _edit(prog)
+    else:
+        print "Program '%s' not loaded." % prog
+        print
+        print "To edit program '%s', first load it from a file." % prog
+        print
+        print "To create or edit a file, please specify its full name and extension."
+        if os.path.isfile("%s.v2" % prog):
+            print "e.g. 'see %s.v2' for editing the file '%s.v2'." % (prog, prog)
+        else:
+            print "e.g. 'see %s.v2' for creating a new file named '%s.v2'." % (prog, prog)
 
 def _CM_SPEED(self, var):
     """
-
+    MONITOR COMMAND
+    
     Set monitor speed.
 
     Example:
@@ -1559,6 +1724,8 @@ def _CM_SPEED(self, var):
     speed 100
 
     Tip: you may change the monitor speed while a robot program is running.
+    
+    There is also the program instruction SPEED, whose effect is not the same!
     """
     spd = eval('int(%s)' % var)
     print "Setting monitor speed to %d" % spd
@@ -1617,15 +1784,35 @@ def _build_dictionary():
     
     ip = IPython.ipapi.get()
     ip.runlines(code)
+
+
+def _CM_RESET(self, var):
+    """
+    MONITOR COMMAND
+    
+    Resets I/O signals.
+    """
+
+    print "Turning off signals..."
+
+    RobotSim.signals = {}
+    RobotSim.signals_dirty = True
+
     
 def _CM_ZERO(self, var):
-
+    """
+    MONITOR COMMAND
+    
+    Deletes all robot programs and variables.
+    """
+    print "Deleting all robot programs and variables..."
+    
     _build_dictionary()
     names = globalVplusNames.keys()
     ip = IPython.ipapi.get()
 
     TOOL(NULL)
-
+    
     for var in names:
         if var[0] != "_" and var.lower() == var:
             value = globalVplusNames[var]
@@ -1640,6 +1827,8 @@ def _CM_ZERO(self, var):
     programMangleP2V.clear()
     programMangleV2P.clear()
     
+    _CM_RESET(None, None)
+    
     _build_dictionary()
     
 def _CM_LISTL(self, var):
@@ -1651,7 +1840,7 @@ def _CM_LISTL(self, var):
     if len(var) > 0:
         ip = IPython.ipapi.get()
         var = translate_expression(var)
-        ip.runlines("pprint.pprint([" + var + "])")
+        ip.runlines("pprint([" + var + "])")
         return
 
     _build_dictionary()
@@ -1809,26 +1998,39 @@ def _CM_MC(self, var):
     Displays a list of supported monitor commands.
 
     """
-    print "Monitor commands:"
-    print "================="
-    print "here           # teach a robot location"
-    print "speed          # set monitor speed"
-    print "see            # edit a robot program"
-    print "exec           # execute a robot program"
-    print "status         # display system status"
-    print "listl          # list location variables"
-    print "listr          # list real and integer variables"
-    print "lists          # list string variables"
-    print "enable         # enable a switch"
-    print "disable        # disable a switch"
-    print "switch         # list switches"
-    print "parameter      # set a parameter"
-    print "tool           # set the tool transformation"
-    print "cd <folder>    # change directory"
-    print "ls             # list files"
-    print ""
-    print "For more help, type a monitor command followed by '?'"    
-    print "e.g. here?"    
+    print """
+Monitor commands:
+=================
+env            # load an environment
+load           # load a file with robot program(s)
+see            # edit a robot program or a text file
+exec           # execute a robot program
 
+here           # teach a robot location
+do             # execute a robot program instruction at the console
+               # e.g. do departs 100
+               
+status         # display system status
+speed          # set monitor speed
+abort          # abort a robot program
+
+enable         # enable a switch
+disable        # disable a switch
+switch         # list switches
+parameter      # set a parameter
+
+listl          # list location variables
+listr          # list real and integer variables
+lists          # list string variables
+tool           # set the tool transformation
+
+cd <folder>    # change directory
+ls             # list files
+%dir           # list programs loaded into memory
+zero           # deletes robot programs and variables from memory
+    
+For more help, type a monitor command followed by '?'
+e.g. here?
+"""
 
 

@@ -27,6 +27,7 @@ from math import pi
 from geom import *
 import threading
 import cgkit
+import time
 
 class IKError(Exception):
     pass
@@ -55,9 +56,18 @@ param["HAND.TIME"] = 0.5
 
 switch = dict()
 switch["POWER"] = True
-switch["TRACE"] = True
+switch["TRACE"] = False
 switch["DRY.RUN"] = False
 switch["GUI"] = True
+
+timers = {}
+def init_timers():
+    for i in range(-3, 16):
+        timers[i] = time.time()
+init_timers()
+
+signals = {}
+signals_dirty = True
 
 global speed_monitor, speed_always, speed_next_motion
 speed_monitor = 25.0

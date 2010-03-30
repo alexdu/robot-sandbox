@@ -1,20 +1,23 @@
 (dp1
-Vc = compile(cod, "spanac", "exec")
+Vm = worldObject("Box1").getMaterial().diffuse
 p2
-I980
+I1942
 sVINT(RZ(4))
 p3
 I1306
-sVjobs.flush_finished()
+sVc = compile(cod, "spanac", "exec")
 p4
-I1318
+I980
 sVdo type 3 mod 4
 p5
 I1301
-sVm = worldObject("Box1").getMaterial().diffuse
-p6
-I1942
 sVpprint(callDict())
-p7
+p6
 I1875
+sVlistl safe
+p7
+I2020
+sVjobs.flush_finished()
+p8
+I1318
 s.

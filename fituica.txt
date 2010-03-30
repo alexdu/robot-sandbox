@@ -4,59 +4,56 @@ Programele se afla in "robot-programs"
 Cateva comenzi posibile:
 
 mc                     # monitor-commands (un fel de help)
-env pal                # initializeaza mediul de lucru
-exec paletizare        # ruleaza un program robot
-exec pal_back
+env hanoi              # initializeaza mediul de lucru
+load hanoi             # incarca un program robot (din hanoi.v2)
+exec hanoi_main        # ruleaza un program robot
 speed 50               # seteaza viteza monitor
 status                 # afiseaza vitezele si programul care ruleaza
-see paletizare         # editeaza un program robot
+see hanoi_main         # editeaza un program robot
+see hanoi.v2           # editeaza un fisier cu programe robot
 
 Taste scurtatura in consola: TAB, sageata sus.
 
-OPENI()
-CLOSEI()
+do openi
+do closei
 
 
-listWorld()
 
 here a     # invatare punct (transformare)
-MOVE(a)
+do appro a, 100
 
-bs = RZ(45)
+do set bs = rz(45)
 here bs:a  # invatare punct intr-un sistem de coordonate local
-MOVE(bs*a)
+do move bs:a
 
 here #b    # invatare punct de precizie
-MOVE(b)  
+do move #b
 
 
-t = TRANS(0,0,100)
+do set t = TRANS(0,0,100)
 tool t
 tool 
-tool TRANS(0,0,100)
-tool RZ(45)
+tool trans(0,0,100)
+tool rz(45)
 
 
-APPRO(a,100)
-MOVES(a)
-DEPARTS(100)
+do appro a, 100
+do moves a
+do departs 100
 
 
 # operatii cu transformari
-b = SHIFT(a, 10, 20, 30)
-c = a * RZ(45)            # compunere
-d = a * TRANS(10, 20, 30)
-e = TRANS(10, 20, 30) * a
-DISTANCE(a,b)
-DX(a)
-DY(a)
-DZ(a)
-RX(45)
-RY(45)
-RZ(45)
+do set b = SHIFT(a BY 10, 20, 30)
+do set c = a:RZ(45)            # compunere
+do set d = a:TRANS(10, 20, 30)
+do set e = TRANS(10, 20, 30) * a
+do type distance(a,b)
+do type DX(a)
+do type DY(a)
+do type DZ(a)
+do type RX(45)
+do type RY(45)
+do type RZ(45)
 
-MOVE(HERE() * RX(45))
-
-
-
+do move here:rx(45)
 

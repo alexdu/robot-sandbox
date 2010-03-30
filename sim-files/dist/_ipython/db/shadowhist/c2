@@ -2,19 +2,22 @@
 Vs.start
 p2
 I1109
-sVRX(56)
-p3
-I1353
 sVdo break
-p4
+p3
 I523
 sVINT(4)
-p5
+p4
 I1278
-sVTerm
-p6
-I1488
 sVdo appro a,0
-p7
+p5
 I323
+sVRX(56)
+p6
+I1353
+sVTerm
+p7
+I1488
+sVdis gui
+p8
+I2013
 s.

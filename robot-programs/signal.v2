@@ -1,0 +1,104 @@
+.PROGRAM signal()
+    
+    ; Laborator 5 - Comunicatie cu automatul programabil
+    
+    GLOBAL l_storage, nl_storage, pal, #safe
+    AUTO pick, place, storage
+    AUTO p, r, h, d, n, nr
+    h = 15
+    nr = 3
+    in.start_valid = 1033
+    in.part_type = 1034
+    in.nr_parts_b1 = 1035
+    in.nr_parts_b0 = 1036
+    out.done_valid = 49
+    out.time_b2 = 50
+    out.time_b1 = 51
+    out.time_b0 = 52
+    
+    PARAMETER HAND.TIME = 0.5
+    SPEED 100 ALWAYS
+    MOVET #safe, TRUE
+    RIGHTY
+    SIGNAL (-out.done_valid)
+    SIGNAL (-out.time_b2)
+    SIGNAL (-out.time_b1)
+    SIGNAL (-out.time_b0)
+    WHILE SIG(-in.start_valid) DO
+        WAIT
+    END
+    ; citesc numarul de piese dorit:
+    n = 0
+    IF SIG(in.nr_parts_b0) THEN
+        n = n+1
+    END
+    IF SIG(in.nr_parts_b1) THEN
+        n = n+2
+    END
+    
+    ; alternativa: deoarece SIG(...) returneaza 0 sau -1,
+    ; n = ABS(2*SIG(in.nr_parts_b1) + SIG(in.nr_parts_b0))
+    
+    ; citesc tipul piesei:
+    IF SIG(in.part_type) THEN
+        SET storage = nl_storage
+    ELSE
+        SET storage = l_storage
+    END
+    
+    ; execut operatia si cronometrez:
+    TIMER 1 = 0
+    FOR p = 1 TO n
+        r = nr - p + 1
+        SET pick = SHIFT(storage BY 0, 0, h * (r-1))
+        SET place = SHIFT(pal BY 0, 0, h * (p-1))
+        CALL pick.place(pick, place)
+    END
+    MOVE #safe
+    BREAK
+    d = INT(TIMER(1))
+    TYPE "Timpul necesar: ", d, " secunde."
+    ; daca a durat mai mult de 7 secunde, trimit 7.
+    IF d > 7 THEN
+        d = 7
+    END
+    ; decodific valoarea lui d (pe 3 biti):
+    IF d BAND 4 THEN         ; BAND = AND pe biti
+        SIGNAL (out.time_b2)
+    END
+    IF d BAND 2 THEN
+        SIGNAL (out.time_b1)
+    END
+    IF d BAND 1 THEN
+        SIGNAL (out.time_b0)
+    END
+    ; semnalele care indica valoarea lui d sunt valide:
+    SIGNAL (out.done_valid)
+.END
+
+
+.PROGRAM pick.place(pick,place)
+    AUTO z.pick, z.place
+    
+    z.pick = 100
+    z.place = 100
+    
+    OPEN
+    APPRO pick, 100
+    BREAK
+    SPEED 30
+    MOVES pick
+    CLOSEI
+    SPEED 30
+    DEPARTS 100
+    BREAK
+    
+    APPRO place, 100
+    BREAK
+    SPEED 30
+    APPROS place, 1
+    OPENI
+    SPEED 30
+    DEPARTS 100
+    BREAK
+.END

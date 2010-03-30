@@ -24,15 +24,17 @@ robot-sandbox.cmd          # porneste cu Python 2.5 inclus in "dist"
 
 LINUX:
 
+
 Se instaleaza mediul de dezvoltare si bibliotecile de mai jos:
 - Python 2.5 sau 2.6 
 - ipython
-- cgkit
+- cgkit 
 - pyode (din SVN; trebuie compilat impreuna cu ODE)
 - numpy
 - pygame
 - PyProtocols (from source, pyhon setup.py --without-speedups install)
 - pyreadline
+- cellulose (are probleme cu Python 2.6)
 
 Este important ca ODE si PyODE sa fie compilate folosind precizie dubla. 
 

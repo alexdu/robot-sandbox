@@ -26,7 +26,6 @@ import time
 
 import RobotSim
 
-
 processViewerEvents = True
 
 leftPanel = [None, None]
@@ -46,6 +45,7 @@ modeswitch = None
 speedpot = None
 speedlabel = None
 plusminus = []
+signalsVBox = None
 
 jogEnabled = False
 jogAxis = 0
@@ -56,7 +56,7 @@ jogSpeed = 100
 
 
 def initGUI():
-    global gui_screen, myguiapp, speedpot, speedlabel, modeswitch, opclo, fpsindic
+    global gui_screen, myguiapp, speedpot, speedlabel, modeswitch, opclo, fpsindic, signalsVBox
     
     leftPanel[1] = lamina.LaminaPartialScreenSurface(100, 250, 10, -10)
     rightPanel[1] = lamina.LaminaPartialScreenSurface(100, 300, -10, -10)
@@ -65,6 +65,10 @@ def initGUI():
     leftPanel[0] = gui.Container(width=100, height=250, surface=leftPanel[1].surf)
     rightPanel[0] = gui.Container(width=100, height=300, surface=rightPanel[1].surf)
     bottomPanel[0] = gui.Container(width=510, height=30, surface=bottomPanel[1].surf)
+    
+    leftPanel[0].value = "left panel"
+    rightPanel[0].value = "right panel"
+    bottomPanel[0].value = "bottom panel"
 
     leftPanel[0].style["bgimage"] = "none"
     rightPanel[0].style["bgimage"] = "none"
@@ -91,8 +95,6 @@ def initGUI():
     opclo.connect(CHANGE, onOpenClose)
     rightPanel[0].add(opclo)
     
-
-
 
     speedpot = gui.HSlider(value=50, min_value=1, length=99, x=0, y=0, width=300)
     speedpot.style["align"] = "right"
@@ -125,13 +127,16 @@ def initGUI():
 
     onModeSwitch()
 
-    fpsindic = gui.Button("0 fps", x=0, y=0, width=70)
-    fpsindic.style["align"] = "left"
-    fpsindic.style["valign"] = "top"
-    fpsindic.label.style["color"] = (255,255,255)
-    fpsindic.label.style["font-size"] = 14
-    leftPanel[0].add(fpsindic)
+    #~ fpsindic = gui.Button("0 fps", x=0, y=0, width=70)
+    #~ fpsindic.style["align"] = "left"
+    #~ fpsindic.style["valign"] = "top"
+    #~ fpsindic.label.style["color"] = (255,255,255)
+    #~ fpsindic.label.style["font-size"] = 14
+    #~ leftPanel[0].add(fpsindic)
 
+    signalsVBox = gui.VBox(x = 0, y = 0, width = 90)
+    signalsVBox.value = "signals"
+    leftPanel[0].add(signalsVBox)
 
 
 def addPlusMinus(guiapp, text, i):
@@ -298,9 +303,112 @@ def onSpeedToggle():
     speedpot.dirty = True
     
     
+def onSignalToggle(addr):
+    if addr > 1000:
+        RobotSim.signals[addr] = - (1 - abs(RobotSim.signals[addr]))
+        RobotSim.signals_dirty = True
+
+
+refreshTime = 0
+    
+def refreshSignals():
+    global signalsVBox
+    if RobotSim.signals_dirty:
+        #~ print "refreshing"
+        try:
+            
+            n = len(RobotSim.signals)
+            m = len(signalsVBox.widgets)
+            
+            if n > m:
+                for i in range(n - m):
+                    w = gui.Button("spanac")
+                    w.label.style["font-size"] = 14
+                    signalsVBox.add(w)
+                    enableStealEvents([w])
+            elif n < m:
+                leftPanel[1].clear()
+                leftPanel[0].top_surface = leftPanel[1].surf
+                leftPanel[0].dirty = 1
+                for i in range(m - n):
+                    signalsVBox.remove(signalsVBox.widgets[-1])
+            
+            i = 0
+            addresses = RobotSim.signals.keys()
+            addresses.sort()
+            for addr in addresses:
+                val = RobotSim.signals[addr]
+                w = signalsVBox.widgets[i]
+                try:
+                    (oldaddr, oldval) = w.sig
+                    refresh = (oldaddr, oldval) != (addr, val)
+                except:
+                    refresh = True
+                
+                if refresh:
+                    #~ print "refreshing ", addr, val
+                    signalsVBox.dirty = True
+                    if addr < 1000:
+                        type = "out"
+                    elif addr < 2000:
+                        type = "in"
+                    else:
+                        type = "soft"
+                        
+                    if val:
+                        sval = "on"
+                    else:
+                        sval = "off"
+                    
+                    w.value = "%s: %d" % (type, addr)
+                    w.label.style["color"] = (255,255,255)
+                    w.label.style["font-size"] = 14
+                    w.style["width"] = 70
+                    w.style["height"] = 20
+                    w.style["padding"] = (5,10)
+                    w.stylesets["default"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
+                    w.stylesets["hover"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
+                    w.stylesets["focused"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
+                    w.stylesets["down"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
+                    w.sig = (addr, val)
+                    w.dirty = True
+                    w.connect(CLICK, onSignalToggle, addr)
+                    #~ print "refresh done"
+                    
+                i += 1
+                
+
+            RobotSim.signals_dirty = False
+            
+            #~ print "resizetest"
+            (w, h, x, y) = leftPanel[1]._whxy            
+            signalsh = 30 * n
+            if signalsh > h:
+                print "growing to ", h * 2
+                leftPanel[1] = lamina.LaminaPartialScreenSurface(100, h * 2, 10, -10)
+                leftPanel[0].top_surface = leftPanel[1].surf
+                leftPanel[0].dirty = True
+                
+            #~ print "resizetest done"
+
+            
+        except RuntimeError:
+            #~ print "runtime error"
+            pass
+        #~ print "done"
+            
 
 def refresh():
     if RobotSim.switch["GUI"]:
+        t0 = time.time()
+
+        refreshSignals()
+        
+        #~ for w in signalsVBox.widgets:
+            #~ if w.dirty:
+                #~ print w
+
+        
         global speedpot, speedMonitor
         if speedMonitor != RobotSim.speed_monitor:
             speedMonitor = RobotSim.speed_monitor
@@ -310,16 +418,15 @@ def refresh():
         if jogEnabled:
             RobotSim.jog(jogMode, jogAxis, jogSpeed)
             
-            
-        fpsindic.label.value = "%d fps" % fps
-        fpsindic.dirty = True
+        #~ fpsindic.label.value = "%d fps" % fps
+        #~ fpsindic.dirty = True
             
         # hack
         global modeswitch, opclo
         for w in [modeswitch, opclo]:
-            w.label.style["color"] = (255,255,255)
-            w.label.style["font-size"] = 14
-
+            if w.label.style["font-size"] != 14:
+                w.label.style["color"] = (255,255,255)
+                w.label.style["font-size"] = 14
 
         for panel in panels:
             panel[0].draw()
@@ -327,8 +434,25 @@ def refresh():
             panel[1].refresh()
             panel[1].display()
 
+        t1 = time.time()
+        refreshTime = t0 - t1
+
+        if refreshTime > 0.1:
+            print refreshTime
+
+            
+    else: # GUI disabled
+        RobotSim.comp_mode = True
+    
+    pygame.display.set_caption("OpenGL Viewer [%d fps]" % fps)
+
+
+
+
 def run(events):
     global processViewerEvents
+    
+    
     
     if RobotSim.switch["GUI"]:
         for panel in panels:

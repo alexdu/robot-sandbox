@@ -1,0 +1,13 @@
+.PROGRAM blink()
+    ; Laborator 5 - Test pentru semnale si timere
+    AUTO i, delay
+    FOR i = 1 TO 10
+        DELAY = 3/i
+        SIGNAL 49
+        TIMER 1 = 0
+        WAIT TIMER(1) > delay
+        SIGNAL -49
+        TIMER 1 = 0
+        WAIT TIMER(1) > delay
+    END
+.END

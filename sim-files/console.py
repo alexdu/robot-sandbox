@@ -41,6 +41,10 @@ _ipshell = IPython.Shell.IPShellEmbed(_args, banner="V+ simulation console ready
 
 
 def _onQuit():    
+    print "onQuit()"
+    _ipshell.IP.magic_Quit()
+    _ipshell.IP.savehist()
+    os.abort()
     raise SystemExit
 
 eventmanager.connect("QUIT", _onQuit)
@@ -79,17 +83,26 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("dir", vplus._CM_DIR)
         IPython.ipapi.get().expose_magic("load", vplus._CM_LOAD)
         IPython.ipapi.get().expose_magic("zero", vplus._CM_ZERO)
+        IPython.ipapi.get().expose_magic("reset", vplus._CM_RESET)
         
-        print
-        print "Type 'mc' to see a list of monitor commands."
-        print "Use ! to invoke operating system commands (dir, ls, copy...)"
-        print
-        print "TRACE is ON."
-        print
+        print """
+TRACE is OFF.
 
+Type 'mc' to see a list of monitor commands.
+Use ! to invoke operating system commands (dir, ls, copy...)
+
+Quick Start:
+. env hanoi
+. load hanoi
+. exec hanoi_main
+
+"""
         
         _ipshell() 
-        pygame.event.post(pygame.event.Event(pygame.locals.QUIT))
+        try:
+            pygame.event.post(pygame.event.Event(pygame.locals.QUIT))
+        except:
+            pass
 
 ConsoleThread().start()
 

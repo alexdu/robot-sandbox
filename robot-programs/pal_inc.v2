@@ -36,6 +36,45 @@
     
 .END
 
+
+.PROGRAM pal.inc.bk
+    GLOBAL #safe, st, pal, dx, dy, dz, bs
+    AUTO nl, nc, nn, m, ang, pick, place, p, i, j, k
+    
+    n = 12   ; numarul de piese
+    ang = 60
+    nl = 3
+    nc = 2
+    nn = 2
+    m = nl * nc * nn
+    
+    PARAMETER HAND.TIME = 0.5
+    SPEED 100 ALWAYS
+    
+    OPEN
+    MOVE #safe
+    BREAK
+    
+    FOR p = m TO 1 STEP -1
+        
+        ; ordinea L-C-N
+        
+        i = INT((p-1) / (nc * nn))
+        j = INT((p-1) / nn) MOD nc
+        k = (p-1) MOD nn
+        
+        SET place = SHIFT(st BY 0, 0, dz * (n - p))
+        SET pick = bs:SHIFT(pal BY i*dx, j*dy, k*dz)
+        
+        CALL pick.place(pick, place)
+    END
+    
+    MOVE #safe
+    BREAK
+    
+.END
+
+
 .PROGRAM pick.place(pick,place)
     AUTO z.pick, z.place
     

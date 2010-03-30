@@ -103,7 +103,7 @@ def beautify_program(file):
         indent_now = indent + d_indent_now
         
         spaces = " " * indent_now * 4
-        line = spaces + beautify_line(line.strip())
+        line = spaces + beautify_line(line.strip(), True)
         #print line
         newcode.append(line + "\n")
         
@@ -126,55 +126,92 @@ def get_indent(line): # intoarce indentarea pentru linia curenta si pentru urmat
 
 
     (kw, rest, vs) = split_after_keyword(line)
-    if kw in [".PROGRAM", "FOR", "IF", "WHILE"]:
+    if kw in [".PROGRAM", "FOR", "IF", "WHILE", "DO", "CASE"]:
         return (0,1)
-    if kw == "ELSE":
+    if kw in ["ELSE", 'ELSEIF', 'ELSIF', 'ELIF', "VALUE", "ANY"]:
         return (-1,0)
-    if kw in ["END", ".END"]:
+    if kw in ["END", ".END", "UNTIL"]:
         return (-1,-1)
     return (0,0)
 
-def beautify_line(var):
+def beautify_line(var, statement = False):
     (code, comment) = split_comment(var)
     strsplit = split_strings(code)
     newstr = []
-    for block in strsplit:
+    for i, block in enumerate(strsplit):
         if block[0] != '"':    # este ceva care nu e string, pot sa-l modific
-            newstr.append(beautify_block(block))
+            newstr.append(beautify_block(block, statement and (i==0)))
         else:
             newstr.append(block)
     return string.join(newstr, "") + comment
-def beautify_block(var):
+def beautify_block(var, first = False):
     # un bloc care nu este string si nu contine stringuri si nici comentarii
+    vplus_instructions = ['ABORT', 'ABOVE', 'ACCEL', 'ALIGN', 'ALTER', 'ANY',
+    'APPRO', 'APPROS', 'ATTACH', 'AUTO', 'BELOW', 'BRAKE', 'BREAK', 'CALIBRATE', 'CALL', 
+    'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'DECOMPOSE', 'DELAY',
+     'DEPART', 'DEPARTS', 
+    'DETACH', 'DISABLE', 'DO', 'DRIVE', 'DRY.RUN', 'DURATION',
+    'ELSE', 'ELIF', 'ELSIF', 'ELSEIF', 'ENABLE', 'END', '.END', 'ERROR', 'ESTOP', 'EXECUTE', 'EXIT', 'FINE', 'FLIP', 'FOR', 
+    'GLOBAL', 'HERE', 'IF', 'JHERE', 'JMOVE', 
+    'KILL', 'LEFTY', 'LOCAL', 'MC', 'MCS', 'MOVE', 'MOVES', 
+    'MOVET', 'MOVEST', 'MULTIPLE', 'NEXT', 'NOFLIP', 'NONULL', 'NULL', 'OPEN', 'OPENI', 
+    'PARAMETER', 'PAUSE', '.PROGRAM', 'PROMPT', 
+    'RELAX', 'RELAXI', 'RESET', 'RETURN', 'RETURNE', 'RIGHTY', 'ROBOT', 'RUNSIG', 
+    'SEE', 'SELECT', 'SET', 'SIGNAL', 'SINGLE', 'SPEED',
+    'STOP', 'SWITCH', 'TIME', 'TIMER', 'TOOL',
+    'TYPE', 'UNTIL', 'VALUE', 'WAIT', 'WAIT.EVENT', 'WHILE', 'WRITE']
+
+
+    # cuvinte cheie, care nu sunt functii (nu urmeaza paranteza dupa ele)
+    vplus_expr_keywords = ['ALWAYS', 'AND', 
+    'BY', 'BAND', 'BOR', 'BXOR', 
+    'DEST', 'DO', 'DRY.RUN',
+    'FALSE', 
+    'HAND.TIME', 'HERE', 'IPS',
+    'MMPS', 'MOD', 
+    'NOT', 'NULL', 'OFF', 'ON', 
+    'OR', 'OF', 'PI', 'POWER', 
+    'STEP', 'TERMINAL', 'THEN', 'TOOL', 
+    'TO', 'TRUE', "XOR"]
     
-    vplus_keywords = ['ABORT', 'ABOVE', 'ABS', 'ACCEL', 'ALIGN', 'ALTER', 'ALWAYS', 'AND', 'ANY', 
-    'APPRO', 'APPROS', 'ASC', 'ATAN2', 'ATTACH', 'AUTO', 'BELOW', 'BREAK', 'BY', 'CALIBRATE', 'CALL', 
-    'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'COS', 'DECOMPOSE', 'DEFINED', 'DELAY', 'DEPART', 'DEPARTS', 
-    'DEST', 'DETACH', 'DISABLE', 'DISTANCE', 'DRIVE', 'DRY.RUN', 'DURATION', #DX, DY, DZ (nu le punem aici)
-    'ELSE', 'ENABLE', 'END', '.END', 'ERROR', 'ESTOP', 'EXECUTE', 'EXIT', 'FALSE', 'FINE', 'FLIP', 'FOR', 'FRACT', 
-    'FRAME', 'GLOBAL', 'HAND.TIME', 'HERE', 'IF', 'INRANGE', 'INT', 'INVERSE', 'IPS', 'JHERE', 'JMOVE', 
-    'KILL', 'LAST', 'LEFTY', 'LEN', 'LOCAL', 'MAX', 'MC', 'MCS', 'MIN', 'MMPS', 'MOD', 'MOVE', 'MOVES', 
-    'MOVET', 'MOVEST', 'MULTIPLE', 'NEXT', 'NOFLIP', 'NONULL', 'NOT', 'NULL', 'OFF', 'ON', 'OPEN', 'OPENI', 
-    'OR', 'PARAMETER', 'PAUSE', 'PI', 'POS', 'POWER', '#PPOINT', 'PPOINT', '.PROGRAM', 'PROMPT', 'RANDOM', 
-    'RELAX', 'RELAXI', 'RESET', 'RETURN', 'RETURNE', 'RIGHTY', 'ROBOT', 'RUNSIG', 'RX', 'RY', 'RZ', 
-    'SEE', 'SELECT', 'SET', 'SHIFT', 'SIG', 'SIGN', 'SIGNAL', 'SIG', 'SINGLE', 'SPEED', 'SQR', 'SQRT', 
-    'STATE', 'STATUS', 'STEP', 'STOP', 'SWITCH', 'TAS', 'TASK', 'TERMINAL', 'THEN', 'TIME', 'TIMER', 'TOOL', 'TRANS', 
-    'TO', 'TRUE', 'TYPE', 'UNTIL', 'UPPER', 'VAL', 'VALUE', 'WAIT', 'WAIT.EVENT', 'WHILE', 'WRITE']
+    # daca dupa chestiile astea urmeaza paranteza, sunt functii (le scriu cu litere mari)
+    # altfel, sunt variabile, le scriu cu litere mici
+    vplus_functions_arg = ['ABS',
+    'ASC', 'ATAN2', 'BMASK', 
+    'COS', 'DEFINED', 
+    'DISTANCE', 'DX', 'DY', 'DZ',
+    'FRACT', 
+    'FRAME', 'INRANGE', 'INT', 'INVERSE', 
+    'LAST', 'LEN', 'MAX', 'MIN',
+    'PARAMETER', 'POS', '#PPOINT', 'PPOINT', 'RANDOM', 
+    'RX', 'RY', 'RZ', 
+    'SHIFT', 'SIG', 'SIGN', 'SIN', 'SQR', 'SQRT', 'SWITCH',
+    'STATE', 'STATUS', 'TAS', 'TASK', 'TAN', 'TIMER', 'TRANS', 
+    'VAL']
+    
 
     vs = re.split("([a-zA-Z\#\.][a-zA-Z0-9_\.]*)", var)
     newvs = []
 
     vs.append("")
     for i,s in enumerate(vs):
-        if s.upper() in vplus_keywords:
-            newvs.append(s.upper())
-        elif s.upper() in ["DX", "DY", "DZ"]:       # DX, DY, DZ sunt functii daca sunt urmate de paranteza; 
-            if re.match("\ *\(", (vs[i+1]).upper()): # altfel, sunt variabile
+        if first and ((i == 0) or (i == 1 and len(vs[0].strip()) == 0)):  # primul keyword
+            #~ print "first: ", s
+            if s.upper() in vplus_instructions:
                 newvs.append(s.upper())
             else:
                 newvs.append(s.lower())
-        else:
-            newvs.append(s.lower())
+        else: # ceva in mijlocul frazei
+            #~ print "mid: ", s
+            if s.upper() in vplus_functions_arg:       # daca sunt urmate de paranteza, inseamna ca sunt functii; 
+                if re.match("\ *\(", (vs[i+1]).upper()): # altfel, sunt variabile
+                    newvs.append(s.upper())
+                else:
+                    newvs.append(s.lower())
+            elif s.upper() in vplus_expr_keywords:
+                newvs.append(s.upper())
+            else:
+                newvs.append(s.lower())
     
     vs = list(newvs)
     var = string.join(newvs, "")
@@ -244,6 +281,7 @@ def parse_function_call(expr):
 
 
 _program_args = []
+_casevar = []
     
 def translate_statement(var, indent):
     
@@ -257,7 +295,7 @@ def translate_statement(var, indent):
     # APPRO a, b    => APPRO(a, b)
     # adica ceea ce in vplus nu are nevoie de paranteze, dar are parametri
     vplus_functions = ['ACCEL', 'APPRO', 'APPROS', 'ATTACH', 
-    'DELAY', 'DEPART', 'DEPARTS', 
+    'DEPART', 'DEPARTS', 
     'DETACH', 'DISABLE', 'DRIVE',  'DURATION', # 'DX', 'DY', 'DZ', 
     'ENABLE', 'EXECUTE', 
     'JMOVE', 
@@ -267,7 +305,6 @@ def translate_statement(var, indent):
     'RUNSIG', 
     'SIGNAL', 'SPEED',
     'TOOL', 
-    'TIMER', 
     'VAL']
 
     # OPENI => OPENI()
@@ -285,10 +322,12 @@ def translate_statement(var, indent):
 
     # PARAMETER HAND.TIME = 0.5
     # TIMER 1 = 0
-    vplus_eq_functions = ['PARAMETER', 'TIMER']
+    vplus_eq_functions = ['PARAMETER', 'TIMER', 'SWITCH']
 
     (kw, rest, vs) = split_after_keyword(var)
+    #~ print "keyword: ", kw
     global _program_args
+    global _casevar
 
     if kw[0] == '.':
         if indent != 0:
@@ -304,7 +343,7 @@ def translate_statement(var, indent):
         (name, value) = split_at_equal_sign(rest)
         name = translate_expression(name)
         value = translate_expression(value)            
-        vs = [kw.upper(), '("', name.strip(), '", ', value.strip(), ')']
+        vs = [kw.upper(), '(', name.strip(), ', ', value.strip(), ')']
     elif kw in vplus_functions:
         vs = [kw, "(", translate_expression(rest).strip(), ")"]
     elif kw in vplus_noarg_functions:
@@ -331,6 +370,8 @@ def translate_statement(var, indent):
 
     elif kw == "EXIT":
         vs = ['break']
+    elif kw == "NEXT":
+        vs = ['continue']
     elif kw == 'TYPE':
         vs = ["print ", translate_expression(rest)]
     elif kw == 'GLOBAL':
@@ -409,17 +450,48 @@ def translate_statement(var, indent):
             cond = string.join(vs, "")
             
         vs = ['if ', cond.strip(), ':']
-    elif kw == "ELSEIF":
+    elif kw in ["ELSEIF", 'ELSIF', 'ELIF']:
         vs = ['elif:']
     elif kw == "ELSE":
         vs = ['else:']
+
     elif kw == "WAIT":
         cond = translate_expression(rest)
-            
-        vs = ['while not (', cond.strip(), '): time.sleep(0.01)']
+        if len(cond.strip()) == 0:
+            vs = ["WAIT_EVENT(0, 0.016)"]
+        else:
+            vs = ['while not (', cond.strip(), '): WAIT_EVENT(0, 0.016)']
+
+
+    elif kw == "DO":
+        vs = ["while (True): #DO#"]
+    elif kw == "UNTIL":
+        cond = translate_expression(rest)
+        vs = ["    if (", cond.strip(), "): break #UNTIL#"]
+
+    elif kw == "CASE":
+        rest = translate_expression(rest)
+        vs = split_keywords(rest)
+        if "OF" in vs:
+            pos_of = vs.index("OF")
+            _casevar = string.join(vs[0 : pos_of], "")
+        else:
+            _casevar = string.join(vs, "")
+        
+        vs = ["if False: pass # ", var]
+    elif kw == "VALUE":
+        rest = rest.strip()
+        if rest[-1] == ':': 
+            rest = rest[:-1]
+        rest = translate_expression(rest)
+        #print rest
+        vs = ["elif (", _casevar, ") in [", rest, "]:"]
+    elif kw == "ANY":
+        vs = ["else:"]
+
     elif kw == "WAIT.EVENT":
         args = translate_expression(rest).strip()
-        print args
+        #~ print args
         if args[0] == ',':
             args = "0" + args
         vs = ['WAIT_EVENT(', args, ')']
@@ -454,6 +526,8 @@ def translate_expression(var):
 
 def translate_block(var):    
     var = var.replace(":", "|")
+    var = var.replace("[]", "")
+    var = var.replace("^B", "0b")
     vs = re.split("([a-zA-Z\#\.][a-zA-Z0-9_\.]*)", var)
     newvs = []
 
@@ -467,7 +541,17 @@ def translate_block(var):
         elif s == 'MMPS'   : newvs.append(', "MMPS"')
         elif s == 'ALWAYS' : newvs.append(', "ALWAYS"')
         elif s == 'MONITOR': newvs.append(', "MONITOR"')
+        elif s == 'HAND.TIME': newvs.append('"HAND.TIME"')
         elif s == 'MOD'    : newvs.append(" % ")
+        elif s == 'AND'    : newvs.append(" and ")
+        elif s == 'OR'    : newvs.append(" or ")
+        elif s == 'NOT'    : newvs.append(" not ")
+        elif s == 'XOR'    : newvs.append(" |XOR| ")
+        elif s == 'BAND'    : newvs.append(" & ")
+        elif s == 'BOR'    : newvs.append(" | ")
+        elif s == 'BXOR'    : newvs.append(" ^ ")
+        elif s == 'COM'    : newvs.append(" ~ ")
+        elif s == 'LEN'    : newvs.append("len")
         else:
             newvs.append(s)
 
@@ -475,7 +559,7 @@ def translate_block(var):
     newvs = []
     # inlocuiesc punctul cu underscore
     for s in vs:
-        if re.match("^[a-zA-Z\#][a-zA-Z0-9\.\_\#]*$", s): # nume de variabila
+        if re.match("^[a-zA-Z\#][a-zA-Z0-9\.\_\#]*(\[\])?$", s): # nume de variabila, cu . _ #
             newvs.append(s.replace(".", "_").replace("#", ""))
         else:
             newvs.append(s)

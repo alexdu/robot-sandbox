@@ -26,6 +26,7 @@ print " "
 import cellulose    # nu-l gaseste py2exe
 import cellulose.extra    # nu-l gaseste py2exe
 import cellulose.extra.restrictions    # nu-l gaseste py2exe
+import pprint
 
 import sys
 import os

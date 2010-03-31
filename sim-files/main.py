@@ -58,6 +58,21 @@ else:
 
 
 
+def rmrf(folder, exc = False):
+    if sys.platform == "win32":
+        rm = "rmdir /s /q "
+    else:
+        rm = "rm -rf "
+
+    ret = os.system(rm + folder)
+    if exc:
+        if ret != 0: 
+            raise Exception, "error deleting " + folder
+
+if os.path.isdir(os.path.join(basepath, "..", "upgradetmp")): 
+    print "Deleting temporary files..."
+    rmrf(os.path.normpath(os.path.join(basepath, "..", "upgradetmp")))
+
 
 from vplus import *
 import vplus

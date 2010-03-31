@@ -1464,7 +1464,7 @@ def _CM_LOAD(self, file):
 
     
 
-    _LOAD(file)
+    _LOAD(file.strip())
 
 
 
@@ -1484,9 +1484,10 @@ def _CM_EXEC(self, prog):
 
     _flush_completed_jobs()
     if len(jobs.jobs_all) > 0:
-        if RobotSim.abort_flag:
-            print "Please wait for previous robot program to finish."
-            return
+        print "A robot program is already running."
+        print "Please stop the program first."
+        print "  (hint: you may use either the 'COMP' button or the 'abort' command)."
+        return
     if not RobotSim.comp_mode:
         print "COMP mode disabled."
         return
@@ -1495,7 +1496,7 @@ def _CM_EXEC(self, prog):
     if RobotSim.debug:
         _list_dictionary()
 
-    ip.runlines("%%bg _ip.runlines(\"EXECUTE('%s')\")" % prog)
+    ip.runlines("%%bg _ip.runlines(\"EXECUTE('%s')\")" % prog.strip())
 
 
 def _CM_HERE(self, var):
@@ -1939,6 +1940,14 @@ def _CM_ENV(self, prog):
 
     Initializes the work environment for the robot.
     """
+    
+    _flush_completed_jobs()
+    if len(jobs.jobs_all) > 0:
+        print "A robot program is already running."
+        print "Please stop the program first."
+        print "  (hint: you may use either the 'COMP' button or the 'abort' command)."
+        return
+    
     ip = IPython.ipapi.get()
     envs = []
     prog = prog.strip()

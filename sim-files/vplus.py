@@ -1325,6 +1325,58 @@ def exec_end():
 
 
 
+
+
+def completers_setup():
+    ip = IPython.ipapi.get()
+    ip.set_hook('complete_command', load_completers, str_key = 'load')
+    ip.set_hook('complete_command', env_completers, str_key = 'env')
+    ip.set_hook('complete_command', exec_completers, str_key = 'exec')
+    ip.set_hook('complete_command', param_completers, str_key = 'param')
+    ip.set_hook('complete_command', param_completers, str_key = 'parameter')
+    ip.set_hook('complete_command', switch_completers, str_key = 'switch')
+    ip.set_hook('complete_command', switch_completers, str_key = 'enable')
+    ip.set_hook('complete_command', switch_completers, str_key = 'disable')
+    ip.set_hook('complete_command', switch_completers, str_key = 'en')
+    ip.set_hook('complete_command', switch_completers, str_key = 'dis')
+    
+    
+def load_completers(self, event):
+    progfiles = []
+    files = os.listdir(".")
+    for f in files:
+        if f.lower().endswith(".v2"):
+            progfiles.append(f[:-3])
+    progfiles.sort()
+    return progfiles
+
+def env_completers(self, event):
+    progfiles = []
+    files = os.listdir(".")
+    for f in files:
+        if f.lower().endswith(".env"):
+            progfiles.append(f[:-4])
+    progfiles.sort()
+    return progfiles
+
+def exec_completers(self, event):    
+    programe = programDict.keys()
+    programe.sort()
+    if len(programe) == 0:
+        return ["<no robot programs loaded>", "..."]
+    return programe
+    
+def param_completers(self, event):
+    e = RobotSim.param.keys()
+    e.sort()
+    return e
+
+def switch_completers(self, event):
+    e = RobotSim.switch.keys()
+    e.sort()
+    return e
+
+
 def EXECUTE(prog):
     """
     Executes a robot program.
@@ -1409,18 +1461,12 @@ def _CM_DIR(self, arg):
 def _LOAD(file, reload=False):
     ip = IPython.ipapi.get()
 
-    progfiles = []
-    if file.strip() == "":
-        files = os.listdir(".")
-        for f in files:
-            if f.lower().endswith(".v2"):
-                progfiles.append(f)
-        progfiles.sort()
+    file = file.strip()
+    if len(file) == 0:
         print "Robot programs in current directory:"
-        for e in progfiles:
-            print "  * ", e[:-3]
+        for e in load_completers(None, None):
+            print "  * ", e
         return
-        
 
     if not re.match("^.*\.[^.]*$", file): # fara extensie, ii adaug .v2
         file = file + ".v2" 
@@ -1951,18 +1997,14 @@ def _CM_ENV(self, prog):
         return
     
     ip = IPython.ipapi.get()
-    envs = []
     prog = prog.strip()
+
     if len(prog)==0:
-        files = os.listdir(".")
-        for f in files:
-            if f.lower().endswith(".env"):
-                envs.append(f)
-        envs.sort()
         print "Available environments:"
-        for e in envs:
-            print "  * ", e[:-4]
+        for e in env_completers(None, None):
+            print "  * ", e
         return
+    
         
     if not re.match("^.*\.env$", prog):
         prog = prog + ".env" 

@@ -85,6 +85,7 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("zero", vplus._CM_ZERO)
         IPython.ipapi.get().expose_magic("reset", vplus._CM_RESET)
         
+        vplus.completers_setup()
         print """
 TRACE is OFF.
 

@@ -1302,17 +1302,19 @@ def trace_calls(frame, event, arg):
                  #~ caller_line_no, caller_filename)
     return
 
-
+def starprompt(self, cont):
+    return "* "
 def exec_init():
     init_trace()
     sys.stdout.flush()
     sys.stdout = sys.ipy_stdout
     sys.settrace(trace_calls)
-    
+    IPython.ipapi.get().set_hook("generate_prompt", starprompt)    
     time.sleep(0.2)
     print 
     
 def exec_end():
+    IPython.ipapi.get().set_hook("generate_prompt", IPython.hooks.generate_prompt)    
     print
     print "Press ENTER to continue "
     print 

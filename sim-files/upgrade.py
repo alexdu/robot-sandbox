@@ -60,7 +60,6 @@ if ans == "yes":
         print os.getcwd()
 
         url = "http://github.com/alexdu/robot-sandbox/zipball/master"
-        url = "file:///z:/robot-sandbox.zip"
         
         print "downloading ", url, " ..."
         urllib.urlretrieve(url, "temp.zip", progress)

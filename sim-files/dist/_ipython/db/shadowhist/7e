@@ -1,20 +1,23 @@
 (dp1
-Vload paletizare
+V_ip.set_hook("generate_prompt", inp)
 p2
-I1852
-sVfrom __future__ import division
+I2023
+sVdir
 p3
-I1813
+I1316
 sV!del calltest.v2
 p4
 I1582
-sVdir
+sVload paletizare
 p5
-I1316
-sVp.getChildNodes()[0].getChildNodes()
-p6
-I1769
+I1852
 sVa["4"] = 8
-p7
+p6
 I1379
+sVfrom __future__ import division
+p7
+I1813
+sVp.getChildNodes()[0].getChildNodes()
+p8
+I1769
 s.

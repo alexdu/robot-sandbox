@@ -17,10 +17,13 @@ I1824
 sVvars
 p7
 I1660
-sVvplus._convert_to_trans(saf)
+sV_ip.set_hook("generate_prompt", IPython.hooks.generate_prompt)
 p8
+I2025
+sVvplus._convert_to_trans(saf)
+p9
 I446
 sVdo appro pick,100
-p9
+p10
 I550
 s.

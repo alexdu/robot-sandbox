@@ -1,23 +1,26 @@
 (dp1
-V__builtins
+Vdo align
 p2
-I410
-sVprint
-p3
-I751
+I724
 sVdo print 1/2
-p4
+p3
 I1811
 sVtype(SIN).__name__
-p5
+p4
 I1789
+sVprint
+p5
+I751
 sVenv hanoi(7)
 p6
 I1968
-sVdo align
+sV__builtins
 p7
-I724
+I410
 sVconvert_parse_tree(l)
 p8
 I1635
+sV_ip.set_hook("generate_prompt", None)
+p9
+I2024
 s.

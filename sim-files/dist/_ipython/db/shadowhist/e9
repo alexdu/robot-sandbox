@@ -1,35 +1,38 @@
 (dp1
-Vt = parser.expr("a+b,c").totuple()
+VMOVE(safe)
 p2
-I1652
-sVdo appro top, 0
+I51
+sVdef spanac():
 p3
-I1905
-sVRobotSim.debug = 0
+I996
+sVr=
 p4
+I851
+sVRobotSim.debug = 0
+p5
 I253
 sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c
-p5
-I432
-sVr=
 p6
-I851
+I432
 sVdo if 1 == 2 then
 p7
 I693
 sVhere bs:A
 p8
 I199
-sVMOVE(safe)
-p9
-I51
-sVdef spanac():
-p10
-I996
 sVdo while 1 do
-p11
+p9
 I699
+sVt = parser.expr("a+b,c").totuple()
+p10
+I1652
+sVdo appro top, 0
+p11
+I1905
 sVvplus._compactdisplay = False
 p12
 I743
+sVdef inp(self, cont):
+p13
+I2022
 s.

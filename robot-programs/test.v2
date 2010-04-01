@@ -5,6 +5,19 @@
     AUTO a[5]
     
     TYPE "V+ Language Tests"
+    TYPE ""
+    TYPE "Empty loop tests:"
+    WHILE FALSE DO
+    END
+    
+    FOR i = 1 TO 5
+    END
+    TYPE i
+    
+    DO
+    UNTIL TRUE
+    
+    TYPE "Empty loop tests seem OK"
     
     TYPE "ABS(-5) => ", ABS(-5)
     TYPE "SIN(30) => ", SIN(30)

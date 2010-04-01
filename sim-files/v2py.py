@@ -496,7 +496,7 @@ def translate_statement(var, indent):
             args = "0" + args
         vs = ['WAIT_EVENT(', args, ')']
     elif kw == "END":
-        vs = ['#end']
+        vs = ['    pass #end']
     elif kw == ".END":
         vs = ['    return (', string.join(_program_args, ', '), ') # .END']
     elif kw == "RETURN":

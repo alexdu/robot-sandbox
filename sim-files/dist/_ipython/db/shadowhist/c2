@@ -1,23 +1,26 @@
 (dp1
-Vs.start
+Vdo appro a,0
 p2
+I323
+sVINT(4)
+p3
+I1278
+sVs.start
+p4
 I1109
 sVdo break
-p3
-I523
-sVINT(4)
-p4
-I1278
-sVdo appro a,0
 p5
-I323
-sVRX(56)
+I523
+sVparameter HAND.TIME
 p6
+I2031
+sVRX(56)
+p7
 I1353
 sVTerm
-p7
+p8
 I1488
 sVdis gui
-p8
+p9
 I2013
 s.

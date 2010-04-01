@@ -1,35 +1,38 @@
 (dp1
-Vsys.last_traceback.tb_lasti
+Vsplit_comment(ana are; mere)
 p2
+I1179
+sVsys.last_traceback.tb_lasti
+p3
 I922
 sVdo appro
-p3
-I646
-sVmatch_subtree(pattern, t[1][4])
 p4
-I1690
-sVsplit_comment(ana are; mere)
+I646
+sVsee test
 p5
-I1179
+I2057
 sVos.path.splitext("gigel.v2")
 p6
 I1421
-sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_firstlineno
+sVmatch_subtree(pattern, t[1][4])
 p7
-I940
+I1690
 sVworldObject("Box2").mass
 p8
 I1946
-sVAPPRO(bs*pal,100)
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code.co_firstlineno
 p9
+I940
+sVAPPRO(bs*pal,100)
+p10
 I56
 sVTRANS?
-p10
+p11
 I458
 sVp = parser.expr("a+b,c")
-p11
+p12
 I1603
 sVprint a
-p12
+p13
 I1717
 s.

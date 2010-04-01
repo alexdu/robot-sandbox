@@ -5,19 +5,22 @@ I145
 sVa = TRANS(119,-101,813,0,180,0)
 p3
 I34
-sVhelp i.format_latex
-p4
-I1525
 sVdo z.pick = 100
-p5
+p4
 I549
 sVhelp parser.expr
-p6
+p5
 I1588
 sVbeautify_line('type "cucu"')
-p7
+p6
 I1206
 sVbs = RZ(30)*RX(10)*RY(20)
-p8
+p7
 I31
+sVcompleters_setup()
+p8
+I2026
+sVhelp i.format_latex
+p9
+I1525
 s.

@@ -1,20 +1,23 @@
 (dp1
-Vlocals().keys().sort()
+Vdo move b
 p2
-I481
-sVdo move b
-p3
 I331
-sVCOS()
-p4
-I1245
+sVsee spanac
+p3
+I2047
 sVhere #a
-p5
+p4
 I644
 sVhelp safe
-p6
+p5
 I454
-sVdo set a = rz(45):rx(43)
+sVCOS()
+p6
+I1245
+sVlocals().keys().sort()
 p7
+I481
+sVdo set a = rz(45):rx(43)
+p8
 I868
 s.

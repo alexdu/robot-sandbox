@@ -1,38 +1,41 @@
 (dp1
-VSIN(4)
+Vip
 p2
-I1243
+I2021
 sVstr_compact("cdus       fw fr        fr")
 p3
 I1459
 sVdo if a == b then
 p4
 I691
-sVdo print "cucu"
+sVexec pal_back.py
 p5
+I22
+sVdo print "cucu"
+p6
 I1204
 sVdo type "cucu" bau
-p6
-I1209
-sVip
 p7
-I2021
-sVexec pal_back.py
+I1209
+sVSIN(4)
 p8
-I22
+I1243
 sV%bg a=4
 p9
 I988
-sV(code,comment) = split_comment(".PROGRAM calltest()")
+sVdo appro abort, 100
 p10
+I2038
+sV(code,comment) = split_comment(".PROGRAM calltest()")
+p11
 I1726
 sVsys.spanac
-p11
+p12
 I1509
 sVa = "32"
-p12
+p13
 I1710
 sVmatch_subtree(pattern, t[1][2])
-p13
+p14
 I1688
 s.

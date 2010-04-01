@@ -42,7 +42,7 @@ _ipshell = IPython.Shell.IPShellEmbed(_args, banner="V+ simulation console ready
 
 def _onQuit():    
     print "onQuit()"
-    _ipshell.IP.magic_Quit()
+    _ipshell.IP.magic_Exit()
     _ipshell.IP.savehist()
     os.abort()
     raise SystemExit
@@ -80,12 +80,15 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("env", vplus._CM_ENV)
         IPython.ipapi.get().expose_magic("do", vplus._CM_DO)
         IPython.ipapi.get().expose_magic("abort", vplus._CM_ABORT)
+        IPython.ipapi.get().expose_magic("a", vplus._CM_ABORT)
         IPython.ipapi.get().expose_magic("dir", vplus._CM_DIR)
         IPython.ipapi.get().expose_magic("load", vplus._CM_LOAD)
         IPython.ipapi.get().expose_magic("zero", vplus._CM_ZERO)
         IPython.ipapi.get().expose_magic("reset", vplus._CM_RESET)
         
         vplus.completers_setup()
+
+        IPython.ipapi.get().set_hook("generate_prompt", vplus.consoleprompt)    
         print """
 TRACE is OFF.
 
@@ -107,8 +110,6 @@ Quick Start:
 
 ConsoleThread().start()
 
-time.sleep(1)
 _ip = IPython.ipapi.get()
 _ip.runlines("from __future__ import division")
-
 

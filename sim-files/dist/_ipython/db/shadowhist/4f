@@ -2,19 +2,22 @@
 Vlistr
 p2
 I505
-sVsplit_comment('ana are ; 5 mere')
+sVbeautify_line('type "a = appro(5)"')
 p3
+I1196
+sVa = "xsad.env"
+p4
+I587
+sVtranslate_program("spirala.v2")
+p5
+I1042
+sVsplit_comment('ana are ; 5 mere')
+p6
 I1180
 sVdo type a:b
-p4
-I1271
-sVbeautify_line('type "a = appro(5)"')
-p5
-I1196
-sVtranslate_program("spirala.v2")
-p6
-I1042
-sVa = "xsad.env"
 p7
-I587
+I1271
+sVwhos abort
+p8
+I2040
 s.

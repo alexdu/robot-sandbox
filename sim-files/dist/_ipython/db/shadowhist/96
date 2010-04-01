@@ -2,37 +2,40 @@
 Vl = parser.expr("(a,b,c)").tolist()
 p2
 I1649
-sVdo appros c, 100
-p3
-I366
-sVenv pal-inc
-p4
-I30
-sV%bg print hello
-p5
-I972
-sVMOVE(bs*SHIFT(a,-80,0,-100))
-p6
-I49
-sVdo type "cucu
-p7
-I1208
-sVmatch_subtree(pattern, t[1], )
-p8
-I1678
-sVsys.stdout = sys.old_stdout
-p9
-I1512
-sVdo type "cucu" bau rz(45)
-p10
-I1210
-sVindent_program("paletizare.v2")
-p11
-I1030
-sVprint "%5.3g" % 53232
-p12
-I499
 sVdo move bs:shift(ry(180) by -100,100,0)
-p13
+p3
 I1480
+sVindent_program("paletizare.v2")
+p4
+I1030
+sVMOVE(bs*SHIFT(a,-80,0,-100))
+p5
+I49
+sVenv pal-inc
+p6
+I30
+sVmatch_subtree(pattern, t[1], )
+p7
+I1678
+sV_ip.set_hook?
+p8
+I2035
+sVprint "%5.3g" % 53232
+p9
+I499
+sVdo appros c, 100
+p10
+I366
+sVdo type "cucu
+p11
+I1208
+sVdo type "cucu" bau rz(45)
+p12
+I1210
+sVsys.stdout = sys.old_stdout
+p13
+I1512
+sV%bg print hello
+p14
+I972
 s.

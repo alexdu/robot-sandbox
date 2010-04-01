@@ -5,16 +5,19 @@ I237
 sVdo call x
 p3
 I641
-sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code
+sVjobs.traceback(0)
 p4
+I960
+sVparam HAND.TIME = 0.5
+p5
+I2030
+sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_code
+p6
 I935
 sVmatch_subtree(pattern, t[1])
-p5
+p7
 I1679
 sVvplus._flush_completed_jobs()
-p6
+p8
 I1343
-sVjobs.traceback(0)
-p7
-I960
 s.

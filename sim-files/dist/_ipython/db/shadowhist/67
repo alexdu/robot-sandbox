@@ -2,30 +2,33 @@
 Vhelp re.sub
 p2
 I70
+sVdelete __builtins__.dir
+p3
+I2042
 sVf
 I907
+sVprogdecl = translate_expression(rest).strip()
+p4
+I1731
 sVtest = 'do print "a;b"; c'
-p3
+p5
 I1132
 sVre.findall("([a-zA-Z][a-zA-Z0-9_\u005C.\u005C#]*)", "cucu bau + bau+c").groups()
-p4
-I94
-sVt = parser.expr("a,b,c+da+sin(x)+trans(1,2,3)").totuple()
-p5
-I1701
-sV_ipshell.exit_msg
 p6
-I1516
-sVprogdecl = translate_expression(rest).strip()
+I94
+sVdo move shift(pal by -100, -30, -30)
 p7
-I1731
-sVdo set ref.loc = trans((dx(a)+dx(b))/2, (dy(a)+dy(b))/2, dz(a)):a.rot
+I270
+sV_ipshell.exit_msg
 p8
+I1516
+sVdo set ref.loc = trans((dx(a)+dx(b))/2, (dy(a)+dy(b))/2, dz(a)):a.rot
+p9
 I736
 sVcucu()
-p9
-I1753
-sVdo move shift(pal by -100, -30, -30)
 p10
-I270
+I1753
+sVt = parser.expr("a,b,c+da+sin(x)+trans(1,2,3)").totuple()
+p11
+I1701
 s.

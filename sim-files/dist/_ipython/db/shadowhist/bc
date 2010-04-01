@@ -1,17 +1,20 @@
 (dp1
-VIPython.Shell.KBINT
+Vexec test
 p2
-I1100
-sVdo moves e:rz(90):TRANS(100,10,90)
+I2034
+sVIPython.Shell.KBINT
 p3
-I383
+I1100
 sVfind_params_passable_by_ref("a+b,c,d_e")
 p4
 I1708
 sVenv hanoi(3.4)
 p5
 I1978
-sVpal
+sVdo moves e:rz(90):TRANS(100,10,90)
 p6
+I383
+sVpal
+p7
 I65
 s.

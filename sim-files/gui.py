@@ -139,6 +139,7 @@ def initGUI():
     leftPanel[0].add(signalsVBox)
 
 
+
 def addPlusMinus(guiapp, text, i):
     y0 = i * 35
     wm = gui.Button("-", x=-30, y=y0, width=10)
@@ -322,7 +323,8 @@ def refreshSignals():
             
             if n > m:
                 for i in range(n - m):
-                    w = gui.Button("spanac")
+                    w = gui.Button("spanac", width=10)
+                    w.label.style["width"] = 10
                     w.label.style["font-size"] = 14
                     signalsVBox.add(w)
                     enableStealEvents([w])
@@ -363,7 +365,7 @@ def refreshSignals():
                     w.value = "%s: %d" % (type, addr)
                     w.label.style["color"] = (255,255,255)
                     w.label.style["font-size"] = 14
-                    w.style["width"] = 70
+                    #w.style["width"] = 70
                     w.style["height"] = 20
                     w.style["padding"] = (5,10)
                     w.stylesets["default"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)

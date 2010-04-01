@@ -1,23 +1,26 @@
 (dp1
-Vdo print rx(45)
+Vdo if i mod 2 == 0
 p2
-I285
+I555
 sVraise Error, "cucu"
 p3
 I592
-sVdo if i mod 2 == 0
+sVload test
 p4
-I555
-sVspanac()
-p5
-I1002
+I2033
 sVjobs[0]
-p6
+p5
 I1323
-sVdo moves safe
+sVspanac()
+p6
+I1002
+sVdo print rx(45)
 p7
+I285
+sVdo moves safe
+p8
 I613
 sVpygame.display
-p8
+p9
 I2001
 s.

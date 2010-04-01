@@ -2,28 +2,31 @@
 Vdo speed 100 ips always
 p2
 I607
-sVvarf_stv_b = globalVplusNames["varf_stv_b"]
+sVtype(dir)
 p3
-I1922
-sVdo move ppoint(150,-171,226,180,55.4,180-150)
+I1845
+sVre.split("[a-z]", "av+b")
 p4
-I780
+I151
 sVre.search('"[^"]*"', 'ana are "453" mere')
 p5
 I1107
-sVp.getChildNodes()[0].getChildNodes()[0]
-p6
-I1770
-sVre.split("[a-z]", "av+b")
-p7
-I151
 sVprint m.groups()
-p8
+p6
 I1742
-sVdo if 1 == 2
+sVp.getChildNodes()[0].getChildNodes()[0]
+p7
+I1770
+sVdo move ppoint(150,-171,226,180,55.4,180-150)
+p8
+I780
+sVvarf_stv_b = globalVplusNames["varf_stv_b"]
 p9
-I692
-sVtype(dir)
+I1922
+sVdel(dir)
 p10
-I1845
+I2045
+sVdo if 1 == 2
+p11
+I692
 s.

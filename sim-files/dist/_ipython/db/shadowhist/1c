@@ -2,31 +2,34 @@
 Va.keys()
 p2
 I475
-sVdo appro dx ( 10)
+sV2 + (
 p3
-I178
-sVsee /g 1 hanoi_main
+I2036
+sVdo appro dx ( 10)
 p4
-I1829
-sVif i |MOD| 2 == 0: print i
-p5
-I560
-sVa = {1:2}
-p6
-I1411
-sVdo total.ang = 321
-p7
-I632
+I178
 sVglobals()
-p8
+p5
 I403
+sVsee /g 1 hanoi_main
+p6
+I1829
 sVdo type a:1
-p9
+p7
 I1273
+sVa = {1:2}
+p8
+I1411
 sVmod(s.count('"'), 2)
-p10
+p9
 I1129
-sVcompile("sin(1)", "x", "eval")
+sVdo total.ang = 321
+p10
+I632
+sVif i |MOD| 2 == 0: print i
 p11
+I560
+sVcompile("sin(1)", "x", "eval")
+p12
 I992
 s.

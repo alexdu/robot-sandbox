@@ -1,19 +1,22 @@
 (dp1
-Vt[1][0]
+Vsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_restricted
 p2
-I1698
-sVc
-I372
+I932
 sVdo moves shift(here by 10,0,0)
 p3
 I1925
-sVsys.last_traceback.tb_next.tb_next.tb_next.tb_next.tb_frame.f_restricted
-p4
-I932
-sV1 % "fds"
-p5
-I1230
 sVl[4]
-p6
+p4
 I1628
+sVc
+I372
+sVt[1][0]
+p5
+I1698
+sVexec_completers()
+p6
+I2027
+sV1 % "fds"
+p7
+I1230
 s.

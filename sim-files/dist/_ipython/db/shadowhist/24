@@ -1,14 +1,17 @@
 (dp1
-Vdo move shift(pal by 0,0,10)
+Venv random
 p2
-I333
-sVenv random
-p3
 I64
-sVworldObject("Box3").mass
+sV!del spanac.v2
+p3
+I2051
+sVdo move shift(pal by 0,0,10)
 p4
-I1947
+I333
 sVprint "%20.3g", 5
 p5
 I495
+sVworldObject("Box3").mass
+p6
+I1947
 s.

@@ -1,11 +1,14 @@
 (dp1
-Vbeautify_program("calltest.v2")
+Vvplus.__dict__.keys()
 p2
-I1724
-sVhere
-p3
-I771
-sVvplus.__dict__.keys()
-p4
 I890
+sVhere abort
+p3
+I2037
+sVhere
+p4
+I771
+sVbeautify_program("calltest.v2")
+p5
+I1724
 s.

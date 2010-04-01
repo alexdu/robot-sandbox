@@ -1,38 +1,41 @@
 (dp1
-VMOVE(safe)
+Vdelete(__builtins__.dir)
 p2
-I51
+I2043
 sVdef spanac():
 p3
 I996
-sVr=
+sVdo appro top, 0
 p4
-I851
+I1905
 sVRobotSim.debug = 0
 p5
 I253
-sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c
+sVr=
 p6
-I432
-sVdo if 1 == 2 then
+I851
+sVre.match("^(.*):([a-z]?[a-z0-9_]*)$", "rz(45):rx(45):c
 p7
-I693
-sVhere bs:A
-p8
-I199
-sVdo while 1 do
-p9
-I699
-sVt = parser.expr("a+b,c").totuple()
-p10
-I1652
-sVdo appro top, 0
-p11
-I1905
+I432
 sVvplus._compactdisplay = False
-p12
+p8
 I743
-sVdef inp(self, cont):
+sVdo if 1 == 2 then
+p9
+I693
+sVdo while 1 do
+p10
+I699
+sVMOVE(safe)
+p11
+I51
+sVhere bs:A
+p12
+I199
+sVt = parser.expr("a+b,c").totuple()
 p13
+I1652
+sVdef inp(self, cont):
+p14
 I2022
 s.

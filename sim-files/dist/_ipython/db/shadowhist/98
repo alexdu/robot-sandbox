@@ -1,23 +1,26 @@
 (dp1
-Vsee paletizare
+Vprint "%40s" % "x032e"
 p2
-I23
-sV'4' in a
-p3
-I1383
-sVtool tool:rz(45)
-p4
-I628
+I494
 sV_ipshell.IP.outputcache.prompt1
-p5
+p3
 I1568
 sVhelp _ip.runlines
-p6
+p4
 I825
-sVprint "%40s" % "x032e"
+sV'4' in a
+p5
+I1383
+sVtool tool:rz(45)
+p6
+I628
+sVsee paletizare
 p7
-I494
-sV2.3
+I23
+sVdel spanac.v2
 p8
+I2050
+sV2.3
+p9
 I1814
 s.

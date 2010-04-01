@@ -1,23 +1,26 @@
 (dp1
-Vdo global a,b,c
+Vdo enable x
 p2
-I871
+I598
 sVwor
 p3
 I260
-sVdo j = int((p-1)/nn)mod nc
+sVdo moves shift(pal by 110, 400, -40)
 p4
+I305
+sVdo j = int((p-1)/nn)mod nc
+p5
 I530
 sVdo for i = n to 1 step -1
-p5
-I681
-sVdo enable x
 p6
-I598
-sVdo moves shift(pal by 110, 400, -40)
+I681
+sVdo global a,b,c
 p7
-I305
+I871
 sVdo move shift(pal by 105,170,55)
 p8
 I351
+sV__builtins__.dir
+p9
+I2041
 s.

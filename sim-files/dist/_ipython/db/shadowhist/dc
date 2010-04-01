@@ -1,32 +1,35 @@
 (dp1
-Vdo wait.event ,4
+Vdir = []
 p2
-I713
-sVdo moves shift(pal by 130, 410, -20)
+I2039
+sVdo wait.event ,4
 p3
-I313
-sVdo move trans(0,0,986,0,0,0)
-p4
-I795
+I713
 sVenv paletizare
-p5
+p4
 I824
-sVre.split("([a-z])", "av+b")
+sVdo move trans(0,0,986,0,0,0)
+p5
+I795
+sVdo moves shift(pal by 130, 410, -20)
 p6
-I152
-sVdo move trans(0,0,700,0,0,0)
+I313
+sVdo speed 30 mmps always
 p7
+I650
+sVdo move trans(0,0,700,0,0,0)
+p8
 I773
 sVTerm.cout
-p8
+p9
 I1489
 sVdo auto x,y,z[3],z,x
-p9
+p10
 I1086
 sVvplus._build_dictionary().keys()
-p10
-I1879
-sVdo speed 30 mmps always
 p11
-I650
+I1879
+sVre.split("([a-z])", "av+b")
+p12
+I152
 s.

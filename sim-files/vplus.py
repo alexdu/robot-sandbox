@@ -1302,19 +1302,41 @@ def trace_calls(frame, event, arg):
                  #~ caller_line_no, caller_filename)
     return
 
-def starprompt(self, cont):
-    return "* "
+
+
+
+def consoleprompt(self, cont):
+    
+    try:
+        busy = _some_jobs_running()
+    except:
+        return "<" + sys.exc_info()[:2] + ">"
+        
+    if cont:
+        return "<continue previous line>... "
+    
+    global prevbusy
+    if busy:
+        if prevbusy:
+            prompt = "* "
+        else:
+            prompt = ""     # imediat dupa exec nu afisez promptul
+    else:
+        prompt = ". "
+    
+    prevbusy = busy
+    
+    return prompt
+    
 def exec_init():
     init_trace()
     sys.stdout.flush()
     sys.stdout = sys.ipy_stdout
-    sys.settrace(trace_calls)
-    IPython.ipapi.get().set_hook("generate_prompt", starprompt)    
+    sys.settrace(trace_calls)    
     time.sleep(0.2)
     print 
     
 def exec_end():
-    IPython.ipapi.get().set_hook("generate_prompt", IPython.hooks.generate_prompt)    
     print
     print "Press ENTER to continue "
     print 
@@ -1411,6 +1433,12 @@ def EXECUTE(prog):
         print "Program '%s' not loaded." % func
         
         
+def _some_jobs_running():
+    for i,j in jobs.jobs_all.iteritems():
+        if j.stat_code == j.stat_running_c:
+            return True
+    return False
+
 
 def _flush_completed_jobs():
     toFlush = []
@@ -1716,6 +1744,23 @@ def _edit(file, lineno = None):
     else:
         subprocess.Popen([_editor, file])
 
+
+vplus_program_template = """.PROGRAM %s()     
+    
+    ; Author: <put your name here>
+    
+    ; What does this program do?
+    
+    GLOBAL a,b,c           ; Declare global variables here
+    AUTO x,y,z             ; Declare local variables here
+
+    ; Write your program here    
+    
+
+
+.END
+
+"""
 def _CM_SEE(self, prog):
     """
 
@@ -1749,8 +1794,25 @@ def _CM_SEE(self, prog):
         print "editing .PROGRAM %s() from file '%s:%d' ..." % (prog, file, lineno)
         _edit(file, lineno)
     elif re.match("^.*\.[^.]{1,3}$", prog): # ceva cu extensie => probabil e un fisier
-        print "editing file '%s' ..." % prog
-        _edit(prog)
+        if os.path.isfile(prog):
+            print "editing file '%s' ..." % prog
+            _edit(prog)
+        else:  # new file
+            progname = prog[:-3].lower()
+            print 
+            ans = raw_input("Create new file '%s'? [y/n] " % prog)
+            if ans.lower() == 'y':
+                if prog.lower().endswith('.v2'):
+                    template = vplus_program_template % progname
+                    f = open(prog, "w")
+                    f.write(template)
+                    f.close()
+                    
+                _edit(prog)
+            elif (ans.lower() == 'n') or (ans == ""):
+                pass
+            else:
+                print "I guess your answer was 'no'."
     else:
         print "Program '%s' not loaded." % prog
         print
@@ -1801,35 +1863,32 @@ def callDict():
 
 def _build_dictionary():
     code = """
-    _k = 0
-    _v = 0
-    _K = list(set(locals().keys() + globals().keys()))
-    _K.sort()
-    _vars = []
+_k = 0
+_v = 0
+_K = list(set(locals().keys() + globals().keys()))
+_K.sort()
+_vars = []
 
-    for _k in _K:
-        if _k[0] != '_': 
-            _v = eval(_k)
-            if type(_v).__name__ == 'instance':
-                if _v.__class__.__name__ in ['TRANS', 'PPOINT']:
-                    _vars.append(_k)
-            if type(_v).__name__ in ['str', 'int', 'float']:
-                if _k.lower() == _k:
-                    _vars.append(_k)
-    
-    for _k in _vars:
-        globalVplusNames[_k] = eval(_k)
-        
-    for _k in vplus.__dict__.keys():
-         if _k[0] != '_': 
-            if _k.upper() == _k:
-                globalVplusNames[_k] = eval(_k)
-    
-    #_dic["vplus"] = vplus
-    globalVplusNames["CALL"] = callDict()
-    
-    
-    """
+for _k in _K:
+    if _k[0] != '_': 
+        _v = eval(_k)
+        if type(_v).__name__ == 'instance':
+            if _v.__class__.__name__ in ['TRANS', 'PPOINT']:
+                _vars.append(_k)
+        elif type(_v).__name__ in ['str', 'int', 'float']:
+            if _k.lower() == _k:
+                _vars.append(_k)
+
+for _k in _vars:
+    globalVplusNames[_k] = eval(_k)
+
+for _k in vplus.__dict__.keys():
+    if _k[0] != '_': 
+        if _k.upper() == _k:
+            globalVplusNames[_k] = eval(_k)
+
+globalVplusNames["CALL"] = callDict()
+"""
     
     ip = IPython.ipapi.get()
     ip.runlines(code)

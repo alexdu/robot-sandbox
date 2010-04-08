@@ -46,7 +46,7 @@ FALSE = 0
 ON = 1
 OFF = 0
 
-numeric = ['int', 'float']
+numeric = ['int', 'int32', 'float', 'float64']
 location = ['TRANS', 'PPOINT']
 def check_args(args, types):
     if type(args).__name__ != 'list':
@@ -351,32 +351,37 @@ class infix:
     #~ check_args([a, b], [numeric])
     #~ return a % b
 
-TO = infix(lambda x,y: _TO(x,y))
-def _TO(a,b):
+TO = infix(lambda x,y: FOR_RANGE(x,y))
+def FOR_RANGE(a,b,step=1):
     """
     Creates an interval to be used in FOR loops:
-    _TO(1,5) = [1,2,3,4,5]
-    _TO(1,1) = [1]
-    _TO(5,1) = []
-    1 |TO| 5 is a shortcut for _TO(1,5)
+    FOR_RANGE(1,5) = [1,2,3,4,5]
+    FOR_RANGE(1,1) = [1]
+    FOR_RANGE(5,1) = []
+    FOR_RANGE(5,1,-1) = [5,4,3,2,1]
+    
+    1 |TO| 5 is the same as FOR_RANGE(1,5)
     
     Usage in V+ program:
               
-    FOR i = 1 TO 5
+    FOR i = 1 TO 5           ; =>  1 |TO| 5 => FOR_RANGE(1,5)
+        TYPE i
+    END
+
+    FOR i = 5 TO 1 STEP -1   ; => FOR_RANGE(5,1,-1)
         TYPE i
     END
     
     """    
     check_args([a, b], [numeric])
 
-    return range(a, b+1)
+    return list(numpy.arange(a, b + numpy.sign(step) * 1e-10, step))
     
-TO = infix(lambda x,y: _TO(x,y))
+TO = infix(lambda x,y: FOR_RANGE(x,y))
 
 
 
 
-TO = infix(lambda x,y: _TO(x,y))
 def _XOR(a,b):
     """
     Logical XOR
@@ -494,6 +499,8 @@ import RobotSim
 
 
 
+def DURATION(*args):
+    pass
 
 def SPEED(spd, flag1=None, flag2=None):
     
@@ -622,7 +629,7 @@ def CLOSE():
     """
     RobotSim.open_flag = False
     RobotSim.close_flag = True
-def BREAK():
+def BREAK(extra_delay=True):
     """
     Waits for the robot to finish the current motion.
     """
@@ -632,7 +639,7 @@ def BREAK():
 
     RobotSim.ActuateGripper()
     
-    while RobotSim.arm_trajectory_index < len(RobotSim.arm_trajectory) - 1:
+    while len(RobotSim.trajQueue) > 0:
         time.sleep(0.01)
         if RobotSim.abort_flag:
             RobotSim.abort_flag = False
@@ -652,9 +659,9 @@ def OPENI():
     if RobotSim.switch["DRY.RUN"]:
         return
 
-    BREAK()
+    BREAK(False)
     OPEN()
-    BREAK()
+    BREAK(False)
     if not RobotSim.switch["DRY.RUN"]:
         time.sleep(RobotSim.param["HAND.TIME"])
     
@@ -670,7 +677,7 @@ def CLOSEI():
 
     BREAK()
     CLOSE()
-    BREAK()
+    BREAK(False)
     time.sleep(RobotSim.param["HAND.TIME"])
     
 
@@ -760,6 +767,26 @@ def _convert_to_ppoint(a):
     
     
 
+def _MOVE_START():
+    """
+    Actiuni care se fac imediat inainte de generarea traiectoriei
+    (parte comuna si la MOVE si la MOVES)
+    """
+    RobotSim.ActuateGripper() 
+
+def _MOVE_END():
+    """
+    Actiuni care se fac imediat dupa generarea traiectoriei
+    (parte comuna si la MOVE si la MOVES)
+    """
+    # pentru urmatoarea miscare, revenim la viteza always 
+    RobotSim.speed_next_motion = RobotSim.speed_always
+    RobotSim.speed_next_motion_unit = RobotSim.speed_always_unit
+
+    if not RobotSim.switch["CP"]:
+        BREAK()
+    
+
 def MOVE(a):
     """
     Starts a joint interpolated motion towards "a".
@@ -773,14 +800,9 @@ def MOVE(a):
     
     """
     check_args(a, location)
-    
-    RobotSim.ActuateGripper() 
+    _MOVE_START()
     RobotSim.jtraj(_convert_to_ppoint(a))
-        
-    # pentru urmatoarea miscare, revenim la viteza always 
-    RobotSim.speed_next_motion = RobotSim.speed_always
-    RobotSim.speed_next_motion_unit = RobotSim.speed_always_unit
-
+    _MOVE_END()
   
 def MOVES(a):
     """
@@ -796,12 +818,16 @@ def MOVES(a):
     """
     check_args(a, location)
 
-    RobotSim.ActuateGripper()
+    _MOVE_START()
     RobotSim.ctraj(_convert_to_ppoint(a))
+    _MOVE_END()
 
     # pentru urmatoarea miscare, revenim la viteza always 
     RobotSim.speed_next_motion = RobotSim.speed_always
     RobotSim.speed_next_motion_unit = RobotSim.speed_always_unit
+
+    if not RobotSim.switch["CP"]:
+        BREAK()
 
 def MOVET(a, grip):
     """
@@ -943,6 +969,21 @@ def TOOL(t = None):
 
 
 
+def ALIGN():
+    a = HERE()
+    yr = round(a.yaw / 90) * 90
+    pr = round(a.pitch / 90) * 90
+    b = TRANS(a.x, a.y, a.z, yr, pr, a.roll)
+    MOVES(b)
+
+
+def BRAKE():
+    del(RobotSim.trajQueue[:])
+
+
+def ABORT(arg = None):    
+    _CM_ABORT(None, arg)
+
 def _valid_signal(x, inp = False, out = False, soft = False):
     if out and 0 < x and x <= 512:
         return True
@@ -974,6 +1015,13 @@ def SIGNAL(*X):
         RobotSim.signals[abs(x)] = (x > 0)
         RobotSim.signals_dirty = True
 
+
+def _SET_INP_SIGNAL(*X):
+    check_args(list(X), "int")
+    for x in X:
+        _valid_signal(abs(x), True, False, False)
+        RobotSim.signals[abs(x)] = (x > 0)
+        RobotSim.signals_dirty = True
         
 def SIG(*X):
     """
@@ -1015,13 +1063,13 @@ def TIMER(x, value = None):
         raise Exception, "Timer " + str(x) + " does not exist. Only timers from -3 to 15 are valid."
     
     if value == None:
-        return time.time() - RobotSim.timers[x]
+        return RobotSim.clock - RobotSim.timers[x]
     else:
-        RobotSim.timers[x] = time.time() - value
+        RobotSim.timers[x] = RobotSim.clock - value
 
 def WAIT_EVENT(unused, delay):
-    t0 = time.time()
-    while time.time() < t0 + delay:
+    t0 = RobotSim.clock
+    while RobotSim.clock < t0 + delay:
         time.sleep(0.01)
         if RobotSim.abort_flag:
             RobotSim.abort_flag = False
@@ -1361,7 +1409,23 @@ def completers_setup():
     ip.set_hook('complete_command', switch_completers, str_key = 'disable')
     ip.set_hook('complete_command', switch_completers, str_key = 'en')
     ip.set_hook('complete_command', switch_completers, str_key = 'dis')
+    ip.set_hook('complete_command', see_completers, str_key = 'see')
     
+
+
+def see_completers(self, event):
+    ex = exec_completers(self, event)
+    if '<no robot programs loaded>' in ex:
+        ex = []
+    lo = load_completers(self, event)
+    lox = []
+    for l in lo:
+        lox.append(l + ".v2")
+    en = env_completers(self, event)
+    enx = []
+    for e in en:
+        enx.append(e + ".env")
+    return ex + lox + enx
     
 def load_completers(self, event):
     progfiles = []
@@ -1594,6 +1658,7 @@ def _CM_HERE(self, var):
         return
         
     var = var.lower()
+    var = var.replace(".", "_")
     
     reSingleVar = """
         ^
@@ -2076,20 +2141,18 @@ def _CM_ENV(self, prog):
 
     print "setting work environment (%s)..." % prog
     print " "
-    ip.runlines("_env_args = [" + args + "]")
-    ip.runlines("resetBoxes()")
 
     RobotSim.pauseTick = True
     try:
         time.sleep(0.2)
-        f = open(prog)
-        r = f.read()
-        f.close()
-        ip.runlines(r)
+        ip.runlines("_env_args = [" + args + "]")
+        ip.runlines("resetEnv()")
+        ip.runlines("execfile('%s')" % prog)
     finally:
         RobotSim.pauseTick = False
     
-
+    time.sleep(0.2)
+    print 
     
 def _CM_DO(self, var):
     if not RobotSim.comp_mode:
@@ -2103,6 +2166,18 @@ def _CM_DO(self, var):
     
     ip = IPython.ipapi.get()
     ip.runlines(var)
+
+
+def _CM_SIGNAL(self, var):
+
+    var = translate_line(var)
+    
+    if RobotSim.debug:
+        print "(debug) " + var
+    
+    ip = IPython.ipapi.get()
+    ip.runlines("SIGNAL(%s)" % var)
+    
 
 def _CM_MC(self, var):
     """

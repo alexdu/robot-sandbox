@@ -146,6 +146,8 @@ def beautify_line(var, statement = False):
     return string.join(newstr, "") + comment
 def beautify_block(var, first = False):
     # un bloc care nu este string si nu contine stringuri si nici comentarii
+    
+    # daca primul keyword e din lista asta, e cu litere mari
     vplus_instructions = ['ABORT', 'ABOVE', 'ACCEL', 'ALIGN', 'ALTER', 'ANY',
     'APPRO', 'APPROS', 'ATTACH', 'AUTO', 'BELOW', 'BRAKE', 'BREAK', 'CALIBRATE', 'CALL', 
     'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'DECOMPOSE', 'DELAY',
@@ -162,7 +164,7 @@ def beautify_block(var, first = False):
     'TYPE', 'UNTIL', 'VALUE', 'WAIT', 'WAIT.EVENT', 'WHILE', 'WRITE']
 
 
-    # cuvinte cheie, care nu sunt functii (nu urmeaza paranteza dupa ele)
+    # cuvinte cheie care merg doar in expresii, nu sunt functii (nu urmeaza paranteza dupa ele)
     vplus_expr_keywords = ['ALWAYS', 'AND', 
     'BY', 'BAND', 'BOR', 'BXOR', 
     'DEST', 'DO', 'DRY.RUN',
@@ -310,7 +312,7 @@ def translate_statement(var, indent):
     # OPENI => OPENI()
     # adica chestii fara parametri, care nu pot sa apara in expresii
     vplus_noarg_functions = ['ABORT', 'ABOVE', 'ALIGN', 
-    'BELOW', 'BREAK', 'CALIBRATE',
+    'BELOW', 'BREAK', 'BRAKE', 'CALIBRATE',
     'CLOSE', 'CLOSEI', 'COARSE', 
     'DEST', 
     'FINE', 'FLIP',
@@ -422,7 +424,7 @@ def translate_statement(var, indent):
             pos_step = vs.index("STEP")
             fin_val = string.join(vs[pos_to+1 : pos_step], "")
             step = string.join(vs[pos_step+1 : ], "")
-            vs = ['for ', counter.strip(), ' in range(', ini_val.strip(), ', ', '(', fin_val.strip(), ') + (', step.strip(), '), ', step.strip(), '):']
+            vs = ['for ', counter.strip(), ' in FOR_RANGE(', ini_val.strip(), ', ', fin_val.strip(), ', ', step.strip(), '):']
         else:
             fin_val = string.join(vs[pos_to+1 : ], "")
             vs = ['for ', counter.strip(), ' in ', ini_val.strip(), ' |TO| ', fin_val.strip(), ':']
@@ -501,6 +503,8 @@ def translate_statement(var, indent):
         vs = ['    return (', string.join(_program_args, ', '), ') # .END']
     elif kw == "RETURN":
         vs = ['return (', string.join(_program_args, ', '), ')']
+    elif kw == "STOP":
+        vs = ['return']
     else:
         vs = [translate_expression(var)]
 

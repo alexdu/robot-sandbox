@@ -28,10 +28,15 @@ from geom import *
 import threading
 import cgkit
 import time
+from pprint import pprint
+import IPython
 
 class IKError(Exception):
     pass
 
+
+clock = 0
+# incrementez la fiecare frame
 
 
 currentJointPos = [0,-90,180,0,0,0]
@@ -59,11 +64,13 @@ switch["POWER"] = True
 switch["TRACE"] = False
 switch["DRY.RUN"] = False
 switch["GUI"] = True
+switch["CP"] = True
 
 timers = {}
 def init_timers():
+    global clock
     for i in range(-3, 16):
-        timers[i] = time.time()
+        timers[i] = clock
 init_timers()
 
 signals = {}
@@ -92,12 +99,17 @@ sig_open = False
 sig_close = False
 
 
-arm_trajectory_index = 0
-arm_trajectory = []
-
 abort_flag = False
 comp_mode = True
         
+
+def checkJointLimits(J):
+
+    for i in range(0,6):
+        if J[i] < lim_min[i]:
+            raise IKError, "Joint %d: lower limit exceeded" % (i+1)
+        if J[i] > lim_max[i]:
+            raise IKError, "Joint %d: upper limit exceeded" % (i+1)
     
 def DK(J):
     """Cinematica directa
@@ -120,9 +132,10 @@ def DK(J):
     Tdk = TRANS(HTM = T0 * T10 * T21 * T32 * T43 * T54 * T65 * Txz * tool_trans.HTM);
     return Tdk
 
+
     
-def IK(loc):
-    """Cinematica directa
+def IK(loc, ppoint = True):
+    """Cinematica inversa
     
     Momentan implementata doar pentru Viper s650, LEFTY, ABOVE, FLIP/NOFLIP
     loc: pozitia dorita a efectorului terminal (obiect de tip TRANS)
@@ -185,20 +198,14 @@ def IK(loc):
             J[5] = J[5] + 180;
 
     except ValueError:
-        raise IKError, "No solution."
+        raise IKError, "No solution"
 
     if not all(numpy.isfinite(J)):
-        raise IKError, "No solution."
-
-    # Joint limits:
-
-    for i in range(0,5):
-        if J[i] < lim_min[i]:
-            raise IKError, "Joint %d: lower limit exceeded." % i
-        if J[i] > lim_max[i]:
-            raise IKError, "Joint %d: upper limit exceeded." % i
-    else:
-        return PPOINT(J)
+        raise IKError, "No solution"
+    
+    checkJointLimits(J)
+    
+    return PPOINT(J) if ppoint else J
 
     
 def ActuateGripper():
@@ -217,8 +224,9 @@ def ang_distance(A,B):
     qa = cgkit.cgtypes.quat(a)
     qb = cgkit.cgtypes.quat(b)
     qdif = qa.inverse() * qb
-    aa = qdif.toAngleAxis()
-    return aa[0] * 180/pi
+    angle,axis = qdif.toAngleAxis()
+    angle = angdif(angle, 0)  # intre -pi/pi
+    return abs(angle * 180/pi)
     
 def lin_interp(A,B,t):
     """ Interpolare liniara intre doua transformari (pentru MOVES)
@@ -234,66 +242,259 @@ def lin_interp(A,B,t):
     qa = cgkit.cgtypes.quat(a)
     qb = cgkit.cgtypes.quat(b)
     qdif = qa.inverse() * qb
-    aa = qdif.toAngleAxis()
+    angle, axis = qdif.toAngleAxis()
+    angle = angdif(angle, 0)
     
-    qdifi = cgkit.cgtypes.quat(aa[0] * t, aa[1])
+    qdifi = cgkit.cgtypes.quat(angle * t, axis)
     qi = qa * qdifi
     
     (pa,cucu,bau) = a.decompose()
     (pb,cucu,bau) = b.decompose()
-    pi = pa * (1-t) + pb * t
-    res = cgkit.cgtypes.mat4(1).translate(pi) * qi.toMat4()
+    pint = pa * (1-t) + pb * t
+    res = cgkit.cgtypes.mat4(1).translate(pint) * qi.toMat4()
     res = mat(res.toList()).reshape(4,4).T
     return TRANS(HTM = res)
     
 
+def angdif(a,b):
+    d = ((a - b + pi) % (2*pi)) - pi
+    return d
+
+def lin_interp_q(a,b,t):
+    """ Interpolare liniara intre doua transformari reprezentate ca mat4
+    """
+    qa = cgkit.cgtypes.quat(a)
+    qb = cgkit.cgtypes.quat(b)
+    qdif = qa.inverse() * qb
+    angle, axis = qdif.toAngleAxis()
+    angle = angdif(angle, 0)
     
-
-def ctraj(jdest):        
-    # Calculeaza traiectoria robotului pentru miscari in linie dreapta (MOVES)
-    # Rezultatul este memorat pe articulatii, in arm_trajectory
-    global arm_trajectory, startJointPos, destJointPos, switch
+    qdifi = cgkit.cgtypes.quat(angle * t, axis)
+    qi = qa * qdifi
     
-    destJointPos = jdest.J
+    (pa,cucu,bau) = a.decompose()
+    (pb,cucu,bau) = b.decompose()
+    pint = pa * (1-t) + pb * t
+    res = cgkit.cgtypes.mat4(1).translate(pint) * qi.toMat4()
+    res = mat(res.toList()).reshape(4,4).T
+    return TRANS(HTM = res)
 
-    p1 = DK(currentJointPos)
-    p2 = DK(destJointPos)
 
-    d = DISTANCE(p1,p2) + ang_distance(p1,p2)*10
-    time = d / max_cartesian_speed / (speed_next_motion/100.0) / (speed_monitor/100.0)
-    steps = 2 + round(time * fps)
-    arm_trajectory_index = 0
-    if not switch["DRY.RUN"]:
-        for t in numpy.linspace(0,1,steps):
-            p = lin_interp(p1,p2,t)
-            j = IK(p)
-            arm_trajectory.append(j)
+class TrajSegment_Proc:
+    def __init__(self, seg1, seg2):
+        self.seg1 = seg1
+        self.seg2 = seg2
+        self.t = 0
+    def step(self):
+        dt1 = self.seg1.step()
+        dt2 = self.seg2.step()
         
-def jtraj(jdest):
-    # Calculeaza traiectoria robotului pentru miscari interpolate pe articulatii (MOVE)
-    # Rezultatul este memorat pe articulatii, in arm_trajectory
+        dt = dt1 * (1-self.t) + dt2 * self.t 
+        dt = dt/2
+        self.t = min(self.t + dt, 1)
+        self.seg1.t = self.t
+        self.seg2.t = self.t
 
-
-    global arm_trajectory, startJointPos, destJointPos
-    
+        return dt
         
+        
+    def where(self):
+        a = self.seg1.where()
+        b = self.seg2.where()
+        ja = mat(a)
+        jb = mat(b)
+        j = ja * (1-self.t) + jb * self.t
+        j = j.tolist()[0]
+        return j
+        
+
+#~ def jreldist(ppa,ppb):
+    #~ ja = mat(ppa.J)
+    #~ jb = mat(ppb.J)
+    #~ dif = ja - jb
+    #~ return abs(dif / mat(max_joint_speed)).max()  
+    
+class TrajSegment_Joint:
+    def __init__(self, ppstart, ppend, program_speed):
+        self.ppstart = ppstart
+        self.ppend = ppend
+        self.program_speed = program_speed
+        self.cartesian = False
+        self.t = 0
+
+        self.ja = mat(ppstart.J)
+        self.jb = mat(ppend.J)
+        dif = self.ja - self.jb
+        self.drel = abs(dif / mat(max_joint_speed)).max()   # 1 = 100%
+
+    def step(self):
+        time = self.drel / (self.program_speed/100.0) / (speed_monitor/100.0)
+        steps = 1 + round(time * fps)
+        #~ print steps
+        dt = 1/steps
+        self.t = min(self.t + dt, 1)
+        return dt
+    
+    def where(self):
+        j = self.ja * (1-self.t) + self.jb * self.t
+        j = j.tolist()[0]
+        return j
+
+class TrajSegment_Cart:
+    def __init__(self, ppstart, ppend, program_speed):
+        self.ppstart = ppstart
+        self.ppend = ppend
+        self.program_speed = program_speed
+        self.cartesian = True
+        self.t = 0
+    
+        self.p1 = DK(ppstart)
+        self.p2 = DK(ppend)
+        self.m1 = cgkit.cgtypes.mat4(self.p1.HTM.flatten().tolist()[0])
+        self.m2 = cgkit.cgtypes.mat4(self.p2.HTM.flatten().tolist()[0])
+        self.drel = (DISTANCE(self.p1, self.p2) + ang_distance(self.p1,self.p2)*10) / max_cartesian_speed
+
+    def step(self):
+        time = self.drel / (self.program_speed/100.0) / (speed_monitor/100.0)
+        steps = 1 + round(time * fps)
+        dt = 1/steps
+        self.t = min(self.t + dt, 1)
+        return dt
+        
+    def where(self):
+        p = lin_interp_q(self.m1, self.m2, self.t)
+        return IK(p, False)
+
+trajQueue = []
+
+def Step():
+    t0 = time.time()
+    global currentJointPos, trajQueue
+    removed = False
+    if len(trajQueue) > 0:
+        ts = trajQueue[0]
+        try:
+            ts.step()
+            currentJointPos = ts.where()
+        except IKError:
+            ex = sys.exc_info()[1]
+            print "IKError: " + str(ex)
+            
+            
+        
+        if ts.t == 1:
+            removed = True
+            #~ print "finished"
+            trajQueue = trajQueue[1:]
+    t1 = time.time()
+    dt = t1 - t0
+    #~ if dt > 0.01:
+        #~ print "Step(): ", dt
+        #~ print removed
+        #~ print ts
+        #~ pass
+
+def splitSegment(ts, t = None):
+    if t != None:
+        ts.t = t
+    ppmid = PPOINT(ts.where())
+    if ts.cartesian:
+        a = TrajSegment_Cart(ts.ppstart, ppmid, ts.program_speed)
+        b = TrajSegment_Cart(ppmid, ts.ppend, ts.program_speed)        
+    else:
+        a = TrajSegment_Joint(ts.ppstart, ppmid, ts.program_speed)
+        b = TrajSegment_Joint(ppmid, ts.ppend, ts.program_speed)        
+    return (a,b)
+
+# miscare normala: un TrajSegment_Cart sau TrajSegment_Joint
+# procedurala:
+#   - renunt la segmentul curent
+#   - sparg segmentul de la HERE pana la DEST in doua
+#   - prima jumatate o pun la coada
+#   - apoi sparg si segmentul de la DEST la NEXT_DEST in doua
+#   - fac blend intre sparturile din mijloc
+#   - ultima spartura o pun la coada
+#   => am 3 segmente la procedurala; 2 daca sunt la blending; 
+#   cand raman cu 1 pot sa incep miscare procedurala din nou
+
+    
+
+def ctraj(jdest):
+    global startJointPos, destJointPos
+
+    while len(trajQueue) > 1:
+        #~ print "waiting for proc motion to finish"
+        time.sleep(0.01)
+    
+    if len(trajQueue) == 0:
+        # incerc sa aproximez cu jtraj daca traiectoria e suficient de scurta
+        ts = TrajSegment_Joint(PPOINT(currentJointPos), jdest, speed_next_motion)
+        if ts.step() < 0.5:
+            ts = TrajSegment_Cart(PPOINT(currentJointPos), jdest, speed_next_motion)
+        else:
+            #~ ts.t = 0  # aproximez
+            #~ print "ctraj aprox
+            pass
+            
+        trajQueue.append(ts)
+    else:
+        ts = TrajSegment_Joint(PPOINT(destJointPos), jdest, speed_next_motion)
+        if ts.step() < 0.5:
+            global pauseTick
+            pauseTick = True
+            npseg = TrajSegment_Cart(PPOINT(destJointPos), jdest, speed_next_motion)
+            #~ print "proc"
+            #~ print trajQueue[0].t
+            (a,b) = splitSegment(trajQueue[0])
+            (a,b) = splitSegment(b, 0.5)
+            (c,d) = splitSegment(npseg, 0.5)
+            del(trajQueue[0])
+            trajQueue.append(a)
+            trajQueue.append(TrajSegment_Proc(b,c))
+            trajQueue.append(d)
+            #~ print trajQueue
+            #IPython.Shell.IPShellEmbed([])()
+            pauseTick = False
+        else:
+            #~ ts.t = 0  # aproximez
+            #~ print "pctraj aprox"
+            trajQueue.append(ts)
+
     startJointPos = currentJointPos
     destJointPos = jdest.J
-    ja = mat(currentJointPos)
-    jb = mat(destJointPos)
-    dif = ja - jb
-    maxrot = abs(dif / mat(max_joint_speed)).max()
-    time = maxrot / (speed_next_motion/100.0) / (speed_monitor/100.0)
-    steps = 2 + round(time * fps)
-    
-    arm_trajectory_index = 0
-    if not switch["DRY.RUN"]:
-        for t in numpy.linspace(0,1,steps):
-            j = ja * (1-t) + jb * t
-            j = j.tolist()[0]
-            arm_trajectory.append(PPOINT(j))
-    #print arm_trajectory
+        
+def jtraj(jdest):
+    global startJointPos, destJointPos
+    while len(trajQueue) > 1:
+        #~ print "waiting for proc motion to finish"
+        time.sleep(0.01)
 
+
+    if len(trajQueue) == 0:
+        ts = TrajSegment_Joint(PPOINT(destJointPos), jdest, speed_next_motion)
+        trajQueue.append(ts)
+    else:
+        ts = TrajSegment_Joint(PPOINT(currentJointPos), jdest, speed_next_motion)
+        if ts.step() < 0.5:
+            global pauseTick
+            pauseTick = True
+            npseg = TrajSegment_Joint(PPOINT(destJointPos), jdest, speed_next_motion)
+            (a,b) = splitSegment(trajQueue[0])
+            (a,b) = splitSegment(b, 0.5)
+            (c,d) = splitSegment(npseg, 0.5)
+            del(trajQueue[0])
+            trajQueue.append(a)
+            trajQueue.append(TrajSegment_Proc(b,c))
+            trajQueue.append(d)
+            pauseTick = False
+        else:
+            #~ ts.t = 0  # aproximez
+            #~ print "pjtraj aprox"
+            trajQueue.append(ts)
+
+    startJointPos = currentJointPos
+    destJointPos = jdest.J
+        
 
 def jog(mode, axis, signed_speed):
     """
@@ -306,7 +507,7 @@ def jog(mode, axis, signed_speed):
     try:
         a0 = axis - 1
         
-        global currentJointPos
+        global currentJointPos, destJointPos
         
         if mode.lower() == 'world':
             here = DK(currentJointPos)
@@ -330,6 +531,7 @@ def jog(mode, axis, signed_speed):
             
             jdest = IK(dest)
             currentJointPos = jdest.J
+            destJointPos = currentJointPos
         elif mode.lower() == 'tool':
             here = DK(currentJointPos)
             transl = [0,0,0]
@@ -349,16 +551,35 @@ def jog(mode, axis, signed_speed):
             dest = here * TRANS(transl[0], transl[1], transl[2]) * rot
             jdest = IK(dest)
             currentJointPos = jdest.J
+            destJointPos = currentJointPos
                 
             
         elif mode.lower() == 'joint':
-            currentJointPos[a0] = currentJointPos[a0] + signed_speed/100.0 * max_joint_speed[a0] / 3 / fps
-            currentJointPos[a0] = max(currentJointPos[a0], lim_min[a0])
-            currentJointPos[a0] = min(currentJointPos[a0], lim_max[a0])
+            J = copy(currentJointPos)
+            J[a0] = J[a0] + signed_speed/100.0 * max_joint_speed[a0] / 3 / fps
+            checkJointLimits(J)
+            currentJointPos = J
+            destJointPos = J
     except IKError:
         ex = sys.exc_info()[1]
-        print "IKError:", ex
-    except:
-        tb = sys.exc_info()[0]
-        import traceback
-        traceback.print_tb(tb)
+        return "IKError: " + str(ex)
+
+
+def AlignMCP():
+    global currentJointPos, destJointPos
+    
+    try:
+        a = DK(currentJointPos)
+        yr = round(a.yaw / 90.0) * 90
+        pr = round(a.pitch / 90.0) * 90
+        rr = round(a.roll / 90.0) * 90
+            
+        b = TRANS(a.x, a.y, a.z, yr, pr, rr)
+        
+        ctraj(IK(b))
+        #currentJointPos = IK(b).J
+        #destJointPos = currentJointPos
+
+    except IKError:
+        ex = sys.exc_info()[1]
+        return "IKError: " + str(ex)

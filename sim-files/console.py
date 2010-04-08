@@ -44,8 +44,12 @@ def _onQuit():
     print "onQuit()"
     _ipshell.IP.magic_Exit()
     _ipshell.IP.savehist()
-    os.abort()
-    raise SystemExit
+    try:
+        print "pygame quit"
+        pygame.quit()
+        raise SystemExit
+    except:
+        os.abort()
 
 eventmanager.connect("QUIT", _onQuit)
 
@@ -85,6 +89,7 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("load", vplus._CM_LOAD)
         IPython.ipapi.get().expose_magic("zero", vplus._CM_ZERO)
         IPython.ipapi.get().expose_magic("reset", vplus._CM_RESET)
+        IPython.ipapi.get().expose_magic("signal", vplus._CM_SIGNAL)
         
         vplus.completers_setup()
 

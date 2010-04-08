@@ -29,8 +29,7 @@
     CALL init(nr_discuri)       ;seteaza varfurile stivei si dz
     
     
-    SPEED 70 ALWAYS             ;viteza de lucru
-    PARAMETER HAND.TIME = 1
+    SPEED 100 ALWAYS            ;viteza de lucru
     
     OPEN
     MOVE #safe
@@ -85,6 +84,8 @@
 .END
 
 .PROGRAM pick_place(pick, place)
+    ; Pick and place optimizat
+    
     AUTO z_pick
     AUTO z_place
     
@@ -92,9 +93,9 @@
     z_pick = 80
     z_place = 80
     
+    PARAMETER HAND.TIME = 0.3
     
     APPRO pick, z_pick
-    BREAK
     
     SPEED 50
     MOVES pick
@@ -102,10 +103,10 @@
     
     SPEED 50
     DEPARTS z_pick
-    BREAK
+    
+    PARAMETER HAND.TIME = 0
     
     APPRO place, z_place
-    BREAK
     
     SPEED 50
     MOVES place
@@ -113,6 +114,5 @@
     
     SPEED 50
     DEPARTS z_place
-    BREAK
     
 .END

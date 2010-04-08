@@ -12,31 +12,36 @@ import sys
 import os
 import RobotSim
 import ode
+import OpenGL.GL as GL
+from copy import copy
 
+ENV_RESET = "EnvReset"
+NEW_BOX_CREATED = "NewBoxCreated"
 
-# Materiale pentru randare si contact properties
+execfile("env.py")
+execfile("ConveyorBelt.py")
+execfile("PartSensor.py")
+execfile("PartDispenser.py")
+execfile("PenAndPaper.py")
+execfile("PalletDispenser.py")
+execfile("BlackHole.py")
 
-matRobot = GLMaterial(name="robot", diffuse=(1,0.95,0.9))
-matFloor = GLMaterial(name="floor", diffuse=(0,1,1))
-matGripper = GLMaterial(name="gripper", diffuse=(0.5,0.5,0.5))
-matPallet = GLMaterial(name="pallet", diffuse=(1,1,1))
-
-matRedBox = GLMaterial(name="RedBox", diffuse=(1,0,0))
-matYellowBox = GLMaterial(name="YellowBox", diffuse=(1,1,0))
-matGreenBox = GLMaterial(name="GreenBox", diffuse=(0,1,0))
-matBlueBox = GLMaterial(name="BlueBox", diffuse=(0,0,1))
-matPinkBox = GLMaterial(name="PinkBox", diffuse=(1,0,1))
-matBoxes = [matRedBox, matYellowBox, matGreenBox, matBlueBox, matPinkBox]
-
-defaultContactProps = ODEContactProperties(bounce = 0, mu = 0.01, soft_erp=0.2, soft_cfm=1E-4)
+defaultContactProps = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-4)
 contactProps_BoxBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.1, soft_cfm=1E-4)
 contactProps_PalBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-6)
 contactProps_FloorBox = ODEContactProperties(bounce = 0, mu = 0.1, soft_erp=0.2, soft_cfm=1E-6)
-
 contactProps_GripBox = ODEContactProperties(bounce = 0, mu = 100, soft_erp=0.2, soft_cfm=0.0001)
+contactProps_GripPal = ODEContactProperties(bounce = 0, mu = 10, soft_erp=0.2, soft_cfm=0.0001)
+
+contactProps_ConveyorBox_Running = ODEContactProperties(bounce = 0.5, mu = 0.1, soft_erp=0.2, soft_cfm=1E-6, motion1 = 0.1, fdir1 = (1,0,0))
+contactProps_ConveyorBox_Stopped = ODEContactProperties(bounce = 0.5, mu = 0.1, soft_erp=0.2, soft_cfm=1E-6)
+
+contactProps_ConveyorPal_Running = ODEContactProperties(bounce = 0, mu = 10, soft_erp=0.2, soft_cfm=1E-6, motion1 = 0.1, fdir1 = (1,0,0))
+contactProps_ConveyorPal_Stopped = ODEContactProperties(bounce = 0, mu = 10, soft_erp=0.2, soft_cfm=1E-6)
+
 
 odeSim = ODEDynamics(gravity=9.81/5, substeps=2, cfm=1E-5, erp=0.2, defaultcontactproperties = defaultContactProps,
-               show_contacts=1, contactmarkersize=1E-3, contactnormalsize=0.01, use_quick_step = False)
+               show_contacts=0, contactmarkersize=1E-3, contactnormalsize=0.1, use_quick_step = False, collision_events = True)
 
 odeSim.world.setLinearDamping(0.1)
 odeSim.world.setAngularDamping(0.1)
@@ -45,13 +50,22 @@ odeSim.world.setContactSurfaceLayer(1E-10)
 odeSim.world.setAutoDisableFlag(True)
 odeSim.world.setAutoDisableLinearThreshold(0.01)
 odeSim.world.setAutoDisableAngularThreshold(0.01)
+odeSim.world.setMaxAngularSpeed(100)
 
-#odeSim.world.setMaxAngularSpeed(1)
+
+odeSim.setContactProperties((matPallet, matConveyorRunning), contactProps_ConveyorPal_Running)
+odeSim.setContactProperties((matPallet, matConveyorStopped), contactProps_ConveyorPal_Stopped)
+
+odeSim.setContactProperties((matGripper, matPallet), contactProps_GripPal)
 
 for matBox in matBoxes:
     odeSim.setContactProperties((matGripper, matBox), contactProps_GripBox)
     odeSim.setContactProperties((matFloor, matBox), contactProps_FloorBox)
     odeSim.setContactProperties((matPallet, matBox), contactProps_PalBox)
+    odeSim.setContactProperties((matBox, matConveyorRunning), contactProps_ConveyorBox_Running)
+    odeSim.setContactProperties((matBox, matConveyorStopped), contactProps_ConveyorBox_Stopped)
+
+#odeSim.setContactProperties((matConveyor, matFloor), contactProps_ConveyorBox)
 
 for matBox1 in matBoxes:
     for matBox2 in matBoxes:
@@ -75,7 +89,6 @@ load_robot_link('6dof-robot-model/link3.stl', 'Robot Link 3')
 load_robot_link('6dof-robot-model/link4.stl', 'Robot Link 4')
 load_robot_link('6dof-robot-model/link56.stl', 'Robot Link 5-6')
 
-
 base = worldObject("Robot Base")
 link1 = worldObject("Robot Link 1")
 link2 = worldObject("Robot Link 2")
@@ -83,26 +96,13 @@ link3 = worldObject("Robot Link 3")
 link4 = worldObject("Robot Link 4")
 link5 = worldObject("Robot Link 5-6")
 link6 = Box("Gripper Mounting Support", lx = 50E-3, ly = 30E-3, lz = 30E-3, mass=0.1)
-#gripper = Box(lx = 15, ly = 15, lz = 30, mass=1)
 gripper = Box("Gripper", lx = 20E-3, ly = 30E-3, lz = 100E-3, mass=100, material=matGripper)
 finger1 = Box("Gripper Finger 1", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.1, material=matGripper)
 finger2 = Box("Gripper Finger 2", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.1, material=matGripper)
 
-
-
-
-
 floor = Box("Floor", lx=1500E-3, ly=1500E-3, lz=50E-3, material=matFloor)
 floor.mass = 1
 floor.pos = (0,0,-25E-3)
-
-
-
-
-## link(link2, link1, relative=True)
-## link(link1, base, relative=True)
-
-
 
 
 
@@ -113,8 +113,8 @@ def setGripperForces(open, close):
     
     slider_finger1.motorfmax = gripForce
     slider_finger2.motorfmax = gripForce
-    slider_finger1.fudgefactor = 0.000001
-    slider_finger2.fudgefactor = 0.000001
+    slider_finger1.fudgefactor = 0.0001
+    slider_finger2.fudgefactor = 0.0001
     slider_finger1.stopcfm = 1E-5
     slider_finger2.stopcfm = 1E-5
 
@@ -131,8 +131,8 @@ def setGripperForces(open, close):
         err = pos1 - pos2
         k = 1
         
-        slider_finger1.motorvel = -0.2 + err * k
-        slider_finger2.motorvel = 0.2 - err * k
+        slider_finger1.motorvel = -0.3 + err * k
+        slider_finger2.motorvel = 0.3 - err * k
         
         pos = abs(slider_finger2.position)
         pos = min(pos, 40E-3)
@@ -142,31 +142,7 @@ def setGripperForces(open, close):
         slider_finger2.histop = -(pos - 1E-3)
         slider_finger2.lostop = -(pos + 0.01E-3)
         
-        #slider_finger2.lostop = -pos-0.01E-3
         
-    #~ if open:
-        #~ M["finger1"].addForce((0,0,gripForce), True)
-        #~ M["finger2"].addForce((0,0,-gripForce), True)
-        #~ slider_finger1.histop = 40
-        #~ slider_finger2.lostop = -40
-        
-    #~ if close:
-        #~ M["finger1"].addForce((0,0,-gripForce), True)
-        #~ M["finger2"].addForce((0,0,gripForce), True)
-        #~ pos = (slider_finger1.position - slider_finger2.position)/2
-        #~ pos = min(pos, 40)
-        #~ pos = max(pos, 10)
-        #~ slider_finger1.histop = pos+0.1
-        #~ slider_finger2.lostop = -pos-0.1
-
-    #~ M["finger1"].setLinearVel((0,0,0))
-    #~ M["finger2"].setLinearVel((0,0,0))
-    #~ M["finger1"].setAngularVel((0,0,0))
-    #~ M["finger2"].setAngularVel((0,0,0))
-    
-#~ 
-
-            
 
 def enforcePose(m, P):
     #~ if int(scene._timer.frame) |MOD| 30 == 0:
@@ -176,14 +152,14 @@ def enforcePose(m, P):
         
         oldPos = m.body.pos
         (pos,b,c) = P.decompose()
-        m.setRot(P.getMat3().inverse().toList())
+        m.setRot(P.getMat3())
         m.setPos(pos)
         m.setLinearVel((0,0,0))
         m.setAngularVel((0,0,0))
         m.odebody.setGravityMode(False)
 
 def changePose(m, P):
-    #if int(scene._timer.frame) % 30 == 0:
+    #~ if int(scene._timer.frame) % 30 == 15:
     
         m.odebody.enable()
         
@@ -215,29 +191,29 @@ def enforceRobotPos(J, grip_pos = -1):
 
     R = mat4(1)
     P = R
-    enforcePose(M["base"], P)
+    enforcePose(base.manip, P)
     P = R.rotation(j[0], (0,0,1)) * R.translation((0,0,203E-3)) * P
-    enforcePose(M["link1"], P)
+    enforcePose(link1.manip, P)
     P = P * R.translation((75E-3,0,335E-3 - 203E-3)) * R.rotation(j[1]+pi/2, (0,1,0))
-    enforcePose(M["link2"], P)
+    enforcePose(link2.manip, P)
     P = P * R.translation((0,0,270E-3)) * R.rotation(j[2]-pi, (0,1,0))
-    enforcePose(M["link3"], P)
+    enforcePose(link3.manip, P)
     P = P * R.translation((108E-3,0,90E-3)) * R.rotation(j[3], (1,0,0))
-    enforcePose(M["link4"], P)
+    enforcePose(link4.manip, P)
     P = P * R.translation((295E-3 - 108E-3,0,0)) * R.rotation(j[4], (0,1,0))
-    enforcePose(M["link5"], P)
+    enforcePose(link5.manip, P)
     P = P * R.translation((80E-3 + 20E-3,0,0)) * R.rotation(j[5], (1,0,0))
-    enforcePose(M["link6"], P)
+    enforcePose(link6.manip, P)
     P = P * R.translation((20E-3 + 15E-3,0,0))
-    enforcePose(M["gripper"], P)
+    enforcePose(gripper.manip, P)
 
-    enforcePose(M["floor"], R.translation((0,0,-25E-3)))
+    enforcePose(floor.manip, R.translation((0,0,-25E-3)))
 
     if grip_pos >= 0:
         P1 = P * R.translation((10E-3 + 15E-3,0, grip_pos))
-        enforcePose(M["finger1"], P1)
+        enforcePose(finger1.manip, P1)
         P2 = P * R.translation((10E-3 + 15E-3,0,-grip_pos))
-        enforcePose(M["finger2"], P2)
+        enforcePose(finger2.manip, P2)
 
 
 def changeRobotPos(J):
@@ -246,21 +222,21 @@ def changeRobotPos(J):
 
     R = mat4(1)
     P = R
-    changePose(M["base"], P)
+    changePose(base.manip, P)
     P = R.rotation(j[0], (0,0,1)) * R.translation((0,0,203E-3)) * P
-    changePose(M["link1"], P)
+    changePose(link1.manip, P)
     P = P * R.translation((75E-3,0,335E-3 - 203E-3)) * R.rotation(j[1]+pi/2, (0,1,0))
-    changePose(M["link2"], P)
+    changePose(link2.manip, P)
     P = P * R.translation((0,0,270E-3)) * R.rotation(j[2]-pi, (0,1,0))
-    changePose(M["link3"], P)
+    changePose(link3.manip, P)
     P = P * R.translation((108E-3,0,90E-3)) * R.rotation(j[3], (1,0,0))
-    changePose(M["link4"], P)
+    changePose(link4.manip, P)
     P = P * R.translation((295E-3 - 108E-3,0,0)) * R.rotation(j[4], (0,1,0))
-    changePose(M["link5"], P)
+    changePose(link5.manip, P)
     P = P * R.translation((80E-3 + 20E-3,0,0)) * R.rotation(j[5], (1,0,0))
-    changePose(M["link6"], P)
+    changePose(link6.manip, P)
     P = P * R.translation((20E-3 + 15E-3,0,0))
-    changePose(M["gripper"], P)
+    changePose(gripper.manip, P)
 
 
 
@@ -269,97 +245,136 @@ def changeRobotPos(J):
 RobotSim.pauseTick = False
 
 def tick():
+    t0 = time.time()
     if int(scene._timer.frame) == 1:
+        
+        # some dirty init
+        
         programspath = os.path.normpath(os.path.join(os.getcwd(), "..", "robot-programs"))
         os.chdir(programspath)
 
-    #~ if int(scene._timer.frame) |MOD| 10 == 1:
-        #~ jobs._status_new()
-        #~ if len(jobs.jobs_comp) > 0:
-            #~ jobs.flush_finished()
+        cam = worldObject("TargetCamera")
+        cam.fov = 40
+        cam.pos = (2,1,1)
+        cam.target = (0,0,0.2)
         
-
-
-    while RobotSim.pauseTick:
+        
+    while RobotSim.pauseTick:  # la schimbarea environmentului
         time.sleep(0.1)
 
+    RobotSim.fps = scene.timer().fps
+    RobotSim.clock += 1/RobotSim.fps
 
-    #print RobotSim.currentJointPos
     setGripperForces(RobotSim.sig_open, RobotSim.sig_close)
-    
     changeRobotPos(RobotSim.currentJointPos)
 
     # avans la urmatorul punct pe traiectorie
     
-    if RobotSim.arm_trajectory_index < len(RobotSim.arm_trajectory) - 1:
-        RobotSim.arm_trajectory_index = RobotSim.arm_trajectory_index + 1
-        RobotSim.currentJointPos = RobotSim.arm_trajectory[RobotSim.arm_trajectory_index].J
-    
+    RobotSim.Step()
 
-    
+
 eventmanager.connect(STEP_FRAME, tick) 
 
+
+
+def bum(args):
+    if RobotSim.debug:
+        
+        print args 
+        IPython.Shell.IPShellEmbed([])()
+        print args.obj1.getMaterial().name # , args.obj2.getMaterial().name
+        
+    #~ #print obj1, obj2, contacts, cp
+
+#eventmanager.connect(ODE_COLLISION, bum)
+
+
+
+
+floorPlane = Plane(pos = (0,0,-1000E-3), lx = 0.01, ly = 0.01)
+
+odeSim.add(floor,       categorybits=CB_FLOOR, collidebits=CB_PARTS)
+odeSim.add(floorPlane,  categorybits=CB_FLOOR, collidebits=CB_PARTS)
+odeSim.add(base,        categorybits=CB_ROBOT, collidebits=0)
+odeSim.add(link1,       categorybits=CB_ROBOT, collidebits=CB_PARTS)
+odeSim.add(link2,       categorybits=CB_ROBOT, collidebits=CB_PARTS)
+odeSim.add(link3,       categorybits=CB_ROBOT, collidebits=CB_PARTS)
+odeSim.add(link4,       categorybits=CB_ROBOT, collidebits=CB_PARTS)
+odeSim.add(link5,       categorybits=CB_ROBOT, collidebits=CB_PARTS)
+odeSim.add(link6,       categorybits=CB_ROBOT, collidebits=CB_PARTS)
+odeSim.add(gripper,     categorybits=CB_ROBOT, collidebits=CB_PARTS|CB_FLOOR)
+odeSim.add(finger1,     categorybits=CB_ROBOT, collidebits=CB_PARTS|CB_FLOOR)
+odeSim.add(finger2,     categorybits=CB_ROBOT, collidebits=CB_PARTS|CB_FLOOR)
+
+
+def createBoxStack(n, 
+                   pos = (0,0,0), 
+                   rot = mat3(1),
+                   size = (100E-3, 30E-3, 15E-3),
+                   material=matRedBox, 
+                   mass = 1E-2, 
+                   name = "Box", 
+                   kinematic = False):
+    """
     
-
-
-
-# category bits:
-# 1 = robot (se ciocneste de piese)
-# 2 = floor (se ciocneste de piese)
-# 4 = piese (se ciocneste de orice)
-
-
-
-
-floorPlane = Plane()
-floorPlane.pos = (0,0,-50E-3)
-
-odeSim.add(floor, categorybits=2, collidebits=4)
-odeSim.add(floorPlane, categorybits=2, collidebits=4)
-odeSim.add(base,  categorybits=1, collidebits=0)
-odeSim.add(link1,  categorybits=1, collidebits=4)
-odeSim.add(link2,  categorybits=1, collidebits=4)
-odeSim.add(link3,  categorybits=1, collidebits=4)
-odeSim.add(link4,  categorybits=1, collidebits=4)
-odeSim.add(link5,  categorybits=1, collidebits=4)
-odeSim.add(link6,  categorybits=1, collidebits=4)
-odeSim.add(gripper,  categorybits=1, collidebits=6)
-odeSim.add(finger1,  categorybits=1, collidebits=6)
-odeSim.add(finger2,  categorybits=1, collidebits=6)
-
-
-def createBoxes():
-    global boxes
+    Create a stack of boxes (useful in environments).
+    
+    
+    Args     |  meaning                    | default value
+    ---------+-----------------------------+--------------
+    pos      | stack bottom position       | (0,0,0)
+    rot      | box orientation             | mat3(1)
+    size     | box size                    | (100E-3, 30E-3, 15E-3)
+    material | material for rendering and  | matRedBox
+             |   contact properties        | 
+    mass     | box mass                    | 1E-2
+    name     | name root (=> Box1,Box2...) | "Box"
+    kinematic| ODE kinematic flag          | False 
+             | TRUE => not influenced      |
+             |   by external forces        |
+    """
     boxes = []
-    for i in range(20):
-        b = Box("Box1", lx=100E-3,ly=30E-3,lz=15E-3,material=matRedBox)
-        b.mass = 1E-2
-        b.pos = (0.5, 0.5, -0.01)
-        boxes.append(b)
-        odeSim.add(b, categorybits=4, collidebits=0)
-        odeSim.createBodyManipulator(b).odebody.setKinematic()
-createBoxes()
-
-def resetBoxes():
-    RobotSim.pauseTick = True
-    try:
-        time.sleep(0.1)
     
-        for b in boxes:
-            mb = odeSim.createBodyManipulator(b)
-            mb.odebody.setKinematic()
-            b.mass = 1E-2
-            mb.setPos((0.5, 0.5, -0.01))
-            mb.setRot(mat3(1).toList())
-            b.lx = 100E-3
-            b.ly = 30E-3
-            b.lz = 15E-3
-            mb.odebody.disable()
-            for ob in odeSim.bodies:
-                if ob.odebody == mb.odebody:
-                    ob.odegeoms[0].setCollideBits(0)
-                    ob.odegeoms[0].getGeom().setCollideBits(0)
+    if n > 1:
+        name += "1"
+    
+    for i in range(n):
+        b = Box(name, lx=size[0],ly=size[1],lz=size[2],material=material, mass=mass)
+        (x,y,z) = pos
+        z += i * size[2] * 1.1
+        b.pos = (x,y,z)
+        b.rot = rot
             
+        boxes.append(b)
+        odeSim.add(b, categorybits=CB_PARTS, collidebits=CB_PARTS|CB_FLOOR|CB_ROBOT)
+        if kinematic:
+            b.manip.odebody.setKinematic()
+
+    eventmanager.event(NEW_BOX_CREATED)
+
+    return boxes
+    
+def resetEnv():
+
+    RobotSim.pauseTick = True
+    time.sleep(0.2)
+    try:
+        print "firing reset event"
+        eventmanager.event(ENV_RESET)
+        time.sleep(0.2)
+            
+        gomi = []
+        for obj in scene.walkWorld():
+            if not hasattr(obj, "keepitsafe"):
+                gomi.append(obj)
+        
+        for obj in gomi:
+            odeSim.remove(obj)
+            worldroot.removeChild(obj)
+
+        RobotSim.signals = {}
+        RobotSim.signals_dirty = True
+                    
     finally:
         RobotSim.pauseTick = False
 
@@ -373,72 +388,23 @@ link6.setOffsetTransform(mat4(1))
 gripper.setOffsetTransform(mat4(1))
 finger1.setOffsetTransform(mat4(1))
 finger2.setOffsetTransform(mat4(1))
-
-M = {}
-M["floor"] = odeSim.createBodyManipulator(floor)
-M["base"] = odeSim.createBodyManipulator(base)
-M["link1"] = odeSim.createBodyManipulator(link1)
-M["link2"] = odeSim.createBodyManipulator(link2)
-M["link3"] = odeSim.createBodyManipulator(link3)
-M["link4"] = odeSim.createBodyManipulator(link4)
-M["link5"] = odeSim.createBodyManipulator(link5)
-M["link6"] = odeSim.createBodyManipulator(link6)
-M["gripper"] = odeSim.createBodyManipulator(gripper)
-M["finger1"] = odeSim.createBodyManipulator(finger1)
-M["finger2"] = odeSim.createBodyManipulator(finger2)
-
-
-M["floor"].odebody.setKinematic()
-
-
+floor.manip.odebody.setKinematic()
 
 enforceRobotPos([0, -90, 90, 0, 0, 0], 0)
+
 slider_finger1 = ODESliderJoint("Slider for Finger 1", gripper, finger1)
 slider_finger2 = ODESliderJoint("Slider for Finger 2", gripper, finger2)
 slider_finger1.histop = 40E-3
 slider_finger1.lostop = 10E-3
-
 slider_finger2.lostop = -40E-3
 slider_finger2.histop = -10E-3
-
-
 
 odeSim.add(slider_finger1)
 odeSim.add(slider_finger2)
 
 
-
-
-
-
-
-# pentru env
-
-def setSizePosRot(box, size, pos, rot):
-    mb = odeSim.createBodyManipulator(box)
-    box.lx = size[0]
-    box.ly = size[1]
-    box.lz = size[2]
-    mb.body.geom.lx = box.lx
-    mb.body.geom.ly = box.ly
-    mb.body.geom.lz = box.lz
-    
-    mb.setPos(pos)
-    mb.setRot(rot)
-    mb.odebody.setDynamic()
-    mb.odebody.enable()
-    mb.setLinearVel((0,0,0))
-    mb.setAngularVel((0,0,0))
-    
-
-    for b in odeSim.bodies:
-        if b.odebody == mb.odebody:
-            b.odegeoms[0].getGeom().setLengths(size)
-            b.odegeoms[0].setCollideBits(7)
-            b.odegeoms[0].getGeom().setCollideBits(7)
-
-
-
+for obj in scene.walkWorld():
+    obj.keepitsafe = True
 
 
 

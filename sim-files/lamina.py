@@ -69,6 +69,7 @@ import OpenGL.GL as ogl
 import pygame
 import math
 
+
 def load_texture(surf):
     """Load surface into texture object. Return texture object. 
     @param surf: surface to make texture from.
@@ -96,12 +97,10 @@ def overlay_texture(txtr, surf, r):
     
     subsurf = surf.subsurface(r)
     textureData = pygame.image.tostring(subsurf, "RGBA", 1) 
-
+    
     hS, wS = surf.get_size()
-    #~ print r
     #rect = pygame.Rect(r.x,hS-(r.y+r.height),r.width,r.height)
     rect = r
-    #~ print rect
     ogl.glEnable(ogl.GL_TEXTURE_2D)
     ogl.glBindTexture(ogl.GL_TEXTURE_2D, txtr)
     ogl.glTexSubImage2D(ogl.GL_TEXTURE_2D, 0, rect.x, rect.y, rect.width, rect.height,  
@@ -151,15 +150,12 @@ class LaminaPanelSurface(object):
         @param dirty: list of rectangles to update, None for whole panel
         """
         if not self._txtr:
-            #~ print "loading texture"
             self._txtr = load_texture(self._surfTotal)
         else:
             wS, hS = self._surfTotal.get_size()
             if dirty is None:
-                #~ print "full refresh"
                 dirty = [pygame.Rect(0,0,wS,hS)]
             for r in dirty:
-                #~ print "refreshing", r
                 overlay_texture(self._txtr,self._surfTotal,r)
                 
     def convertMousePos(self, pos):
@@ -178,6 +174,9 @@ class LaminaPanelSurface(object):
         ogl.glEnable(ogl.GL_TEXTURE_2D)
         ogl.glBindTexture(ogl.GL_TEXTURE_2D, self._txtr)
         ogl.glTexEnvf(ogl.GL_TEXTURE_ENV, ogl.GL_TEXTURE_ENV_MODE, ogl.GL_REPLACE)
+
+        ogl.glMatrixMode(ogl.GL_TEXTURE)
+        ogl.glLoadIdentity()
         
         ogl.glBegin(ogl.GL_QUADS)
         ogl.glTexCoord2f(0.0, 1.0)
@@ -243,6 +242,7 @@ class LaminaScreenSurface(LaminaPanelSurface):
         width = topright[0] - topleft[0]
         height = topright[1] - bottomright[1]
         self._qdims = topleft[0], topleft[1], width, height
+    
         
 
 class LaminaScreenSurface2(LaminaScreenSurface):
@@ -374,7 +374,6 @@ class LaminaPartialScreenSurface(LaminaPanelSurface):
         self.regen()
         
         (width, height, x, y) = self._whxy
-        #~ print self._whxy
         self._winSize = pygame.display.get_surface().get_size()
         
         (W, H) = self._winSize
@@ -401,14 +400,12 @@ class LaminaPartialScreenSurface(LaminaPanelSurface):
                 top = H - abs(y)
 
         self.tblr = [top, bottom, left, right]
-        #~ print self.tblr
         
         self.refreshPosition()
-        #self.clear()
         
     def refreshPosition(self):
         """Recalc where in modelspace quad needs to be to fill screen."""
-
+        
         depth = self._depth
         (top, bottom, left, right) = self.tblr
         
@@ -417,12 +414,11 @@ class LaminaPartialScreenSurface(LaminaPanelSurface):
         topleft = oglu.gluUnProject(left, top, depth)
         topright = oglu.gluUnProject(right, top, depth)
         
-        self.dims = topleft, topright, bottomright, bottomleft 
+        self.dims = topleft, topright, bottomright, bottomleft
         width = topright[0] - topleft[0]
         height = topright[1] - bottomright[1]
         self._qdims = topleft[0], topleft[1], width, height
-
-
+    
         
 
     def clear(self):
@@ -432,21 +428,16 @@ class LaminaPartialScreenSurface(LaminaPanelSurface):
         width = right - left
         height = top - bottom   
         
-        #~ print "(w,h) = ", (width, height)
         width2 = pow2(width)
         height2 = pow2(height)
             
         
-        #print "Allocating texture: ", (width2, height2)
         raw = pygame.Surface((width2, height2), pygame.SRCALPHA, 32)
         self._surfTotal = raw.convert_alpha()
-        #~ print "surfTotal:", (width2, height2)
         
         self._usable = 1.0*width/width2, 1.0*height/height2
         self.surf = self._surfTotal.subsurface(0,0,width,height)
 
-
-        #~ print "usable:", self._usable
         
         self.regen()
         

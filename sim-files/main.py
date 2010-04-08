@@ -53,6 +53,8 @@ if file != 'sim-files':
 else:
     print "path is OK"    
     basepath = os.getcwd()
+
+sys.basepath = basepath
 #raise SystemExit
 
 

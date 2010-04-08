@@ -17,14 +17,12 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-##################### GUI
 import gooeypy as gui
 from gooeypy.const import *
 import lamina
 import time
-#####################
-
 import RobotSim
+from tictoc import *
 
 processViewerEvents = True
 
@@ -53,18 +51,43 @@ jogMode = "world"
 jogSpeed = 100
 
         
+last_msg_show = time.time()
+def msg_show(msg):    
+    global last_msg_show
+    
+    if msgblock.active:
+        msg_hide()
+        
+    last_msg_show = time.time()
+    msgblock.active = True
+    msgblock.value = msg
+    msgblock.style["font-weight"] = "bold"
+    msgblock.style["color"] = (255,255,255)
+    msgblock.style["bgcolor"] = "50,50,100;"
+    msgblock.style["width"] = msgblock.font.size(msgblock.value)[0]
+    
+    pass
 
+def msg_hide():
+    msgblock.active = False
+    bottomPanel[1].clear()
+    bottomPanel[0].top_surface = bottomPanel[1].surf
+    bottomPanel[0].dirty = 1
+
+def msg_autohide():
+    if time.time() > last_msg_show + 1 and msgblock.active:
+        msg_hide()
 
 def initGUI():
-    global gui_screen, myguiapp, speedpot, speedlabel, modeswitch, opclo, fpsindic, signalsVBox
+    global gui_screen, myguiapp, speedpot, speedlabel, modeswitch, align, opclo, fpsindic, signalsVBox, msgblock
     
-    leftPanel[1] = lamina.LaminaPartialScreenSurface(100, 250, 10, -10)
-    rightPanel[1] = lamina.LaminaPartialScreenSurface(100, 300, -10, -10)
-    bottomPanel[1] = lamina.LaminaPartialScreenSurface(510, 30, 0.0, 10)
+    leftPanel[1] = lamina.LaminaPartialScreenSurface(100, 32, 10, -10)
+    rightPanel[1] = lamina.LaminaPartialScreenSurface(100, 32, -10, -10)
+    bottomPanel[1] = lamina.LaminaPartialScreenSurface(510, 64, 0.0, 10)
     
-    leftPanel[0] = gui.Container(width=100, height=250, surface=leftPanel[1].surf)
-    rightPanel[0] = gui.Container(width=100, height=300, surface=rightPanel[1].surf)
-    bottomPanel[0] = gui.Container(width=510, height=30, surface=bottomPanel[1].surf)
+    leftPanel[0] = gui.Container(width=100, height=32, surface=leftPanel[1].surf)
+    rightPanel[0] = gui.Container(width=100, height=32, surface=rightPanel[1].surf)
+    bottomPanel[0] = gui.Container(width=510, height=64, surface=bottomPanel[1].surf)
     
     leftPanel[0].value = "left panel"
     rightPanel[0].value = "right panel"
@@ -78,7 +101,7 @@ def initGUI():
 
     labels = ["X", "Y", "Z", "RX", "RY", "RZ"]
 
-    modeswitch = gui.Switch(0, ["Comp", 'World', 'Tool', 'Joint'], [0,1,2,3], x=0, y=0, width=65)
+    modeswitch = gui.Switch(0, ["COMP", 'WORLD', 'TOOL', 'JOINT'], [0,1,2,3], x=0, y=0, width=65)
     modeswitch.label.style["color"] = (255,255,255)
     modeswitch.style["align"] = "center"
     modeswitch.label.style["font-size"] = 14
@@ -86,7 +109,17 @@ def initGUI():
     modeswitch.connect(CHANGE, onModeSwitch)
     rightPanel[0].add(modeswitch)
 
-    opclo = gui.Switch(0, ["OPEN", "CLOSE"], [0,1], x=0, y=35*7, width=65)
+    align = gui.Button("ALIGN", x=0, y=35*7, width=65)
+    align.label.style["color"] = (255,255,255)
+    align.style["align"] = "center"
+    align.style["valign"] = "top"
+    align.label.style["font-size"] = 14
+    enableStealEvents([align])
+    align.connect(CLICK, onAlign)
+    rightPanel[0].add(align)
+
+
+    opclo = gui.Switch(0, ["OPEN", "CLOSE"], [0,1], x=0, y=35*8, width=65)
     opclo.label.style["color"] = (255,255,255)
     opclo.style["align"] = "center"
     opclo.style["valign"] = "top"
@@ -96,24 +129,31 @@ def initGUI():
     rightPanel[0].add(opclo)
     
 
-    speedpot = gui.HSlider(value=50, min_value=1, length=99, x=0, y=0, width=300)
+    speedpot = gui.HSlider(value=50, min_value=1, length=99, x=0, y=20, width=300)
     speedpot.style["align"] = "right"
     speedpot.style["valign"] = "center"
     enableStealEvents([speedpot])
     bottomPanel[0].add(speedpot)
 
-    speedlabel = gui.Button("MCP Speed: 50", x=0, y=0, width=130)
+    speedlabel = gui.Button("MCP Speed: 50", x=0, y=20, width=130)
     speedlabel.style["align"] = "left"
     speedlabel.style["valign"] = "center"
     speedlabel.label.style["color"] = (255,255,255)
     speedlabel.label.style["font-size"] = 14
     speedlabel.connect(CLICK, onSpeedToggle)
-    #speedlabel.style["bgimage"] = "none"
-
+    
     enableStealEvents([speedlabel])
     bottomPanel[0].add(speedlabel)
 
     speedpot.connect(CHANGE, onSpeedChange)
+
+
+    msgblock = gui.TextBlock("spanac", x=0, y=-18)
+    msgblock.style["align"] = "center"
+    msgblock.style["valign"] = "center"
+    msgblock.style["padding"] = (0,0,0,0)
+    msgblock.active = False
+    bottomPanel[0].add(msgblock)
 
     #con = gui.TextBlock(value="spanac\ncastraveti", x=0, y=-50, width=300)
     #con.style["align"] = "center"
@@ -230,6 +270,12 @@ def onJogEnd(args):
     stealEvents(False)
     
 
+def onAlign():
+    msg = RobotSim.AlignMCP()
+    if msg != None:
+        msg_show(msg)
+        
+    
 def onOpenClose():
     if opclo.value == 0:
         RobotSim.open_flag = False
@@ -253,23 +299,35 @@ def onModeSwitch():
     
     for i in range(6):
         if modeindex == 0:
+            rightPanel[1] = lamina.LaminaPartialScreenSurface(100, 50, -10, -10)
+            rightPanel[0].top_surface = rightPanel[1].surf
+            rightPanel[0].dirty = True
+
             RobotSim.comp_mode = True
             for w in plusminus[i]:
                 w.active = False
             opclo.active = False
+            align.active = False
             if not speedPotMonitor:
-                onSpeedToggle()            
+                onSpeedToggle()      
+                
+                
         else:
+            rightPanel[1] = lamina.LaminaPartialScreenSurface(100, 400, -10, -10)
+            rightPanel[0].top_surface = rightPanel[1].surf
+            rightPanel[0].dirty = True
+
             RobotSim.comp_mode = False
             for w in plusminus[i]:
                 w.active = True
             if speedPotMonitor:
                 onSpeedToggle()
             opclo.active = True
+            align.active = True
             wl = plusminus[i][1]
             wl.active = True
             wl.label.value = labels[modeindex][i]
-        
+            
         #plusminus[i][1].style["bgcolor"] = (0,0,0)
         
     # fixme: cum fac fara sa regenerez textura de la zero? (doar s-o sterg)
@@ -386,8 +444,15 @@ def refreshSignals():
             (w, h, x, y) = leftPanel[1]._whxy            
             signalsh = 30 * n
             if signalsh > h:
-                print "growing to ", h * 2
-                leftPanel[1] = lamina.LaminaPartialScreenSurface(100, h * 2, 10, -10)
+                newh = lamina.pow2(signalsh)
+                #~ print "growing to ", newh
+                leftPanel[1] = lamina.LaminaPartialScreenSurface(100, newh, 10, -10)
+                leftPanel[0].top_surface = leftPanel[1].surf
+                leftPanel[0].dirty = True
+            elif signalsh < h/2:
+                newh = lamina.pow2(signalsh)
+                #~ print "shrinking to ", newh
+                leftPanel[1] = lamina.LaminaPartialScreenSurface(100, newh, 10, -10)
                 leftPanel[0].top_surface = leftPanel[1].surf
                 leftPanel[0].dirty = True
                 
@@ -400,9 +465,8 @@ def refreshSignals():
         #~ print "done"
             
 
-def refresh():
+def refresh(camchanged):
     if RobotSim.switch["GUI"]:
-        t0 = time.time()
 
         refreshSignals()
         
@@ -418,8 +482,11 @@ def refresh():
             onSpeedChange()
 
         if jogEnabled:
-            RobotSim.jog(jogMode, jogAxis, jogSpeed)
-            
+            msg = RobotSim.jog(jogMode, jogAxis, jogSpeed)
+            if msg != None:
+                msg_show(msg)
+        
+        msg_autohide()
         #~ fpsindic.label.value = "%d fps" % fps
         #~ fpsindic.dirty = True
             
@@ -430,24 +497,23 @@ def refresh():
                 w.label.style["color"] = (255,255,255)
                 w.label.style["font-size"] = 14
 
+
+
         for panel in panels:
             panel[0].draw()
-            panel[1].refreshPosition()
+            if camchanged: 
+                panel[1].refreshPosition()
             panel[1].refresh()
             panel[1].display()
 
-        t1 = time.time()
-        refreshTime = t0 - t1
 
-        if refreshTime > 0.1:
-            print refreshTime
 
             
     else: # GUI disabled
         RobotSim.comp_mode = True
+
     
     pygame.display.set_caption("OpenGL Viewer [%d fps]" % fps)
-
 
 
 

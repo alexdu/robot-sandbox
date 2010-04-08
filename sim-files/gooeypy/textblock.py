@@ -54,7 +54,7 @@ class TextBlock(widget.Widget):
         lines = []
         line_data = ""
         for word in words:
-            if word != "<br>" and self.font.size(line_data +" "+ word)[0] < line_w:
+            if word != "<br>": #and self.font.size(line_data +" "+ word)[0] < line_w:
                 # We can fit this word onto this line.
                 line_data = line_data+" "+word
             else:

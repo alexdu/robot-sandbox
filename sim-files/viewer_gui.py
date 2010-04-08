@@ -54,6 +54,11 @@ camera         Specify camera to be used
 import IPython.Shell
 from IPython.Shell import IPShellEmbed
 
+import OpenGL
+OpenGL.ERROR_CHECKING = False
+OpenGL.ERROR_ON_COPY = False
+
+
 import sys, os, os.path
 #sys.path = [r"D:\tmp\pygame_src\pygame-1.6.2\build\lib.win32-2.3"]+sys.path
 import pygame
@@ -79,6 +84,9 @@ from cgkit.ri import *
 
 
 import gui
+from tictoc import *
+import numpy
+
 
 
 # Viewer
@@ -307,10 +315,10 @@ class Viewer(Tool):
         # Display the scene using pygame...
         scene = getScene()
         timer = scene.timer()
-        
+
         # Create a camera control component
         CameraControl(cam=self.cam, mode=self.navigation_mode)
-
+        #~ timer.fps = 100
         # Get options...
         fps = timer.fps
         width = self.options.width
@@ -385,29 +393,44 @@ class Viewer(Tool):
         cnt = 0
         timer.startClock()
         
+        camtrans = self.cam.transform
         while self.running:
             try:
                 # Display the scene
 
+
+                camchanged = False
+                if self.cam.transform != camtrans:
+                    camchanged = True
+                    camtrans = self.cam.transform
+                if self.cam.transform.__hash__() != camtrans.__hash__():
+                    camchanged = True
+                    camtrans = self.cam.transform
+
                 oldsize = (width, height)
                 (width, height) = pygame.display.get_surface().get_size()                
                 if oldsize != (width, height):
-                    print "resizing to ", (width, height) 
-                    gui.resizeGUI(width, height)          
+                    #~ print "resizing to ", (width, height) 
+                    gui.resizeGUI(width, height)
+                    camchanged = True
                     
                 self.draw(self.cam, width, height) 
                 
                 if cnt % 30 == 0:
                     gui.fps = clk.get_fps()
                     #~ print gui.fps
-                gui.refresh()
-                
+                    
+                gui.refresh(camchanged)
+
                 pygame.display.flip()
+
 
                 # Handle events
 
                 events = pygame.event.get()
                 gui.run(events)
+
+
                 if gui.processViewerEvents:
                     self.handleEvents(events)
 
@@ -418,12 +441,14 @@ class Viewer(Tool):
                 if self.time_end!=None and timer.time>self.time_end+1E-10:
                     active = False
 
+
                 if active:
                     if self.options.save!=None:
                         self.saveScreenshot(srf)
 
                     # Step time
                     timer.step()
+
 
                 # Sync
                 clk.tick(fps)

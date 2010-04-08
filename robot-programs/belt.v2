@@ -1,0 +1,61 @@
+.PROGRAM belt()
+    
+    ; Conveyor belt test
+    
+    GLOBAL out.belt, in.sensor, d, h
+    AUTO p, n, pick, place
+    n = 12
+    
+    out.belt = 1
+    in.sensor = 1001
+    
+    OPEN
+    MOVE #safe
+    BREAK
+    
+    
+    FOR i = 1 TO n/4
+        SIGNAL out.belt
+        WAIT SIG(in.sensor)
+        WAIT.EVENT, 6.75
+        SIGNAL -out.belt
+        
+        FOR j = 1 TO 4
+            p = 4*(i-1) + j
+            SET pick = SHIFT(st BY 0, 0, h * (n - p))
+            SET place = SHIFT(conv BY 0, (j MOD 2)*d - d/2, INT(j/2) * h)
+            CALL pick.place(pick, place)
+        END
+        MOVE #safe
+        
+        SIGNAL out.belt
+    END
+    
+    
+    WAIT.EVENT, 5
+    SIGNAL -out.belt
+.END
+
+
+.PROGRAM pick.place(pick,place)
+    AUTO z.pick, z.place
+    
+    z.pick = 100
+    z.place = 100
+    
+    OPEN
+    APPRO pick, 100
+    SPEED 30
+    MOVES pick
+    CLOSEI
+    SPEED 30
+    DEPARTS 100
+    
+    APPRO place, 100
+    SPEED 30
+    APPROS place, 1
+    OPENI
+    SPEED 30
+    DEPARTS 100
+.END
+

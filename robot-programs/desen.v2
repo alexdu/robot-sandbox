@@ -1,0 +1,98 @@
+.PROGRAM ia.pixul()
+    PARAMETER HAND.TIME = 0.5
+    TYPE "Iau pixul..."
+    SPEED 30 ALWAYS
+    OPEN
+    APPRO loc.pix, 100
+    MOVES loc.pix
+    CLOSEI
+    DEPARTS 100
+    TYPE "Am luat pixul."
+.END
+
+.PROGRAM pune.pixul()
+    TYPE "Pun pixul inapoi..."
+    PARAMETER HAND.TIME = 0.3
+    SPEED 30 ALWAYS
+    APPRO loc.pix, 100
+    MOVES loc.pix
+    OPENI
+    DEPARTS 100
+    TYPE "Am pus pixul, ma retrag in #safe."
+    MOVE #safe
+.END
+
+
+.PROGRAM vezi.foaia()
+    TYPE "Stiu deja unde e foaia."
+.END
+
+
+
+.PROGRAM cerc()
+    GLOBAL loc.foaie
+    CALL vezi.foaia()
+    IF DEFINED(loc.foaie) THEN
+        CALL ia.pixul()
+        CALL deseneaza.cerc()
+        CALL pune.pixul()
+    END
+.END
+
+.PROGRAM deseneaza.cerc()
+    GLOBAL loc.foaie, p0
+    AUTO centru, start, raza, t, pas.mm, pas.deg
+    raza = 90
+    pas.mm = 5
+    pas.deg = (pas.mm / raza) * 180 / PI
+    SET centru = SHIFT(p0 BY 90, 140, 0)
+    SET start = SHIFT(centru BY raza, 0, 0)
+    ; robotul va folosi setarea SPEED pentru segmentele lungi
+    ; si DURATION pt. cele scurte (va alege varianta cea mai lenta)
+    SPEED 100 ALWAYS
+    DURATION pas.mm / 50 ALWAYS
+    APPRO loc.foaie:start, 10
+    MOVES loc.foaie:start
+    BREAK
+    FOR t = 0 TO 360 STEP pas.deg
+        MOVES loc.foaie:SHIFT(centru BY raza*COS(t), raza*SIN(t), 0)
+    END
+    MOVES loc.foaie:start
+    BREAK
+    DEPARTS 10
+.END
+
+
+
+
+.PROGRAM rose(k,d)
+    GLOBAL loc.foaie
+    CALL vezi.foaia()
+    IF DEFINED(loc.foaie) THEN
+        CALL ia.pixul()
+        CALL deseneaza.rose(k,d)
+        CALL pune.pixul()
+    END
+.END
+.PROGRAM deseneaza.rose(n,d)
+    GLOBAL loc.foaie, p0
+    AUTO centru, start, raza, t, pas.mm, pas.deg
+    raza = 90
+    pas.deg = 1
+    SET centru = SHIFT(p0 BY 90, 140, 0)
+    SET start = SHIFT(centru BY raza, 0, 0)
+    
+    SPEED 100 ALWAYS
+    
+    APPRO loc.foaie:start, 10
+    MOVES loc.foaie:start
+    BREAK
+    FOR t = 0 TO 360*d STEP pas.deg
+        r = raza * COS(t * n/d)
+        MOVES loc.foaie:SHIFT(centru BY r*COS(t), r*SIN(t), 0)
+    END
+    MOVES loc.foaie:start
+    BREAK
+    DEPARTS 10
+.END
+

@@ -43,9 +43,9 @@ contactProps_ConveyorPal_Stopped = ODEContactProperties(bounce = 0, mu = 10, sof
 odeSim = ODEDynamics(gravity=9.81/5, substeps=2, cfm=1E-5, erp=0.2, defaultcontactproperties = defaultContactProps,
                show_contacts=0, contactmarkersize=1E-3, contactnormalsize=0.1, use_quick_step = False, collision_events = True)
 
-odeSim.world.setLinearDamping(0.1)
-odeSim.world.setAngularDamping(0.1)
-odeSim.world.setContactMaxCorrectingVel(0.1)
+odeSim.world.setLinearDamping(0.01)
+odeSim.world.setAngularDamping(0.01)
+odeSim.world.setContactMaxCorrectingVel(1)
 odeSim.world.setContactSurfaceLayer(1E-10)
 odeSim.world.setAutoDisableFlag(True)
 odeSim.world.setAutoDisableLinearThreshold(0.01)
@@ -110,13 +110,9 @@ floor.pos = (0,0,-25E-3)
 RobotSim.gripForce = 1000
 def setGripperForces(open, close):
     gripForce = RobotSim.gripForce
-    
-    slider_finger1.motorfmax = gripForce
-    slider_finger2.motorfmax = gripForce
-    slider_finger1.fudgefactor = 0.0001
-    slider_finger2.fudgefactor = 0.0001
-    slider_finger1.stopcfm = 1E-5
-    slider_finger2.stopcfm = 1E-5
+    if slider_finger1.motorfmax != gripForce:
+        slider_finger1.motorfmax = gripForce
+        slider_finger2.motorfmax = gripForce
 
     
     if open:
@@ -125,7 +121,6 @@ def setGripperForces(open, close):
         slider_finger1.histop = 40E-3
         slider_finger2.lostop = -40E-3
     if close:
-        
         pos1 = abs(slider_finger1.position)
         pos2 = abs(slider_finger1.position)
         err = pos1 - pos2
@@ -164,14 +159,14 @@ def changePose(m, P):
         m.odebody.enable()
         
         oldPos = m.body.pos
-        (pos,b,c) = P.decompose()
+        pos = P.decompose()[0]
         dt = 1/RobotSim.fps
         vel = (pos - oldPos).__div__(dt)
         m.setLinearVel(vel)
         
         oldRot = m.body.rot
         rot = P.getMat3()
-        rotDif = quat(oldRot * rot.inverse()).inverse().toAngleAxis()
+        rotDif = quat(rot * oldRot.inverse()).toAngleAxis()
         angle = rotDif[0]
         axis = rotDif[1]
         v = angle/dt
@@ -257,6 +252,12 @@ def tick():
         cam.fov = 40
         cam.pos = (2,1,1)
         cam.target = (0,0,0.2)
+        
+        #~ _ip = IPython.ipapi.get()
+        #~ _ip.runlines("env hanoi")
+        #~ _ip.runlines("load hanoi")
+        #~ _ip.runlines("speed 100")
+        #~ _ip.runlines("exec hanoi_main")
         
         
     while RobotSim.pauseTick:  # la schimbarea environmentului
@@ -398,6 +399,10 @@ slider_finger1.histop = 40E-3
 slider_finger1.lostop = 10E-3
 slider_finger2.lostop = -40E-3
 slider_finger2.histop = -10E-3
+slider_finger1.fudgefactor = 0.0001
+slider_finger2.fudgefactor = 0.0001
+slider_finger1.stopcfm = 1E-5
+slider_finger2.stopcfm = 1E-5
 
 odeSim.add(slider_finger1)
 odeSim.add(slider_finger2)

@@ -148,13 +148,16 @@ def IK(loc, ppoint = True):
 
 
     try:
-        loc = loc * INVERSE(tool_trans)
+        t = tool_trans.HTM
+        t[0:3,3] = -t[0:3,3]
+        t[0:3,0:3] = t[0:3,0:3].T
+        loc = loc.HTM * t
+        # loc = loc:INVERSE(tool.trans)
+        
         # merge doar FLIP/NOFLIP
         J = [0,0,0,0,0,0]
-            
-        x = DX(loc) - 80 * loc.HTM[0,2]
-        y = DY(loc) - 80 * loc.HTM[1,2]
-        z = DZ(loc) - 80 * loc.HTM[2,2]
+        
+        (x,y,z) = (loc[0:3,3] - 80 * loc[0:3,2]).flatten().tolist()[0]
         j1 = math.atan2(y,x)
         
         L1 = 270
@@ -176,13 +179,13 @@ def IK(loc, ppoint = True):
         cb = 0.5*math.cos(j3+j1+j2);
         sb = 0.5*math.sin(j3+j1+j2);
 
-        T03i = TRANS(HTM = omorot(mat([[ca + cb, sa + sb, -math.sin(j2 + j3)],\
-                                              [-math.sin(j1), math.cos(j1), 0],\
-                                              [sb - sa, ca - cb, math.cos(j2+j3)]])))
+        R03i = mat([[ca + cb, sa + sb, -math.sin(j2 + j3)],\
+                    [-math.sin(j1), math.cos(j1), 0],\
+                    [sb - sa, ca - cb, math.cos(j2+j3)]])
         
 
-        T36 = T03i * loc;
-        (x,y,z,j4,j5,j6) = decompose(T36.HTM)
+        R36 = R03i * loc[0:3, 0:3];
+        (j4,j5,j6) = mat2ypr(R36)
 
         J[0] = j1 * 180/pi
         J[1] = j2 * 180/pi
@@ -255,10 +258,6 @@ def lin_interp(A,B,t):
     res = mat(res.toList()).reshape(4,4).T
     return TRANS(HTM = res)
     
-
-def angdif(a,b):
-    d = ((a - b + pi) % (2*pi)) - pi
-    return d
 
 def lin_interp_q(a,b,t):
     """ Interpolare liniara intre doua transformari reprezentate ca mat4

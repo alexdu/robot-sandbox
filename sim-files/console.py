@@ -44,12 +44,8 @@ def _onQuit():
     print "onQuit()"
     _ipshell.IP.magic_Exit()
     _ipshell.IP.savehist()
-    try:
-        print "pygame quit"
-        pygame.quit()
-        raise SystemExit
-    except:
-        os.abort()
+    print "sys.exit(0)"
+    sys.exit(0)
 
 eventmanager.connect("QUIT", _onQuit)
 

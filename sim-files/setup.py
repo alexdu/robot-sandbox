@@ -32,7 +32,7 @@ setup(
         "py2exe": 
         { 
             "includes": ["main"],
-            "excludes": ["wx", "matplotlib", "OpenGL", "gooeypy"],
+            "excludes": ["wx", "matplotlib", "OpenGL", "gooeypy", "profilestats"],
             "dll_excludes": ["wintab32.dll", "MSVCP90.dll", 
                             "libgtk-win32-2.0-0.dll",
                             "libgdk-win32-2.0-0.dll",

@@ -46,7 +46,7 @@ FALSE = 0
 ON = 1
 OFF = 0
 
-numeric = ['int', 'int32', 'float', 'float64']
+numeric = ['int', 'int32', 'float']
 location = ['TRANS', 'PPOINT']
 def check_args(args, types):
     if type(args).__name__ != 'list':
@@ -86,13 +86,13 @@ def DEFINED(x):
 
 def SIN(ang):
     check_args(ang, numeric)
-    return numpy.sin(ang * pi/180)
+    return float(numpy.sin(ang * pi/180))
 def COS(ang):
     check_args(ang, numeric)
-    return numpy.cos(ang * pi/180)
+    return float(numpy.cos(ang * pi/180))
 def TAN(ang):
     check_args(ang, numeric)
-    return numpy.tan(ang * pi/180)
+    return float(numpy.tan(ang * pi/180))
 def ATAN2(dy, dx):
     """
     Arctangent function
@@ -102,7 +102,7 @@ def ATAN2(dy, dx):
     
     """
     check_args([dy,dx], [numeric])
-    return numpy.arctan2(dy, dx) * 180/pi
+    return float(numpy.arctan2(dy, dx) * 180/pi)
 def INT(x):
     check_args(x, numeric)
     return x.__int__()
@@ -192,7 +192,10 @@ def INVERSE(a):
     
     """
     check_args(a, "TRANS")
-    return TRANS(HTM = numpy.linalg.inv(a.HTM))    
+    t = a.HTM
+    t[0:3,3] = -t[0:3,3]
+    t[0:3,0:3] = t[0:3,0:3].T
+    return TRANS(HTM = t)
 
 def RX(ang):
     """
@@ -373,9 +376,11 @@ def FOR_RANGE(a,b,step=1):
     END
     
     """    
-    check_args([a, b], [numeric])
-
-    return list(numpy.arange(a, b + numpy.sign(step) * 1e-10, step))
+    check_args([a, b, step], [numeric])
+    if int(a) == a and int(b)==b and int(step)==step:
+        return numpy.arange(a, b + numpy.sign(step), step).tolist()
+    else:
+        return numpy.arange(a, b + numpy.sign(step) * 1e-10, step).tolist()
     
 TO = infix(lambda x,y: FOR_RANGE(x,y))
 
@@ -441,9 +446,22 @@ class TRANS:
             return False
                  
     def get_htm(self):
-        return omotrans(self.x, self.y, self.z) * \
-               omorot(rotz(self.yaw) * \
-               roty(self.pitch) * rotz(self.roll))
+        cy = math.cos(self.yaw * pi/180)
+        sy = math.sin(self.yaw * pi/180)
+        cp = math.cos(self.pitch * pi/180)
+        sp = math.sin(self.pitch * pi/180)
+        cr = math.cos(self.roll * pi/180)
+        sr = math.sin(self.roll * pi/180)
+        cpcr = cp*cr
+        cpsr = cp*sr
+        return mat([[cy*cpcr - sy*sr, -cy*cpsr - sy*cr, cy*sp, self.x],
+                    [sy*cpcr + cy*sr, -sy*cpsr + cy*cr, sy*sp, self.y],
+                    [         -sp*cr,            sp*sr,    cp, self.z], 
+                    [              0,                0,     0,      1]])
+
+        #~ return omotrans(self.x, self.y, self.z) * \
+               #~ omorot(rotz(self.yaw) * \
+               #~ roty(self.pitch) * rotz(self.roll))
     def get_pos(self):
         return (mat((self.x, self.y, self.z))).T
         
@@ -646,7 +664,7 @@ def BREAK(extra_delay=True):
             raise UserAbort
         if not RobotSim.comp_mode:
             raise CompModeDisabled
-    time.sleep(0.1)
+    time.sleep(0.2)
     
     
 def OPENI():
@@ -1394,7 +1412,9 @@ def exec_end():
     # daca nu dau ENTER, ramane consola "ametita"
 
 
-
+    #~ _ip = IPython.ipapi.get()
+    #~ _ip.runlines("Quit")
+    
 
 
 def completers_setup():

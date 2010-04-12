@@ -20,6 +20,12 @@
 
 from __future__ import division
 
+try:
+    from profilestats import profile
+except:
+    print "No profiling"
+    pass
+
 print "robot-sandbox (development version) starting..."
 print " "
 
@@ -62,11 +68,11 @@ sys.basepath = basepath
 
 def rmrf(folder, exc = False):
     if sys.platform == "win32":
-        rm = "rmdir /s /q "
+        rm = "rmdir /s /q"
     else:
-        rm = "rm -rf "
+        rm = "rm -rf"
 
-    ret = os.system(rm + folder)
+    ret = os.system('%s "%s"' % (rm, folder))
     if exc:
         if ret != 0: 
             raise Exception, "error deleting " + folder
@@ -118,14 +124,16 @@ else:
 #ipshell = IPShellEmbed()
 #ipshell() 
 
-import viewer_gui
+#~ @profile
+def main():
+    import viewer_gui
 
 
-sys.argv.append("--navigation-mode=Softimage")
-sys.argv.append("--verbose")
-sys.argv.append("scene.py")
-V = viewer_gui.Viewer()
-V.run()
+    sys.argv.append("--navigation-mode=Softimage")
+    sys.argv.append("--verbose")
+    sys.argv.append("scene.py")
+    V = viewer_gui.Viewer()
+    V.run()
 
-
+main()
 

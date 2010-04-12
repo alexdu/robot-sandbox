@@ -28,41 +28,46 @@ from math import pi
 def rotx(ang):
     c = math.cos(ang * pi/180)
     s = math.sin(ang * pi/180)
-    return mat([[1,  0,  0], \
-                [0,  c, -s], \
+    return mat([[1,  0,  0], 
+                [0,  c, -s], 
                 [0,  s,  c]])
 
 def roty(ang):
     c = math.cos(ang * pi/180)
     s = math.sin(ang * pi/180)
-    return mat([[ c, 0,  s], \
-                [ 0, 1,  0], \
+    return mat([[ c, 0,  s], 
+                [ 0, 1,  0], 
                 [-s, 0,  c]])
 
 def rotz(ang):
     c = math.cos(ang * pi/180)
     s = math.sin(ang * pi/180)
-    return mat([[c, -s,  0], \
-                [s,  c,  0], \
+    return mat([[c, -s,  0], 
+                [s,  c,  0], 
                 [0,  0,  1]])
 
 def omorot(r):
-    z31 = mat(numpy.zeros((3,1)))
-    z13 = mat(numpy.zeros((1,3)))
-
-    return numpy.bmat([[r,      z31],\
-                       [z13, mat(1)]])
-
+    m = mat(numpy.zeros((4,4)))
+    m[0:3, 0:3] = r
+    m[3,3] = 1
+    return m
 
 def omotrans(x,y,z):
-    return mat([[1, 0, 0, x],\
-                [0, 1, 0, y],\
-                [0, 0, 1, z],\
+    return mat([[1, 0, 0, x],
+                [0, 1, 0, y],
+                [0, 0, 1, z],
                 [0, 0, 0, 1]])
 
 
-def decompose(M):
-    [x,y,z] = M[0:3, 3].flatten().tolist()[0]
+def angdif(a,b=0):
+    d = ((a - b + pi) % (2*pi)) - pi
+    return d
+    
+def angdifd(a,b=0):
+    d = ((a - b + 180) % 360) - 180
+    return d
+    
+def mat2ypr(M):
     
     yaw   = math.atan2(M[1,2],M[0,2]);
     pitch = math.atan2(math.sqrt((M[2,0])**2 + (M[2,1])**2), M[2,2]);
@@ -76,6 +81,9 @@ def decompose(M):
     if abs(abs(pitch) - pi) < 1E-4:
         yaw = 0;
         roll = math.atan2(M[1,0],-M[0,0]);
-
     
-    return (x, y, z, yaw*180/pi, pitch*180/pi, roll*180/pi)
+    return (yaw*180/pi, pitch*180/pi, roll*180/pi)
+    
+def decompose(M):    
+    [x,y,z] = M[0:3, 3].flatten().tolist()[0]
+    return (x, y, z) + mat2ypr(M)

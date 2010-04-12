@@ -22,6 +22,8 @@ from gooeypy.const import *
 import lamina
 import time
 import RobotSim
+import os
+import sys
 from tictoc import *
 
 processViewerEvents = True
@@ -225,6 +227,7 @@ def adjust_panels():
         (W,H) = pygame.display.get_surface().get_size()
         w.x = left
         w.y = H - top
+        s.dirty = True
 
 
 def resizeGUI(w, h):
@@ -347,6 +350,8 @@ def onSpeedChange():
         speedMCP = speedpot.value
 
     speedlabel.dirty = True
+    speedpot.dirty = True
+    bottomPanel[0].dirty = True
 
 
 def onSpeedToggle():
@@ -389,7 +394,6 @@ def refreshSignals():
             elif n < m:
                 leftPanel[1].clear()
                 leftPanel[0].top_surface = leftPanel[1].surf
-                leftPanel[0].dirty = 1
                 for i in range(m - n):
                     signalsVBox.remove(signalsVBox.widgets[-1])
             
@@ -426,10 +430,12 @@ def refreshSignals():
                     #w.style["width"] = 70
                     w.style["height"] = 20
                     w.style["padding"] = (5,10)
-                    w.stylesets["default"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
-                    w.stylesets["hover"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
-                    w.stylesets["focused"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
-                    w.stylesets["down"]["bgimage"] = "data/%s-%s.png slice" % (type, sval)
+                    im = os.path.join(sys.basepath, "gooeypy", "data", "%s-%s.png slice" % (type, sval))
+                    print im
+                    w.stylesets["default"]["bgimage"] = im
+                    w.stylesets["hover"]["bgimage"] = im
+                    w.stylesets["focused"]["bgimage"] = im
+                    w.stylesets["down"]["bgimage"] = im
                     w.sig = (addr, val)
                     w.dirty = True
                     w.connect(CLICK, onSignalToggle, addr)
@@ -437,6 +443,8 @@ def refreshSignals():
                     
                 i += 1
                 
+            leftPanel[0].dirty = 1
+            #leftPanel[0].run([])
 
             RobotSim.signals_dirty = False
             
@@ -464,7 +472,7 @@ def refreshSignals():
             pass
         #~ print "done"
             
-
+fps_prev = 0
 def refresh(camchanged):
     if RobotSim.switch["GUI"]:
 
@@ -500,10 +508,18 @@ def refresh(camchanged):
 
 
         for panel in panels:
-            panel[0].draw()
-            if camchanged: 
-                panel[1].refreshPosition()
-            panel[1].refresh()
+            d = panel[0].dirty
+            if d:
+                #~ print "draw"
+                panel[0].draw()
+            
+            #~ print "ref pos"
+            panel[1].refreshPosition(camchanged)
+            #~ print isGuiDirty(panel[0])
+            if d or panel[1]._txtr is None:
+                #~ print "ref"
+                panel[1].refresh()
+            #~ print "disp"
             panel[1].display()
 
 
@@ -512,10 +528,22 @@ def refresh(camchanged):
     else: # GUI disabled
         RobotSim.comp_mode = True
 
-    
-    pygame.display.set_caption("OpenGL Viewer [%d fps]" % fps)
+    global fps_prev
+    if fps != fps_prev:
+        pygame.display.set_caption("OpenGL Viewer [%d fps]" % fps)
+        fps_prev = fps
 
-
+def isGuiDirty(w):
+    if w.dirty and w.active:
+        return True
+        
+    try:
+        for c in w.widgets:
+            if isGuiDirty(c):
+                return True
+    except:
+        pass
+    return False
 
 def run(events):
     global processViewerEvents
@@ -523,7 +551,17 @@ def run(events):
     
     
     if RobotSim.switch["GUI"]:
-        for panel in panels:
-            panel[0].run(events)
+        
+        evf = []
+        for e in events:
+            if e.type in [KEYDOWN, MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP]:
+                evf.append(e)
+        
+        if len(evf) > 0:
+            for panel in panels:
+                panel[0].run(evf)
+                if isGuiDirty(panel[0]):
+                    panel[0].dirty = True
+
     else:
         processViewerEvents = True

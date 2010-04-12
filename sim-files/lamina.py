@@ -367,7 +367,7 @@ class LaminaPartialScreenSurface(LaminaPanelSurface):
         self._whxy = (width, height, x, y)
         self.setup()
         self.clear()
-
+        
     def setup(self):
         """Setup stuff, after pygame is inited. """
         
@@ -400,16 +400,30 @@ class LaminaPartialScreenSurface(LaminaPanelSurface):
                 top = H - abs(y)
 
         self.tblr = [top, bottom, left, right]
+        self.prev_bl = (0,0,0)
+        self.refreshPosition(True)
         
-        self.refreshPosition()
-        
-    def refreshPosition(self):
+    def refreshPosition(self, possibly_changed):
         """Recalc where in modelspace quad needs to be to fill screen."""
+        ogl.glMatrixMode(ogl.GL_MODELVIEW)
+        ogl.glLoadIdentity()
+        ogl.glMatrixMode(ogl.GL_PROJECTION)
+        ogl.glLoadIdentity()
+        
+        if not possibly_changed:
+            return
         
         depth = self._depth
         (top, bottom, left, right) = self.tblr
         
         bottomleft = oglu.gluUnProject(left, bottom, depth)
+        if bottomleft == self.prev_bl:
+            #~ print "not changed"
+            return
+        
+        #~ print "changed"
+        #~ print bottomleft[0] - self.prev_bl[0]
+        self.prev_bl = bottomleft
         bottomright = oglu.gluUnProject(right, bottom, depth)
         topleft = oglu.gluUnProject(left, top, depth)
         topright = oglu.gluUnProject(right, top, depth)

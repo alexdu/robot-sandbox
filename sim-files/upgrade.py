@@ -71,13 +71,13 @@ if ans == "yes":
         if sys.platform == "win32":
             upgbat = os.path.join("upgradetmp", "upgrade.bat")
             f = open(upgbat, "wt")
-            f.write("ping -n 3 127.0.0.1 >NUL \n") # pe post de delay :)
-            f.write("del /f /q %s \n" % os.getcwd())
+            f.write("ping -n 2 127.0.0.1 >NUL \n") # pe post de delay :)
+            f.write('del /f /q "%s" \n' % os.getcwd())
             for folder in ["robot-programs", "sim-files", "libs"]:
-                f.write("rmdir /s /q %s \n" % os.path.join(os.getcwd(), folder))
-            f.write("xcopy /e /y /r %s %s \n" % (os.path.join(os.getcwd(), "upgradetmp", mainfolder, "*.*"), 
+                f.write('rmdir /s /q "%s" \n' % os.path.join(os.getcwd(), folder))
+            f.write('xcopy /e /y /r "%s" "%s" \n' % (os.path.join(os.getcwd(), "upgradetmp", mainfolder, "*.*"), 
                                                 os.getcwd() + "\\" ))
-            f.write("rmdir /s /q %s \n" % os.path.join(os.getcwd(), "upgradetmp", mainfolder))
+            f.write('rmdir /s /q "%s" \n' % os.path.join(os.getcwd(), "upgradetmp", mainfolder))
             f.write("pause \n")
             f.close()
             print "harakiri..."

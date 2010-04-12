@@ -36,7 +36,7 @@ class Paper:
                 rot = mat3(1)):
         
         (lx,ly,lz) = size
-        self.worldObj = Box(name=name, lx=lx, ly=ly, lz=lz, pos=pos, material=matPaper)
+        self.worldObj = Box(name=name, lx=lx, ly=ly, lz=lz, pos=pos, material=matPaper, mass=1)
         self.worldObj.paperObj = self
         odeSim.add(self.worldObj, categorybits=CB_PAPER, collidebits=CB_PEN_BALLPOINT)
         self.worldObj.manip.odebody.setKinematic()
@@ -122,6 +122,7 @@ class Pen:
         
         self.fixed_joint = ODEFixedJoint(name=name + " Glue", body1=self.pen_box, body2=self.pen_ballpoint)
         odeSim.add(self.fixed_joint)
+
         
         self.support = Box(name=name + " Support", 
                            pos=pos, lx=0.02, ly=0.02, lz=0.05, 
@@ -131,16 +132,16 @@ class Pen:
         
         eventmanager.connect(ENV_RESET, self.destroy)
 
-        
+        self.pen_box.manip.setPos(vec3(pos) + vec3((0,0,0.2)))
             
     def _removeObj(self):
         for obj in [self.pen_box, self.pen_ballpoint, self.pen_cone, self.fixed_joint, self.support]:
             if obj != None:
-                if obj in odeSim.body_dict:
-                    odeSim.remove(obj)
                 if worldroot.hasChild(obj.name):
                     worldroot.removeChild(obj)
-                    obj = None
+                if obj in odeSim.body_dict:
+                    odeSim.remove(obj)
+                obj = None
         
     def destroy(self):
         try:

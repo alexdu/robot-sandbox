@@ -403,9 +403,6 @@ class Viewer(Tool):
                 if self.cam.transform != camtrans:
                     camchanged = True
                     camtrans = self.cam.transform
-                if self.cam.transform.__hash__() != camtrans.__hash__():
-                    camchanged = True
-                    camtrans = self.cam.transform
 
                 oldsize = (width, height)
                 (width, height) = pygame.display.get_surface().get_size()                
@@ -463,6 +460,7 @@ class Viewer(Tool):
 #                cnt=0
         print "Exiting..."
         pygame.display.quit()
+        pygame.quit()
         eventManager().event("QUIT")
   
 

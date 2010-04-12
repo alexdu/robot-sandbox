@@ -430,8 +430,7 @@ def refreshSignals():
                     #w.style["width"] = 70
                     w.style["height"] = 20
                     w.style["padding"] = (5,10)
-                    im = os.path.join(sys.basepath, "gooeypy", "data", "%s-%s.png slice" % (type, sval))
-                    print im
+                    im = "data/%s-%s.png slice" % (type, sval)
                     w.stylesets["default"]["bgimage"] = im
                     w.stylesets["hover"]["bgimage"] = im
                     w.stylesets["focused"]["bgimage"] = im

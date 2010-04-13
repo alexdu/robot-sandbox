@@ -664,7 +664,7 @@ def BREAK(extra_delay=True):
             raise UserAbort
         if not RobotSim.comp_mode:
             raise CompModeDisabled
-    time.sleep(0.2)
+    time.sleep(0.1)
     
     
 def OPENI():
@@ -1404,6 +1404,7 @@ def exec_init():
     
 def exec_end():
     print
+    print "Program completed."
     print "Press ENTER to continue "
     print 
     sys.settrace(None)
@@ -1622,6 +1623,7 @@ def _CM_LOAD(self, file):
     load hanoi
     """
 
+    if not check_no_prog_running(): return
     
 
     _LOAD(file.strip())
@@ -1638,16 +1640,10 @@ def _CM_EXEC(self, prog):
     exec stiva
     """
 
+    if not check_no_prog_running(): return
 
     ip = IPython.ipapi.get()
 
-
-    _flush_completed_jobs()
-    if len(jobs.jobs_all) > 0:
-        print "A robot program is already running."
-        print "Please stop the program first."
-        print "  (hint: you may use either the 'COMP' button or the 'abort' command)."
-        return
     if not RobotSim.comp_mode:
         print "COMP mode disabled."
         return
@@ -1670,7 +1666,9 @@ def _CM_HERE(self, var):
     here #b      # records current joint position as a precision point
     here bs:a    # records end-effector position in the local reference frame "bs"
     """
-    #IPShellEmbed()()
+
+    if not check_no_prog_running(): return
+    
     ip = IPython.ipapi.get()
     
     if len(var.strip()) == 0:
@@ -1752,6 +1750,7 @@ def _CM_TOOL(self, var):
     tool RZ(45)
 
     """
+    if not check_no_prog_running(): return
     ip = IPython.ipapi.get()
     ip.runlines("TOOL(" + translate_expression(var) + ")")
 
@@ -1985,6 +1984,7 @@ def _CM_RESET(self, var):
     
     Resets I/O signals.
     """
+    if not check_no_prog_running(): return
 
     print "Turning off signals..."
 
@@ -1998,6 +1998,8 @@ def _CM_ZERO(self, var):
     
     Deletes all robot programs and variables.
     """
+    if not check_no_prog_running(): return
+
     print "Deleting all robot programs and variables..."
     
     _build_dictionary()
@@ -2126,19 +2128,23 @@ def _CM_LISTS(self, var):
 
 
 
+def check_no_prog_running(): 
+    _flush_completed_jobs()
+    if len(jobs.jobs_all) > 0:
+        print "A robot program is already running."
+        print "Please stop the program first."
+        print "  (hint: you may use either the 'COMP' button or the 'abort' command)."
+        print 
+        return False
+    return True
+        
 
 def _CM_ENV(self, prog):
     """
 
     Initializes the work environment for the robot.
     """
-    
-    _flush_completed_jobs()
-    if len(jobs.jobs_all) > 0:
-        print "A robot program is already running."
-        print "Please stop the program first."
-        print "  (hint: you may use either the 'COMP' button or the 'abort' command)."
-        return
+    if not check_no_prog_running(): return
     
     ip = IPython.ipapi.get()
     prog = prog.strip()
@@ -2175,6 +2181,7 @@ def _CM_ENV(self, prog):
     print 
     
 def _CM_DO(self, var):
+    if not check_no_prog_running(): return
     if not RobotSim.comp_mode:
         print "COMP mode disabled."
         return

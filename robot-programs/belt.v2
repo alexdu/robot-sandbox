@@ -13,13 +13,20 @@
     MOVE #safe
     BREAK
     
-    
     FOR i = 1 TO n/4
+        TYPE "Pornesc conveiorul"
         SIGNAL out.belt
+        
+        TYPE "Astept paleta"
         WAIT SIG(in.sensor)
-        WAIT.EVENT, 6.75
+        
+        TYPE "Paleta a fost detectata; astept"
+        WAIT.EVENT, 7.25
+        
+        TYPE "Opresc conveiorul"
         SIGNAL -out.belt
         
+        TYPE "Pun piese pe paleta"
         FOR j = 1 TO 4
             p = 4*(i-1) + j
             SET pick = SHIFT(st BY 0, 0, h * (n - p))
@@ -27,11 +34,10 @@
             CALL pick.place(pick, place)
         END
         MOVE #safe
-        
-        SIGNAL out.belt
     END
     
-    
+    TYPE "Gata."
+    SIGNAL out.belt
     WAIT.EVENT, 5
     SIGNAL -out.belt
 .END
@@ -44,18 +50,17 @@
     z.place = 100
     
     OPEN
-    APPRO pick, 100
-    SPEED 30
+    APPRO pick, z.pick
+    SPEED 50
     MOVES pick
     CLOSEI
-    SPEED 30
-    DEPARTS 100
+    SPEED 50
+    DEPARTS z.pick
     
-    APPRO place, 100
-    SPEED 30
-    APPROS place, 1
+    APPRO place, z.place
+    SPEED 50
+    MOVES place
     OPENI
-    SPEED 30
-    DEPARTS 100
+    SPEED 50
+    DEPARTS z.place
 .END
-

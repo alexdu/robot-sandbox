@@ -1,27 +1,3 @@
-.PROGRAM pick.place(pick,place)
-    z.pick = 100
-    z.place = 100
-    
-    OPEN
-    APPRO pick, 100
-    BREAK
-    SPEED 30
-    MOVES pick
-    CLOSEI
-    SPEED 30
-    DEPARTS 100
-    BREAK
-    
-    APPRO place, 100
-    BREAK
-    SPEED 30
-    APPROS place, 1
-    OPENI
-    SPEED 30
-    DEPARTS 100
-    BREAK
-.END
-
 .PROGRAM spirala()
     GLOBAL a, b, c, #safe, h
     AUTO p, i
@@ -48,3 +24,28 @@
     
 .END
 
+.PROGRAM pick.place(pick,place)
+    AUTO z.pick, z.place
+    
+    z.pick = 100
+    z.place = 100
+    
+    OPEN
+    APPRO pick, z.pick
+    BREAK
+    SPEED 30
+    MOVES pick
+    CLOSEI
+    SPEED 30
+    DEPARTS z.pick
+    BREAK
+    
+    APPRO place, z.place
+    BREAK
+    SPEED 30
+    MOVES place
+    OPENI
+    SPEED 30
+    DEPARTS z.place
+    BREAK
+.END

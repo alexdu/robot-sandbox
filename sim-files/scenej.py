@@ -371,14 +371,6 @@ slider_finger2.stopcfm = 1E-5
 odeSim.add(slider_finger1)
 odeSim.add(slider_finger2)
 
-def rx(ang):
-    return mat3(1).rotate(ang*pi/180, (1,0,0))
-def ry(ang):
-    return mat3(1).rotate(ang*pi/180, (0,1,0))
-def rz(ang):
-    return mat3(1).rotate(ang*pi/180, (0,0,1))
-def rotaa(angle, axis):
-    return mat3(1).rotate(angle*pi/180, axis)
 
 enforceRobotPos([0, 0, 0, 0, 0, 0], 0)
     

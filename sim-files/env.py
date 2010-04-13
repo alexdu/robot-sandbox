@@ -33,29 +33,66 @@ CB_PEN_HANDLE = CB_PARTS
 
 # functii pentru env
 
-def resizeBox(box, size):
-    (box.lx, box.ly, box.lz) = size
-    box.manip.odegeoms[0].getGeom().setLengths(size)
-
-
-def setSizePosRot(box, size, pos, rot):
-    mb = box.manip
-    box.lx = size[0]
-    box.ly = size[1]
-    box.lz = size[2]
-
-    mb.setPos(pos)
-    mb.setRot(rot)
-
-    mb.body.geom.lx = box.lx
-    mb.body.geom.ly = box.ly
-    mb.body.geom.lz = box.lz
+def createBoxStack(n, 
+                   pos = (0,0,0), 
+                   rot = mat3(1),
+                   size = (100E-3, 30E-3, 15E-3),
+                   material=matRedBox, 
+                   mass = 1E-2, 
+                   name = "Box", 
+                   kinematic = False):
+    """
     
-    mb.setLinearVel((0,0,0))
-    mb.setAngularVel((0,0,0))
+    Create a stack of boxes (useful in environments).
+    
+    
+    Args     |  meaning                    | default value
+    ---------+-----------------------------+--------------
+    pos      | stack bottom position       | (0,0,0)
+    rot      | box orientation             | mat3(1)
+    size     | box size                    | (100E-3, 30E-3, 15E-3)
+    material | material for rendering and  | matRedBox
+             |   contact properties        | 
+    mass     | box mass                    | 1E-2
+    name     | name root (=> Box1,Box2...) | "Box"
+    kinematic| ODE kinematic flag          | False 
+             | TRUE => not influenced      |
+             |   by external forces        |
+    """
+    boxes = []
+    
+    if n > 1:
+        name += "1"
+    
+    for i in range(n):
+        b = Box(name, lx=size[0],ly=size[1],lz=size[2],material=material, mass=mass)
+        (x,y,z) = pos
+        z += i * size[2] * 1.1
+        b.pos = (x,y,z)
+        b.rot = rot
+            
+        boxes.append(b)
+        odeSim.add(b, categorybits=CB_PARTS, collidebits=CB_PARTS|CB_FLOOR|CB_ROBOT)
+        if kinematic:
+            b.manip.odebody.setKinematic()
 
-    #~ for b in odeSim.bodies:
-        #~ if b.odebody == mb.odebody:
-            #~ b.odegeoms[0].getGeom().setLengths(size)
-            #~ b.odegeoms[0].setCollideBits(7)
-            #~ b.odegeoms[0].getGeom().setCollideBits(7)
+    eventmanager.event(NEW_BOX_CREATED)
+
+    return boxes
+
+
+def rx(ang):
+    return mat3(1).rotate(radians(ang), (1,0,0))
+def ry(ang):
+    return mat3(1).rotate(radians(ang), (0,1,0))
+def rz(ang):
+    return mat3(1).rotate(radians(ang), (0,0,1))
+def rotaa(angle, axis):
+    return mat3(1).rotate(radians(ang), axis)
+
+
+def redge(x, x_prev):
+    return bool(x) and not bool(x_prev)
+    
+def fedge(x, x_prev):
+    return not bool(x) and bool(x_prev)

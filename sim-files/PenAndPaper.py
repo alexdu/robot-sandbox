@@ -43,8 +43,8 @@ class Paper:
         
         odeSim.setContactProperties((matBallpointPen, matPaper), contactProps_PenPaper)
 
-        eventmanager.connect(ODE_COLLISION, self.PenOnPaper)
-        eventmanager.connect(ENV_RESET, self.destroy)
+        eventmanager.connect(ODE_COLLISION, self)
+        eventmanager.connect(ENV_RESET, self)
 
         self.polylines = []
         self.last_pen_event = time.time()
@@ -52,7 +52,7 @@ class Paper:
     
         
         
-    def PenOnPaper(self, col):
+    def onODECollision(self, col):
         if col.obj2 == self.worldObj:
             if hasattr(col.obj1, 'ballpoint'):
                 c = col.contacts[0]
@@ -77,10 +77,10 @@ class Paper:
                 worldroot.removeChild(self.worldObj)
                 self.worldObj = None
         
-    def destroy(self):
+    def onEnvReset(self):
         try:
-            eventmanager.disconnect(ODE_COLLISION, self.PenOnPaper)
-            eventmanager.disconnect(ENV_RESET, self.destroy)
+            eventmanager.disconnect(ODE_COLLISION, self)
+            eventmanager.disconnect(ENV_RESET, self)
             self._removeObj()
         except:
             pass

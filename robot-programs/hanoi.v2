@@ -93,7 +93,7 @@
     z_pick = 80
     z_place = 80
     
-    PARAMETER HAND.TIME = 0.3
+    PARAMETER HAND.TIME = 0.1
     
     APPRO pick, z_pick
     

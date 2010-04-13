@@ -40,7 +40,7 @@ class ConveyorBelt:
             posSup = list(pos)
             posSup[2] -= size[2]/2
             pos[2] += sizeSup[2]/2
-            createBoxStack(1, name=name + " Support", size=sizeSup, pos=posSup, kinematic=True, material=matBlueBox)
+            createBoxStack(1, name=name + " Support", size=sizeSup, pos=posSup, rot=rot, kinematic=True, material=matBlueBox)
 
         self.name = name
         self.size = size                
@@ -107,8 +107,8 @@ class ConveyorBelt:
 
     def _removeObj(self):
         if self.worldObj != None:
-            worldroot.removeChild(self.worldObj)
             odeSim.remove(self.worldObj)
+            worldroot.removeChild(self.worldObj)
             self.worldObj = None
         
     def destroy(self):
@@ -116,7 +116,6 @@ class ConveyorBelt:
         try:
             eventmanager.disconnect(STEP_FRAME, self.tick)
             eventmanager.disconnect(ENV_RESET, self.destroy)
-            self._removeObj()
             self.signal = None
         except:
             pass

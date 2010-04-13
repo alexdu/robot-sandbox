@@ -107,36 +107,14 @@ floor.pos = (0,0,-25E-3)
 
 
 
-RobotSim.gripForce = 1000
 def setGripperForces(open, close):
-    gripForce = RobotSim.gripForce
-    if slider_finger1.motorfmax != gripForce:
-        slider_finger1.motorfmax = gripForce
-        slider_finger2.motorfmax = gripForce
-
-    
     if open:
-        slider_finger1.motorvel = 0.1
-        slider_finger2.motorvel = -0.1
-        slider_finger1.histop = 40E-3
-        slider_finger2.lostop = -40E-3
-    if close:
-        pos1 = abs(slider_finger1.position)
-        pos2 = abs(slider_finger1.position)
-        err = pos1 - pos2
-        k = 1
-        
-        slider_finger1.motorvel = -0.3 + err * k
-        slider_finger2.motorvel = 0.3 - err * k
-        
-        pos = abs(slider_finger2.position)
-        pos = min(pos, 40E-3)
-        pos = max(pos, 10E-3)
-        slider_finger1.histop = pos + 0.01E-3
-        slider_finger1.lostop = pos - 1E-3
-        slider_finger2.histop = -(pos - 1E-3)
-        slider_finger2.lostop = -(pos + 0.01E-3)
-        
+        slider_finger1.histop = slider_finger1.lostop = 40E-3
+        slider_finger2.histop = slider_finger2.lostop = -40E-3
+    if close: 
+        pos = max(10e-3, slider_finger1.histop - 10e-3)
+        slider_finger1.histop = slider_finger1.lostop = pos
+        slider_finger2.histop = slider_finger2.lostop = -pos
         
 
 def enforcePose(m, P):
@@ -308,52 +286,6 @@ odeSim.add(finger1,     categorybits=CB_ROBOT, collidebits=CB_PARTS|CB_FLOOR)
 odeSim.add(finger2,     categorybits=CB_ROBOT, collidebits=CB_PARTS|CB_FLOOR)
 
 
-def createBoxStack(n, 
-                   pos = (0,0,0), 
-                   rot = mat3(1),
-                   size = (100E-3, 30E-3, 15E-3),
-                   material=matRedBox, 
-                   mass = 1E-2, 
-                   name = "Box", 
-                   kinematic = False):
-    """
-    
-    Create a stack of boxes (useful in environments).
-    
-    
-    Args     |  meaning                    | default value
-    ---------+-----------------------------+--------------
-    pos      | stack bottom position       | (0,0,0)
-    rot      | box orientation             | mat3(1)
-    size     | box size                    | (100E-3, 30E-3, 15E-3)
-    material | material for rendering and  | matRedBox
-             |   contact properties        | 
-    mass     | box mass                    | 1E-2
-    name     | name root (=> Box1,Box2...) | "Box"
-    kinematic| ODE kinematic flag          | False 
-             | TRUE => not influenced      |
-             |   by external forces        |
-    """
-    boxes = []
-    
-    if n > 1:
-        name += "1"
-    
-    for i in range(n):
-        b = Box(name, lx=size[0],ly=size[1],lz=size[2],material=material, mass=mass)
-        (x,y,z) = pos
-        z += i * size[2] * 1.1
-        b.pos = (x,y,z)
-        b.rot = rot
-            
-        boxes.append(b)
-        odeSim.add(b, categorybits=CB_PARTS, collidebits=CB_PARTS|CB_FLOOR|CB_ROBOT)
-        if kinematic:
-            b.manip.odebody.setKinematic()
-
-    eventmanager.event(NEW_BOX_CREATED)
-
-    return boxes
     
 def resetEnv():
 
@@ -399,10 +331,13 @@ slider_finger1.histop = 40E-3
 slider_finger1.lostop = 10E-3
 slider_finger2.lostop = -40E-3
 slider_finger2.histop = -10E-3
-slider_finger1.fudgefactor = 0.0001
-slider_finger2.fudgefactor = 0.0001
-slider_finger1.stopcfm = 1E-5
-slider_finger2.stopcfm = 1E-5
+slider_finger1.fudgefactor = 0
+slider_finger2.fudgefactor = 0
+slider_finger1.stopcfm = 1E-3
+slider_finger2.stopcfm = 1E-3
+slider_finger1.cfm = 1E-5
+slider_finger2.cfm = 1E-5
+
 
 odeSim.add(slider_finger1)
 odeSim.add(slider_finger2)

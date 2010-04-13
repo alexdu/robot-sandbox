@@ -41,23 +41,21 @@
     z.place = 100
     
     OPEN
-    APPRO pick, 100
+    APPRO pick, z.pick
     BREAK
     SPEED 30
     MOVES pick
     CLOSEI
     SPEED 30
-    DEPARTS 100
+    DEPARTS z.pick
     BREAK
     
-    APPRO place, 100
+    APPRO place, z.place
     BREAK
     SPEED 30
-    APPROS place, 1
+    MOVES place
     OPENI
     SPEED 30
-    DEPARTS 100
+    DEPARTS z.place
     BREAK
 .END
-
-CALL paletizare

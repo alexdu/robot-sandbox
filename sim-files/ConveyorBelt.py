@@ -64,7 +64,7 @@ class ConveyorBelt:
         self.aspect_ratio = self.size[0] / self.size[1]
         imagename = os.path.join(sys.basepath, "img", "pattern-chevrons-3.png")
         im = Image.open(imagename)
-        self.tex = GLTexture(image=im, size=(128,128))
+        self.tex = GLTexture(image=im, size=(64,64), mode=GL_REPLACE)
         self.tex.transform = mat4(1).scale((self.aspect_ratio,1,1))
         self.matRender = GLMaterial(texture=self.tex)
         

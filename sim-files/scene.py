@@ -219,7 +219,8 @@ RobotSim.pauseTick = False
 
 def tick():
     t0 = time.time()
-    if int(scene._timer.frame) == 1:
+    frameno = int(scene._timer.frame)
+    if frameno == 1:
         
         # some dirty init
         
@@ -252,7 +253,12 @@ def tick():
     RobotSim.Step()
 
 
+    if frameno % 5 == 0:
+        vplus.fileChangePoll()
+
 eventmanager.connect(STEP_FRAME, tick) 
+
+
 
 
 

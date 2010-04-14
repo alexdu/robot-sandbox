@@ -1589,6 +1589,8 @@ def _LOAD(file, reload=False):
     else:
         print "Reloading %s ..." % file
     code = translate_program(file)
+    
+    file_timestamps[file] = os.path.getmtime(file)
     code = compile(code, file, "exec")
 
     _build_dictionary()
@@ -1818,6 +1820,22 @@ def _CM_CALIBRATE(self, var):
     """
     print "Simulated robots do not need calibration :)"
 
+
+file_timestamps = {}
+def fileChangePoll():
+    d = os.listdir(".")
+    for f in d:
+        if f.endswith(".v2"):
+            if f in file_timestamps:
+                t = file_timestamps[f]
+                t2 = os.path.getmtime(f)
+                if t != t2:
+                    file_timestamps[f] = t2
+                    print "File %s was changed." % f
+                    beautify_program(f)
+                    file_timestamps[f] = os.path.getmtime(f)
+            else:
+                file_timestamps[f] = os.path.getmtime(f)
 
 def _edit(file, lineno = None):
     if sys.platform == 'win32':

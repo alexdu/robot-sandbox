@@ -226,6 +226,9 @@ def beautify_block(var, first = False):
     
     vs = list(newvs)
     var = string.join(newvs, "")
+    
+    
+    var = re.sub("ELSE\ +if ", "ELSEIF ", var)
     return var
     
     

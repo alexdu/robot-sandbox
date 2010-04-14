@@ -28,6 +28,8 @@ import math
 import parser
 import symbol
 import token
+import time
+import os
 
 from types import ListType, TupleType
 
@@ -93,9 +95,13 @@ def beautify_program(file):
     f = open(file)
     code = f.readlines()
     f.close()
+
+    backup = file + "~"
+    f = open(backup, "w")
+    f.writelines(code)
+    f.close()
     
     newcode = []
-    
     indent = 0
 
     for line in code:
@@ -117,10 +123,12 @@ def beautify_program(file):
     if indent > 0:
         print "Warning: some END's are missing."
     
+    if code != newcode:
+        f = os.fdopen(os.open(file, os.O_WRONLY|os.O_EXCL), 'w')
+        f.writelines(newcode)
+        f.truncate()
+        f.close()
     
-    f = open(file, "w")
-    f.writelines(newcode)
-    f.close()
     
 def get_indent(line): # intoarce indentarea pentru linia curenta si pentru urmatoarele
 
@@ -191,6 +199,7 @@ def beautify_block(var, first = False):
     'STATE', 'STATUS', 'TAS', 'TASK', 'TAN', 'TIMER', 'TRANS', 
     'VAL']
     
+#    print string.join(vplus_instructions + vplus_expr_keywords +  vplus_functions_arg, "|")
 
     vs = re.split("([a-zA-Z\#\.][a-zA-Z0-9_\.]*)", var)
     newvs = []

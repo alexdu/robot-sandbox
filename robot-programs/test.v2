@@ -1,7 +1,6 @@
 .PROGRAM test()
     AUTO a, x, number
     GLOBAL b, cucu
-    
     AUTO a[5]
     
     TYPE "V+ Language Tests"
@@ -105,6 +104,16 @@
         TYPE "ups"
     END
     
+    TYPE "if-elseif-else test [=> ok]"
+    IF 1==2 THEN
+        TYPE "ups"
+    ELSEIF i < 20
+        TYPE "ok"
+    ELSIF i > 30 THEN
+        TYPE "ups"
+    ELSE
+        TYPE "ups"
+    END
     
     TYPE "for-exit test [=> 6]"
     

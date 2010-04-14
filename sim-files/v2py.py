@@ -442,7 +442,7 @@ def translate_statement(var, indent):
             
         vs = ['while ', cond.strip(), ':']
         
-    elif kw == "IF":
+    elif kw in ["IF", "ELSEIF", 'ELSIF', 'ELIF']:
         rest = translate_expression(rest)
         vs = split_keywords(rest)
         if "THEN" in vs:
@@ -451,9 +451,8 @@ def translate_statement(var, indent):
         else:
             cond = string.join(vs, "")
             
-        vs = ['if ', cond.strip(), ':']
-    elif kw in ["ELSEIF", 'ELSIF', 'ELIF']:
-        vs = ['elif:']
+        kw = 'if ' if kw == 'IF' else 'elif '
+        vs = [kw, cond.strip(), ':']
     elif kw == "ELSE":
         vs = ['else:']
 

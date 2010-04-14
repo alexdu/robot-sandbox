@@ -256,16 +256,11 @@ eventmanager.connect(STEP_FRAME, tick)
 
 
 
-def bum(args):
-    if RobotSim.debug:
-        
-        print args 
-        IPython.Shell.IPShellEmbed([])()
-        print args.obj1.getMaterial().name # , args.obj2.getMaterial().name
-        
-    #~ #print obj1, obj2, contacts, cp
+def collision(C):
+    if len(C.contacts) > 10:
+        C.averageAllContacts()
 
-#eventmanager.connect(ODE_COLLISION, bum)
+eventmanager.connect(ODE_COLLISION, collision)
 
 
 

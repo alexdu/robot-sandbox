@@ -28,11 +28,13 @@ class BlackHole:
                 material = GLMaterial(diffuse=(1,0.3,1,0.7)),
                 pos = (0.3,0.3,0.3), 
                 size = (0.1,0.1,0.1), 
-                signal = None):
+                signal = None, 
+                freq = 0.5):
         
         self.name = name
         self.size = size                
         self.pos = pos
+        self.freq = freq
         self.material = GLMaterial(diffuse=material.diffuse, blend_factors = (GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA))
         self.magic_word = re.compile(magic_word)
         self.signal = signal
@@ -53,16 +55,14 @@ class BlackHole:
         self.gomi = []
 
     def onStepFrame(self):
-        if self.signal:
-            if SIG(self.signal):
-                self.t += 1/RobotSim.fps
-                f = 0.5
-                (r,g,b,a) = self.material.diffuse
-                self.material.diffuse = (r,g,b, sin(pi*f*self.t)**2)
-            else:
-                self.t = 0
-                (r,g,b,a) = self.material.diffuse
-                self.material.diffuse = (r,g,b,0)
+        if self.signal == None or SIG(self.signal):
+            self.t += 1/RobotSim.fps
+            (r,g,b,a) = self.material.diffuse
+            self.material.diffuse = (r,g,b, 0.2 + 0.6*cos(pi*self.freq*self.t)**2)
+        else:
+            self.t = 0
+            (r,g,b,a) = self.material.diffuse
+            self.material.diffuse = (r,g,b,0)
                 
         # empty trash 
         for o in self.gomi:

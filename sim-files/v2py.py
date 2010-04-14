@@ -150,7 +150,7 @@ def beautify_block(var, first = False):
     # daca primul keyword e din lista asta, e cu litere mari
     vplus_instructions = ['ABORT', 'ABOVE', 'ACCEL', 'ALIGN', 'ALTER', 'ANY',
     'APPRO', 'APPROS', 'ATTACH', 'AUTO', 'BELOW', 'BRAKE', 'BREAK', 'CALIBRATE', 'CALL', 
-    'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'DECOMPOSE', 'DELAY',
+    'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'DECOMPOSE', #'DELAY',
      'DEPART', 'DEPARTS', 
     'DETACH', 'DISABLE', 'DO', 'DRIVE', 'DRY.RUN', 'DURATION',
     'ELSE', 'ELIF', 'ELSIF', 'ELSEIF', 'ENABLE', 'END', '.END', 'ERROR', 'ESTOP', 'EXECUTE', 'EXIT', 'FINE', 'FLIP', 'FOR', 

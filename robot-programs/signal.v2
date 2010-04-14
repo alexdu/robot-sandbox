@@ -7,10 +7,12 @@
     AUTO p, r, h, d, n, nr
     h = 15
     nr = 3
+    
     in.start_valid = 1033
     in.part_type = 1034
     in.nr_parts_b1 = 1035
     in.nr_parts_b0 = 1036
+    
     out.done_valid = 49
     out.time_b2 = 50
     out.time_b1 = 51
@@ -20,13 +22,16 @@
     SPEED 100 ALWAYS
     MOVET #safe, TRUE
     RIGHTY
-    SIGNAL (-out.done_valid)
-    SIGNAL (-out.time_b2)
-    SIGNAL (-out.time_b1)
-    SIGNAL (-out.time_b0)
+    
+    SIGNAL -out.done_valid
+    SIGNAL -out.time_b2
+    SIGNAL -out.time_b1
+    SIGNAL -out.time_b0
+    
     WHILE SIG(-in.start_valid) DO
         WAIT
     END
+    
     ; citesc numarul de piese dorit:
     n = 0
     IF SIG(in.nr_parts_b0) THEN
@@ -54,14 +59,18 @@
         SET place = SHIFT(pal BY 0, 0, h * (p-1))
         CALL pick.place(pick, place)
     END
+    
     MOVE #safe
     BREAK
+    
     d = INT(TIMER(1))
     TYPE "Timpul necesar: ", d, " secunde."
+    
     ; daca a durat mai mult de 7 secunde, trimit 7.
     IF d > 7 THEN
         d = 7
     END
+    
     ; decodific valoarea lui d (pe 3 biti):
     IF d BAND 4 THEN         ; BAND = AND pe biti
         SIGNAL (out.time_b2)
@@ -72,6 +81,7 @@
     IF d BAND 1 THEN
         SIGNAL (out.time_b0)
     END
+    
     ; semnalele care indica valoarea lui d sunt valide:
     SIGNAL (out.done_valid)
 .END

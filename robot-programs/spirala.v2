@@ -5,6 +5,7 @@
     total.ang = 360
     n = 12
     SPEED 100 ALWAYS
+    PARAMETER HAND.TIME = 0.2
     
     OPEN
     MOVE safe

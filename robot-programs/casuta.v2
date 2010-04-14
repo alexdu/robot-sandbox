@@ -5,6 +5,8 @@
     d = 35
     
     SPEED 100 ALWAYS
+    PARAMETER HAND.TIME = 0.2
+    
     MOVET #safe, TRUE
     BREAK
     LEFTY

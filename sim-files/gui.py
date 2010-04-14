@@ -389,6 +389,8 @@ def refreshSignals():
                     w = gui.Button("spanac", width=10)
                     w.label.style["width"] = 10
                     w.label.style["font-size"] = 14
+                    w.label.style["height"] = 18
+                    w.style["height"] = 18
                     signalsVBox.add(w)
                     enableStealEvents([w])
             elif n < m:
@@ -428,7 +430,7 @@ def refreshSignals():
                     w.label.style["color"] = (255,255,255)
                     w.label.style["font-size"] = 14
                     #w.style["width"] = 70
-                    w.style["height"] = 20
+                    w.style["height"] = 18
                     w.style["padding"] = (5,10)
                     im = "data/%s-%s.png slice" % (type, sval)
                     w.stylesets["default"]["bgimage"] = im

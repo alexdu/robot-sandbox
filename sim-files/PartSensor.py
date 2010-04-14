@@ -50,7 +50,7 @@ class PartSensor:
                                                 kinematic = True)[0]
 
 
-        eventmanager.connect(ODE_COLLISION, self)
+        eventmanager.connect(ODE_COLLISION, self, priority=5)
         eventmanager.connect(ENV_RESET, self) 
         eventmanager.connect(STEP_FRAME, self)
 

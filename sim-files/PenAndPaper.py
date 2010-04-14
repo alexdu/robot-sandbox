@@ -23,8 +23,6 @@
 matPaper = GLMaterial(name="paper", diffuse=(1,1,1), emission=(0.8,0.8,0.8))
 matBallpointPen = GLMaterial(name="ballpoint pen", diffuse=(0,0,1))
 
-contactProps_PenPaper = ODEContactProperties(bounce = 0, mu = 0, soft_erp=0.2, soft_cfm=0.001)
-
 from Drawing import Polyline
 
 
@@ -40,10 +38,8 @@ class Paper:
         self.worldObj.paperObj = self
         odeSim.add(self.worldObj, categorybits=CB_PAPER, collidebits=CB_PEN_BALLPOINT)
         self.worldObj.manip.odebody.setKinematic()
-        
-        odeSim.setContactProperties((matBallpointPen, matPaper), contactProps_PenPaper)
 
-        eventmanager.connect(ODE_COLLISION, self)
+        eventmanager.connect(ODE_COLLISION, self, priority=5)
         eventmanager.connect(ENV_RESET, self)
 
         self.polylines = []
@@ -69,6 +65,8 @@ class Paper:
                     
                 #print pos
                 self.last_pen_event = time.time()
+
+                del(col.contacts[:]) # ignore event
             
     def _removeObj(self):
         if self.worldObj != None:

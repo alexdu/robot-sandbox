@@ -1326,8 +1326,6 @@ def trace_calls(frame, event, arg):
         raise UserAbort
     if not RobotSim.comp_mode:
         raise CompModeDisabled
-        
-    time.sleep(0.001)
 
     if event == 'return':
         co = frame.f_code

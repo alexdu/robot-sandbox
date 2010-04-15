@@ -11,8 +11,14 @@ print
 print "robot-sandbox upgrade"
 print "====================="
 print "This will also delete all your robot programs. "
-ans = raw_input("Are you sure? [yes/no] ")
 
+ans = ""
+while 1:
+    ans = raw_input("Are you sure? [yes/no] ")
+    if ans in ['yes', 'no']:
+        break
+    print "Please answer 'yes' or 'no'."
+    
 
 def unzip(file, dir):
     if os.path.isdir(dir):
@@ -103,10 +109,9 @@ if ans == "yes":
         print ""
         print "Upgrade FAILED. Please download the program again. Sorry for trouble..."        
         print ""
-        raise
+        raw_input("Press ENTER to continue... ")
+        os.abort()    
         #raw_input("Please restart the program. ")
         #raw_input("Press ENTER to continue... ")
         #os.abort()    
-else:
-    print "Please answer 'yes' if you are really sure."
     

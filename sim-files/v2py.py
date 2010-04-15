@@ -289,7 +289,7 @@ def parse_function_call(expr):
         return (func, args, args_ref)
     else:
         if ("(" in expr) or (")" in expr):
-            raise SyntaxError, "Error in function call declaration."
+            raise SyntaxError, "File %s, line %s: Error in program / function call declaration." % (_currentFile, _currentLineNo)
         else:
             return (expr, "", [])
 
@@ -419,7 +419,7 @@ def translate_statement(var, indent):
         programMangleV2P[name_vplus] = name
         
         if "__" in args_ref:
-            raise SyntaxError, "Invalid .PROGRAM declaration"
+            raise SyntaxError, "File %s, line %s: Invalid .PROGRAM declaration"  % (_currentFile, _currentLineNo)
         vs = ["def ", name, "(", args, "):"]
         
         _program_args = args_ref
@@ -640,4 +640,4 @@ def split_at_equal_sign(var):
         value = m.groups()[1]
         return (name, value)
     else:
-        raise SyntaxError, "expected 'name = value' in '" + var + "' "
+        raise SyntaxError, "File '%s', line %s: Arguments for this keyword should be 'name = value'." % (_currentFile, _currentLineNo)

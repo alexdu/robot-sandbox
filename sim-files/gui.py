@@ -468,6 +468,8 @@ def refreshSignals():
             #~ print "resizetest done"
 
             
+        except IndexError:
+            print "Race condition detected in GUI signals module"
         except RuntimeError:
             #~ print "runtime error"
             pass

@@ -1584,6 +1584,9 @@ def _LOAD(file, reload=False):
     if not re.match("^.*\.[^.]*$", file): # fara extensie, ii adaug .v2
         file = file + ".v2" 
     
+    if not file.endswith(".v2"):
+        raise Exception("Only V+ programs can be loaded (files ending in .v2)")
+    
     if not reload:
         print "Loading %s ..." % file
     else:

@@ -1826,21 +1826,26 @@ def _CM_CALIBRATE(self, var):
 
 file_timestamps = {}
 def fileChangePoll():
-    d = os.listdir(".")
-    for f in d:
-        if f.endswith(".v2"):
-            if f in file_timestamps:
-                t = file_timestamps[f]
-                t2 = os.path.getmtime(f)
-                if t != t2:
-                    file_timestamps[f] = t2
-                    if RobotSim.debug:
-                        print "File %s was changed." % f
-                    beautify_program(f)
+    try:
+        d = os.listdir(".")
+        for f in d:
+            if f.endswith(".v2"):
+                if f in file_timestamps:
+                    t = file_timestamps[f]                    
+                    t2 = os.path.getmtime(f)
+                    if t != t2:
+                        file_timestamps[f] = t2
+                        if RobotSim.debug:
+                            print "File %s was changed." % f
+                        beautify_program(f)
+                        file_timestamps[f] = os.path.getmtime(f)
+                else:
                     file_timestamps[f] = os.path.getmtime(f)
-            else:
-                file_timestamps[f] = os.path.getmtime(f)
-
+    except:
+        if RobotSim.debug:
+            raise
+        pass
+        
 def _edit(file, lineno = None):
     if sys.platform == 'win32':
         if lineno and ('notepad2.exe' in _editor.lower()):

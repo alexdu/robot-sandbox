@@ -284,9 +284,9 @@ class TrajSegment_Proc:
         self.seg1 = seg1
         self.seg2 = seg2
         self.t = 0
-    def step(self):
-        dt1 = self.seg1.step()
-        dt2 = self.seg2.step()
+    def step(self, dryrun=False):
+        dt1 = self.seg1.step(dryrun)
+        dt2 = self.seg2.step(dryrun)
         
         dt = dt1 * (1-self.t) + dt2 * self.t 
         dt = dt/2
@@ -326,10 +326,12 @@ class TrajSegment_Joint:
         dif = self.ja - self.jb
         self.drel = abs(dif / mat(max_joint_speed)).max()   # 1 = 100%
 
-    def step(self):
-        time = self.drel / (self.program_speed/100.0) / (speed_monitor/100.0)
-        steps = 1 + round(time * fps)
-        #~ print steps
+    def step(self, dryrun=False):
+        if dryrun: 
+            steps = 1
+        else:
+            time = self.drel / (self.program_speed/100.0) / (speed_monitor/100.0)
+            steps = 1 + round(time * fps)
         dt = 1/steps
         self.t = min(self.t + dt, 1)
         return dt
@@ -353,9 +355,13 @@ class TrajSegment_Cart:
         self.m2 = cgkit.cgtypes.mat4(self.p2.HTM.flatten().tolist()[0])
         self.drel = (DISTANCE(self.p1, self.p2) + ang_distance(self.p1,self.p2)*10) / max_cartesian_speed
 
-    def step(self):
-        time = self.drel / (self.program_speed/100.0) / (speed_monitor/100.0)
-        steps = 1 + round(time * fps)
+    def step(self, dryrun = False):
+        if dryrun: 
+            steps = 1
+        else:
+            time = self.drel / (self.program_speed/100.0) / (speed_monitor/100.0)
+            steps = 1 + round(time * fps)
+            
         dt = 1/steps
         self.t = min(self.t + dt, 1)
         return dt
@@ -370,11 +376,14 @@ def Step():
     t0 = time.time()
     global currentJointPos, trajQueue
     removed = False
+    
+    dryrun = switch["DRY.RUN"]
     if len(trajQueue) > 0:
         ts = trajQueue[0]
         try:
-            ts.step()
-            currentJointPos = ts.where()
+            ts.step(dryrun)
+            if not dryrun:
+                currentJointPos = ts.where()
         except IKError:
             ex = sys.exc_info()[1]
             print "IKError: " + str(ex)

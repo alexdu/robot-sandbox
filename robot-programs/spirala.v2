@@ -14,9 +14,9 @@
     FOR p = 1 TO n
         i = p-1
         IF i MOD 2 == 0 THEN
-            pick = SHIFT(a BY 0, 0, -h * INT(i/2))
+            SET pick = SHIFT(a BY 0, 0, -h * INT(i/2))
         ELSE
-            pick = SHIFT(b BY 0, 0, -h * INT(i/2))
+            SET pick = SHIFT(b BY 0, 0, -h * INT(i/2))
         END
         SET place = SHIFT(c BY 0, 0, h*i):RZ(total.ang * i / (n-1))
         CALL pick.place(pick, place)

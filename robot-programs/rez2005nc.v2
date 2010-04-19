@@ -1,0 +1,106 @@
+.PROGRAM rez2005nc()
+    ; Rezolvarea problemei de la examenul din 2005
+    ; Fara comentarii :)
+    GLOBAL p1,p2,pal1,pal2,#safe
+    GLOBAL d1,d2,d,h
+    AUTO pick,place
+    AUTO a,b
+    AUTO nl,nc,nn
+    AUTO in.s1, in.s2, in.oprire, out.banda, out.o1, out.o2
+    
+    in.s1 = 1001
+    in.s2 = 1002
+    in.oprire = 1234
+    out.banda = 1
+    out.o1 = 11
+    out.o2 = 12
+    
+    SIGNAL -out.banda
+    SIGNAL -out.o1
+    SIGNAL -out.o2
+    
+    nl = 3
+    nc = 2
+    nn = 2
+    
+    SPEED 90 ALWAYS
+    PARAMETER HAND.TIME = 0.2
+    
+    OPEN
+    MOVE #safe
+    BREAK
+    
+    a = 0
+    b = 0
+    
+    WHILE NOT SIG(in.oprire) DO
+        SIGNAL out.banda
+        TIMER 1 = 0
+        WAIT SIG(in.s2) OR TIMER(1) > 30
+        SIGNAL -out.banda
+        
+        IF TIMER(1) > 30 THEN
+            TYPE "Pe banda nu sunt piese."
+            RETURN
+        END
+        
+        IF SIG(in.s1) THEN          ; Piesa de tip A
+            SET pick = p1
+            i = INT(a/nc) MOD nl
+            j = a MOD nc
+            k = INT(a / (nl*nc))
+            SET place = SHIFT(pal1 BY j*d1*10, -i*d2*10, k*h*10)
+            CALL pick.place(pick, place)
+            a = a + 1
+        ELSE                        ; Piesa de tip B
+            SET pick = p2
+            SET place = SHIFT(pal2 BY b*d*10, 0, 0):RZ(90 * (b MOD 2))
+            CALL pick.place(pick, place)
+            b = b + 1
+        END
+        
+        IF a == nl*nn*nc THEN
+            SIGNAL out.o1
+            WAIT.EVENT, 5
+            SIGNAL -out.o1
+            a = 0
+        END
+        
+        IF b == 5 THEN
+            SIGNAL out.o2
+            WAIT.EVENT, 5
+            SIGNAL -out.o2
+            b = 0
+        END
+    END
+    
+    MOVE #safe
+    
+.END
+
+.PROGRAM pick.place(pick,place)
+    AUTO z.pick, z.place
+    z.pick = 100
+    z.place = 100
+    
+    OPEN
+    APPRO pick, z.pick
+    BREAK
+    SPEED 50
+    MOVES pick
+    CLOSEI
+    SPEED 50
+    DEPARTS 100
+    BREAK
+    
+    APPRO place, z.pick
+    BREAK
+    SPEED 50
+    MOVES place
+    OPENI
+    SPEED 50
+    DEPARTS 100
+    BREAK
+.END
+
+

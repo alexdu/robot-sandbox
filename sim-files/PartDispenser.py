@@ -94,6 +94,7 @@ class PartDispenser:
         rot = p["rot"]
         size = p["size"]
         mat = p["material"]
+        name = p["name"]
 
 
         #~ (dx, dy, dz) = self.part_pos_stdev
@@ -103,7 +104,7 @@ class PartDispenser:
         #~ (rx, ry, rz) = self.part_rot_range_xyz
         #~ rot = self.part_rot.rotate(random.uniform(-rx,rx)/2, (1,0,0)).rotate(random.gauss(-ry,ry)/2, (0,1,0)).rotate(random.gauss(-rz,rz)/2, (0,0,1))
         
-        box = createBoxStack(1, pos=pos, rot=rot, size=size, material=mat)[0]
+        box = createBoxStack(1, name=name, pos=pos, rot=rot, size=size, material=mat)[0]
         return box
         
     def tick(self):

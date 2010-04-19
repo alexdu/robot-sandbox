@@ -296,6 +296,7 @@ def parse_function_call(expr):
 
 _program_args = []
 _casevar = []
+_last_kw = ""
     
 def translate_statement(var, indent):
     
@@ -339,10 +340,14 @@ def translate_statement(var, indent):
     vplus_eq_functions = ['PARAMETER', 'TIMER', 'SWITCH']
 
     (kw, rest, vs) = split_after_keyword(var)
+    kwcopy = kw
     #~ print "keyword: ", kw
     global _program_args
     global _casevar
+    global _last_kw
 
+    # no return should be until the end of this function
+    
     if kw[0] == '.':
         if indent != 0:
             raise IndentationError, "Missing END statement."
@@ -455,17 +460,32 @@ def translate_statement(var, indent):
         vs = ['while ', cond.strip(), ':']
         
     elif kw in ["IF", "ELSEIF", 'ELSIF', 'ELIF']:
+
+        if kw in ["ELSEIF", 'ELSIF', 'ELIF'] and _last_kw in ["IF", "ELSEIF", 'ELSIF', 'ELIF']:
+            raise SyntaxError, "File %s, line %s: Empty blocks between IF and ELSEIF are not allowed. \nHint: you may use 'NULL' as a no-op statement." % (_currentFile, _currentLineNo)
+
         rest = translate_expression(rest)
         vs = split_keywords(rest)
         if "THEN" in vs:
             pos_then = vs.index("THEN")
             cond = string.join(vs[0 : pos_then], "")
+            after_then = string.join(vs[pos_then+1 : ], "")
+            #print "after then: '%s'" % after_then.strip()
+            if after_then.strip() != "":
+                raise SyntaxError, "File %s, line %s: Actions for THEN (i.e. %s) should be written on a separate line." % (_currentFile, _currentLineNo, after_then.strip())
+
         else:
             cond = string.join(vs, "")
             
         kw = 'if ' if kw == 'IF' else 'elif '
         vs = [kw, cond.strip(), ':']
     elif kw == "ELSE":
+        #print _last_kw
+        if _last_kw in ["IF", "ELSEIF", 'ELSIF', 'ELIF']:
+            raise SyntaxError, "File %s, line %s: Empty blocks between IF and ELSE are not allowed. \nHint: you may use 'NULL' as a no-op statement." % (_currentFile, _currentLineNo)
+        #print "after else: ", rest.strip()
+        if rest.strip() != "":
+            raise SyntaxError, "File %s, line %s: Actions for ELSE (i.e. %s) should be written on a separate line." % (_currentFile, _currentLineNo, rest.strip())
         vs = ['else:']
 
     elif kw == "WAIT":
@@ -509,7 +529,7 @@ def translate_statement(var, indent):
             args = "0" + args
         vs = ['WAIT_EVENT(', args, ')']
     elif kw == "END":
-        vs = ['    WAIT_EVENT(0,0.001) #end']
+        vs = ['    WAIT_EVENT(0, 0.001) #end']
     elif kw == ".END":
         vs = ['    return (', string.join(_program_args, ', '), ') # .END']
     elif kw == "RETURN":
@@ -519,6 +539,8 @@ def translate_statement(var, indent):
     else:
         vs = [translate_expression(var)]
 
+
+    _last_kw = kwcopy
 
     var = string.join(vs, "")
     return var

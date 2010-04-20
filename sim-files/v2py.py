@@ -175,7 +175,7 @@ def beautify_block(var, first = False):
     # cuvinte cheie care merg doar in expresii, nu sunt functii (nu urmeaza paranteza dupa ele)
     vplus_expr_keywords = ['ALWAYS', 'AND', 
     'BY', 'BAND', 'BOR', 'BXOR', 
-    'DEST', 'DO', 'DRY.RUN',
+    'DEST', 'DO', 'DRY.RUN', 'DOUBLE',
     'FALSE', 
     'HAND.TIME', 'HERE', 'IPS',
     'MMPS', 'MOD', 
@@ -396,6 +396,11 @@ def translate_statement(var, indent):
     elif kw == 'GLOBAL':
         vs = ["global ", translate_expression(rest)]
     elif kw in ['LOCAL', 'AUTO']:
+        value = "None"
+        rest = rest.strip()
+        if rest.startswith("DOUBLE "):
+            value = "0"
+            rest = rest[7:]
         vars = string.split(rest, ",")
         newvars = []
         for v in vars:
@@ -407,9 +412,9 @@ def translate_statement(var, indent):
                 size = m.groups()[1].strip()
                 if len(size) == 0:
                     size = "100"      # fixme
-                newvars.append(variable + "=[None]*(" + size + ")")
+                newvars.append(variable + "=[" + value + "]*(" + size + ")")
             else:
-                newvars.append(v + "=None")
+                newvars.append(v + "=" + value)
         vs = [ string.join(newvars, "; ") ]
     elif kw == ".PROGRAM":
             

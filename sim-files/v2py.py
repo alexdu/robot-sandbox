@@ -399,7 +399,7 @@ def translate_statement(var, indent):
         value = "None"
         rest = rest.strip()
         if rest.startswith("DOUBLE "):
-            value = "0"
+            value = "0.0"
             rest = rest[7:]
         vars = string.split(rest, ",")
         newvars = []

@@ -13,8 +13,8 @@ matYellowBox = GLMaterial(name="YellowBox", diffuse=(1,1,0))
 matGreenBox = GLMaterial(name="GreenBox", diffuse=(0,1,0))
 matBlueBox = GLMaterial(name="BlueBox", diffuse=(0,0,1))
 matPinkBox = GLMaterial(name="PinkBox", diffuse=(1,0,1))
-matCyanBox = GLMaterial(name="PinkBox", diffuse=(0,1,1))
-matLightBlueBox = GLMaterial(name="PinkBox", diffuse=(0.7,0.7,1))
+matCyanBox = GLMaterial(name="CyanBox", diffuse=(0,1,1))
+matLightBlueBox = GLMaterial(name="LightBlueBox", diffuse=(0.7,0.7,1))
 matBoxes = [matRedBox, matYellowBox, matGreenBox, matBlueBox, matPinkBox, matCyanBox, matLightBlueBox]
 
 # category bits:

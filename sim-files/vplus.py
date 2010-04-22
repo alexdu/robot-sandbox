@@ -647,6 +647,14 @@ def CLOSE():
     """
     RobotSim.open_flag = False
     RobotSim.close_flag = True
+def RELAX():
+    """
+    The robot will limp the gripper at the next motion instruction
+    (MOVE, APPRO, BREAK etc.)
+    """
+    RobotSim.open_flag = False
+    RobotSim.close_flag = False
+
 def BREAK(extra_delay=True):
     """
     Waits for the robot to finish the current motion.
@@ -664,7 +672,10 @@ def BREAK(extra_delay=True):
             raise UserAbort
         if not RobotSim.comp_mode:
             raise CompModeDisabled
-    time.sleep(0.1)
+    if extra_delay:
+        time.sleep(0.1)
+    else:
+        time.sleep(0.05)
     
     
 def OPENI():
@@ -693,11 +704,24 @@ def CLOSEI():
     if RobotSim.switch["DRY.RUN"]:
         return
 
-    BREAK()
+    BREAK(False)
     CLOSE()
     BREAK(False)
-    time.sleep(RobotSim.param["HAND.TIME"])
+    if not RobotSim.switch["DRY.RUN"]:
+        time.sleep(RobotSim.param["HAND.TIME"])
     
+def RELAXI():
+    """
+    Waits for the current robot motion to finish, 
+    then RELAXes the gripper actuators, 
+    then waits for (PARAMETER HAND.TIME) seconds.
+    """
+    BREAK(False)
+    RELAX()
+    BREAK(False)
+    if not RobotSim.switch["DRY.RUN"]:
+        time.sleep(RobotSim.param["HAND.TIME"])
+
 
 def HERE():
     """
@@ -867,9 +891,9 @@ def MOVET(a, grip):
     check_args([a, grip], [location, numeric])
 
     if grip:
-        OPEN
+        OPEN()
     else:
-        CLOSE
+        CLOSE()
     MOVE(a)
     
 def MOVEST(a, grip):
@@ -891,9 +915,9 @@ def MOVEST(a, grip):
     check_args([a, grip], [location, numeric])
 
     if grip:
-        OPEN
+        OPEN()
     else:
-        CLOSE
+        CLOSE()
     MOVES(a)
     
 def APPRO(a, h):

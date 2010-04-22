@@ -213,13 +213,15 @@ def IK(loc, ppoint = True):
     
 def ActuateGripper():
     global sig_open, sig_close
-    
     if open_flag:
         sig_close = False
         sig_open = True
-    if close_flag:
+    elif close_flag:
         sig_open = False
         sig_close = True
+    else:
+        sig_open = False
+        sig_close = False
     
 def ang_distance(A,B):
     a = cgkit.cgtypes.mat4(A.HTM.flatten().tolist()[0])

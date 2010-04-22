@@ -111,10 +111,15 @@ def setGripperForces(open, close):
     if open:
         slider_finger1.histop = slider_finger1.lostop = 40E-3
         slider_finger2.histop = slider_finger2.lostop = -40E-3
-    if close: 
+    elif close: 
         pos = max(10e-3, slider_finger1.histop - 10e-3)
         slider_finger1.histop = slider_finger1.lostop = pos
         slider_finger2.histop = slider_finger2.lostop = -pos
+    else: # relax
+        slider_finger1.histop = 40E-3
+        slider_finger1.lostop = 10E-3
+        slider_finger2.lostop = -40E-3
+        slider_finger2.histop = -10E-3
         
 
 def enforcePose(m, P):

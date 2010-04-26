@@ -277,7 +277,7 @@ def translate_line(line, indent=None):
 
 def parse_function_call(expr):
     #print expr
-    m = re.match("^([^\(]+)\(([^\(]*)\)$", expr)
+    m = re.match("^([^\(]+)\((.*)\)$", expr)
     #print m.groups()
     if m:
         func = m.groups()[0].strip()

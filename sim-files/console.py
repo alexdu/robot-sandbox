@@ -29,7 +29,7 @@ sys.argv.pop()
 import IPython
 import pygame
 import time
-
+import ode
 from vplus import *
 import vplus
 
@@ -52,7 +52,8 @@ eventmanager.connect("QUIT", _onQuit)
 
 class ConsoleThread ( threading.Thread ):
     def run(self):
-
+        ode.InitODE()
+        
         from IPython.genutils import Term
         sys.sys_stdout = sys.stdout
         sys.ipy_stdout = Term.cout

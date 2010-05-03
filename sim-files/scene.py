@@ -14,6 +14,7 @@ import RobotSim
 import ode
 import OpenGL.GL as GL
 from copy import copy
+from EZDynamics import *
 
 ENV_RESET = "EnvReset"
 NEW_BOX_CREATED = "NewBoxCreated"

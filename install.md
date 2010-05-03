@@ -3,8 +3,8 @@ layout: default
 title: installing - robot-sandbox @ github
 ---
 
-installing robot-sandbox
-========================
+installing [robot-sandbox](index.html)
+======================================
 
 
 Windows

@@ -3,7 +3,7 @@ layout: default
 title: robot-sandbox demos
 ---
 
-robot-sandbox demos
+[robot-sandbox](index.html) demos
 ===================
 
 [belt1]: screenshot-conveyor-belt-1.jpg

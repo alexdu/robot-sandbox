@@ -2,8 +2,9 @@
 *~
 *.log
 build/
+_site/*
 *.pyc
 *.tcl
 sim-files/dist/tcl/tk8.4/demos/
 sim-files/dist/tcl/tk8.4/images/
-sim-files/dist/_ipython/db/*/_site/
+sim-files/dist/_ipython/db/*/

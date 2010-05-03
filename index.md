@@ -6,7 +6,7 @@ title: robot-sandbox @ github
 
 <div class="download">
   <a href="http://github.com/alexdu/robot-sandbox/zipball/master">
-    <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+    <img border="0" src="zip.jpg"></a>
 </div>
 
 [robot-sandbox](http://github.com/alexdu/robot-sandbox)
@@ -45,7 +45,7 @@ Alex Dumitrache, <alex@cimr.pub.ro>
 
 <div class="download">
   <a href="http://github.com/alexdu/robot-sandbox/zipball/master">
-    <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+    <img border="0" src="zip.jpg"></a>
 </div>
 
 Download

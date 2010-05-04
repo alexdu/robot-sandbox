@@ -1,10 +1,10 @@
 ---
-layout: default
-title: robot-sandbox demos
+layout: flex
+title: robot-sandbox screenshots and demos
 ---
 
-[robot-sandbox](index.html) demos
-===================
+screenshots and demos
+=====================
 
 [belt1]: screenshot-conveyor-belt-1.jpg
 [belt2]: screenshot-conveyor-belt-2.jpg

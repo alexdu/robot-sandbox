@@ -1,10 +1,10 @@
 ---
-layout: default
+layout: flex
 title: installing - robot-sandbox @ github
 ---
 
-installing [robot-sandbox](index.html)
-======================================
+installing
+==========
 
 
 Windows

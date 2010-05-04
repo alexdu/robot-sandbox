@@ -1,27 +1,19 @@
 ---
-layout: index
+layout: flex
 title: robot-sandbox @ github
 ---
 
 
-<div class="download">
-  <a href="http://github.com/alexdu/robot-sandbox/zipball/master">
-    <img border="0" src="zip.jpg"></a>
-</div>
-
-[robot-sandbox](http://github.com/alexdu/robot-sandbox)
-=======================================================
-
-*Robot arm simulator with rigid body dynamics*
-
 [Screenshots and demos](demos.html)
 -----------------------------------
-[belt1]: screenshot-conveyor-belt-1.jpg
-[belt2]: screenshot-conveyor-belt-2.jpg
-[draw-rose]: screenshot-robot-drawing-rose.jpg
-[hanoi]: screenshot-hanoi-towers.jpg
+[belt1]: thumb-conveyor-belt-1.jpg
+[belt2]: thumb-conveyor-belt-2.jpg
+[draw-rose]: thumb-robot-drawing-rose.jpg
+[hanoi]: thumb-hanoi-towers.jpg
 
-![robot-sandbox screenshot][belt1]
+[![robot-sandbox screenshot][hanoi]](demos.html)
+[![robot-sandbox screenshot][belt1]](demos.html)
+[![robot-sandbox screenshot][draw-rose]](demos.html)
 
 [See more...](demos.html)
 
@@ -48,20 +40,16 @@ Alex Dumitrache, <alex@cimr.pub.ro>
     <img border="0" src="zip.jpg"></a>
 </div>
 
+<a name="download"> </a>
+
 Download
 --------
 
-You can download this project in [zip](http://github.com/alexdu/robot-sandbox/zipball/master) format.
+You may download the project in [zip](http://github.com/alexdu/robot-sandbox/zipball/master) format.
 
-You can also clone the project with [Git](http://git-scm.com) by running:
+You may also clone the project with [Git](http://git-scm.com) by running:
 
 {% highlight sh %}
 $ git clone git://github.com/alexdu/robot-sandbox
 {% endhighlight %}
-
-<div class="footer">
-  get the source code on GitHub : <a href="http://github.com/alexdu/robot-sandbox">alexdu/robot-sandbox</a>
-</div>
-
-
-  
+ 

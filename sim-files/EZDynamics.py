@@ -735,7 +735,7 @@ class ODEFixedJoint(cgkit.odedynamics.ODEJointBase):
                  body1 = None,
                  body2 = None,
                  **params):
-        ODEJointBase.__init__(self, name=name, body1=body1, body2=body2,
+        cgkit.odedynamics.ODEJointBase.__init__(self, name=name, body1=body1, body2=body2,
                               **params)
 
         self._createSlots()
@@ -747,7 +747,7 @@ class ODEFixedJoint(cgkit.odedynamics.ODEJointBase):
 
     # _initODEjoint
     def _initODEjoint(self):
-        ODEJointBase._initODEjoint(self)
+        cgkit.odedynamics.ODEJointBase._initODEjoint(self)
         self.odejoint.setFixed()
 
 

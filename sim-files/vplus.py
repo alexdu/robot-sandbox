@@ -1942,6 +1942,7 @@ def _CM_SEE(self, prog):
                     f = open(prog, "w")
                     f.write(template)
                     f.close()
+                    _LOAD(prog)
                     
                 _edit(prog)
             elif (ans.lower() == 'n') or (ans == ""):

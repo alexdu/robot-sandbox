@@ -2228,14 +2228,14 @@ def _CM_ENV(self, prog):
 
     RobotSim.pauseTick = True
     try:
-        time.sleep(0.2)
+        time.sleep(0.3)
         ip.runlines("_env_args = [" + args + "]")
         ip.runlines("resetEnv()")
         ip.runlines("execfile('%s')" % prog)
+        time.sleep(0.3)
     finally:
         RobotSim.pauseTick = False
     
-    time.sleep(0.2)
     print 
     
 def _CM_DO(self, var):

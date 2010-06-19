@@ -295,28 +295,23 @@ odeSim.add(finger2,     categorybits=CB_ROBOT, collidebits=CB_PARTS|CB_FLOOR)
 
     
 def resetEnv():
-
-    RobotSim.pauseTick = True
+    # caller should pause the simulation
+    print "firing reset event"
+    eventmanager.event(ENV_RESET)
     time.sleep(0.2)
-    try:
-        print "firing reset event"
-        eventmanager.event(ENV_RESET)
-        time.sleep(0.2)
-            
-        gomi = []
-        for obj in scene.walkWorld():
-            if not hasattr(obj, "keepitsafe"):
-                gomi.append(obj)
         
-        for obj in gomi:
-            odeSim.remove(obj)
-            worldroot.removeChild(obj)
+    gomi = []
+    for obj in worldroot.iterChilds():
+        if not hasattr(obj, "keepitsafe"):
+            gomi.append(obj)
+    
+    for obj in gomi:
+        odeSim.remove(obj)
+        worldroot.removeChild(obj)
 
-        RobotSim.signals = {}
-        RobotSim.signals_dirty = True
+    RobotSim.signals = {}
+    RobotSim.signals_dirty = True
                     
-    finally:
-        RobotSim.pauseTick = False
 
 base.setOffsetTransform(mat4(1))
 link1.setOffsetTransform(mat4(1))

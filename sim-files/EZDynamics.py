@@ -747,7 +747,6 @@ class ODEFixedJoint(cgkit.odedynamics.ODEJointBase):
 
     # _initODEjoint
     def _initODEjoint(self):
-        cgkit.odedynamics.ODEJointBase._initODEjoint(self)
+        self.attach(self.body1, self.body2)
         self.odejoint.setFixed()
-
 

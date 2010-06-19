@@ -82,6 +82,17 @@ def load_robot_link(file, name):
     obj.setMaterial(matRobot)
 
 
+def Load(filename):
+    """
+    Load a cgkit scene file and return the list of objects.
+    """
+    oldObjects = list(worldroot.iterChilds())
+    load(filename)
+    newObjects = list(worldroot.iterChilds())
+    for o in oldObjects:
+        newObjects.remove(o)
+    return newObjects
+
 
 load_robot_link('6dof-robot-model/base.stl', 'Robot Base')
 load_robot_link('6dof-robot-model/link1.stl', 'Robot Link 1')

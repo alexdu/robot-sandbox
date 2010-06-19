@@ -1607,6 +1607,9 @@ def _LOAD(file, reload=False):
 
     if not re.match("^.*\.[^.]*$", file): # fara extensie, ii adaug .v2
         file = file + ".v2" 
+        
+    if os.path.isfile(file + ".v2"):
+        file = file + ".v2" 
     
     if not file.endswith(".v2"):
         raise Exception("Only V+ programs can be loaded (files ending in .v2)")
@@ -2209,7 +2212,10 @@ def _CM_ENV(self, prog):
     
         
     if not re.match("^.*\.env$", prog):
-        prog = prog + ".env" 
+        prog = prog + ".env"
+        
+    if os.path.isfile(prog + ".env"):
+        prog = prog + ".env"
     
         
     (func, args, args_ref) = parse_function_call(prog[:-4])

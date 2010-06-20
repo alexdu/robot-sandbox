@@ -1,16 +1,24 @@
 .PROGRAM mistake()
     OPENI
     SPEED 50 ALWAYS
+    TYPE ""
+    TYPE "=================================="
+    TYPE "Demo: hitting the stack by mistake"
+    TYPE "=================================="
+    TYPE "Commands for hitting the stack (intentionally wrong):"
+    WAIT.EVENT, 1
     
-    TYPE ".do appro pal, 100"
+    TYPE ". do appro pal, 100"
     WAIT.EVENT, 1
     APPRO pal, 100
     BREAK
+    TYPE "."
     
     WAIT.EVENT, 1
-    TYPE ".do appro st, 100"
+    TYPE ". do appro st, 100"
     WAIT.EVENT, 1
     APPRO st, 100
     BREAK
+    TYPE "."
     WAIT.EVENT, 1
 .END

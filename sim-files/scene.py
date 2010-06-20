@@ -243,6 +243,7 @@ def tick():
         
         programspath = os.path.normpath(os.path.join(os.getcwd(), "..", "robot-programs"))
         os.chdir(programspath)
+        IPython.ipapi.get().IP.home_dir = programspath
 
         cam = worldObject("TargetCamera")
         cam.fov = 40

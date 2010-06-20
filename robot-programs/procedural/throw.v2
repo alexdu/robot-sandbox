@@ -1,0 +1,23 @@
+.PROGRAM throw()
+    
+    PARAMETER HAND.TIME = 0.1
+    
+    APPRO pick, 100
+    MOVES pick
+    CLOSEI
+    DEPARTS 100
+    BREAK
+    
+    SPEED 50
+    MOVES SHIFT(HERE BY 0,-300,0)
+    BREAK
+    
+    SPEED 100, "MONITOR"
+    SPEED 100
+    MOVES SHIFT(HERE BY 0,400,0)
+    WAIT DISTANCE(HERE, DEST) < 100
+    OPEN
+    
+    
+.END
+

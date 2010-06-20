@@ -1,0 +1,16 @@
+.PROGRAM mistake()
+    OPENI
+    SPEED 50 ALWAYS
+    
+    TYPE ".do appro pal, 100"
+    WAIT.EVENT, 1
+    APPRO pal, 100
+    BREAK
+    
+    WAIT.EVENT, 1
+    TYPE ".do appro st, 100"
+    WAIT.EVENT, 1
+    APPRO st, 100
+    BREAK
+    WAIT.EVENT, 1
+.END

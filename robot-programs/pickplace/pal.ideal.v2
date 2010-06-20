@@ -1,0 +1,67 @@
+.PROGRAM pal.ideal()
+    ; Paletizare în cazul ideal  (paleta aliniată perfect cu axele robotului)
+    
+    GLOBAL safe, st, pal, dx, dy, dz
+    AUTO i,j,k,p,r,nr.piese
+    AUTO nl,nc,nn               ; nr. linii, nr. coloane, nr. nivele
+    AUTO pick, place
+    
+    nl = 3
+    nc = 2
+    nn = 2
+    nr.piese = nl*nc*nn
+    
+    SPEED 100 ALWAYS
+    OPEN
+    MOVE #safe
+    BREAK
+    
+    FOR p = 1 TO nr.piese             ; \cods{p} = indicele piesei curente
+        r = nr.piese - p + 1          ; \cods{r} = nr. de piese rămase stivă
+        i = INT((p-1)/(nc*nn))        ; ordinea L-C-N
+        j = INT((p-1)/nn) MOD nc
+        k = (p-1) MOD nn
+        TYPE i, ", ", j, ", ", k
+        
+        SET pick = SHIFT(st BY 0,0,(r-1)*dz)
+        SET place = SHIFT(pal BY i*dx, j*dy, k*dz)
+        CALL pick.place(pick, place)
+    END
+    
+    MOVE #safe
+.END
+
+
+.PROGRAM pick.place(pick, place)
+    
+    AUTO z.pick, z.place
+    z.pick = 80
+    z.place = 80
+    
+    PARAMETER HAND.TIME = 0.2
+    OPEN
+    
+    APPRO pick, z.pick
+    BREAK
+    
+    SPEED 50
+    MOVES pick
+    CLOSEI
+    
+    SPEED 30
+    DEPARTS z.pick
+    BREAK
+    
+    APPRO place, z.place
+    BREAK
+    
+    SPEED 20
+    MOVES place
+    OPENI
+    
+    SPEED 50
+    DEPARTS z.place
+    BREAK
+    
+.END
+

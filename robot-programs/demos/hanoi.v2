@@ -1,0 +1,62 @@
+.PROGRAM hanoi()
+    ; Problema turnurilor din Hanoi
+    
+    GLOBAL p1, dx, dz, #safe, n, ang
+    AUTO vf.a, vf.v, vf.c
+    
+    SET vf.a = SHIFT(p1 BY 0,0,dz*n)
+    SET vf.b = RZ(ang):TRANS(dx,0,0):RZ(-ang):p1
+    SET vf.c = RZ(ang):TRANS(2*dx,0,0):RZ(-ang):p1
+    
+    SPEED 100 ALWAYS
+    
+    OPEN
+    MOVE #safe
+    BREAK
+    
+    CALL muta.discuri(vf.a, vf.b, vf.c, n)  ; Funcţie recursivă
+    
+    MOVE #safe
+.END
+
+.PROGRAM muta.discuri(vf.src, vf.dst, vf.aux, n)
+    IF n == 1 THEN
+        CALL muta.un.disc(vf.src, vf.dst)
+    ELSE
+        CALL muta.discuri(vf.src, vf.aux, vf.dst, n-1)
+        CALL muta.un.disc(vf.src, vf.dst)
+        CALL muta.discuri(vf.aux, vf.dst, vf.src, n-1)
+    END
+.END
+
+.PROGRAM muta.un.disc(vf.src, vf.dst)
+    GLOBAL dz
+    SET vf.src = SHIFT(vf.src BY 0,0,-dz)
+    CALL pick.place(vf.src, vf.dst)
+    SET vf.dst = SHIFT(vf.dst BY 0,0,dz)
+.END
+
+.PROGRAM pick.place(pick, place)
+    AUTO z_pick
+    AUTO z_place
+    z_pick = 80
+    z_place = 80
+    
+    PARAMETER HAND.TIME = 0.1
+    
+    APPRO pick, z_pick
+    SPEED 50
+    MOVES pick
+    CLOSEI
+    SPEED 50
+    DEPARTS z_pick
+    
+    PARAMETER HAND.TIME = 0
+    
+    APPRO place, z_place
+    SPEED 50
+    MOVES place
+    OPENI
+    SPEED 50
+    DEPARTS z_place
+.END

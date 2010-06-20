@@ -14,19 +14,19 @@
     BREAK
     
     FOR i = 1 TO n/4
-        TYPE "Pornesc conveiorul"
+        TYPE "Starting conveyor belt"
         SIGNAL out.belt
         
-        TYPE "Astept paleta"
+        TYPE "Waiting for pallet..."
         WAIT SIG(in.sensor)
         
-        TYPE "Paleta a fost detectata; astept"
+        TYPE "Pallet detected."
         WAIT.EVENT, 7.25
         
-        TYPE "Opresc conveiorul"
+        TYPE "Stopping conveyor belt..."
         SIGNAL -out.belt
         
-        TYPE "Pun piese pe paleta"
+        TYPE "Placing parts on the pallet..."
         FOR j = 1 TO 4
             p = 4*(i-1) + j
             SET pick = SHIFT(st BY 0, 0, h * (n - p))
@@ -36,7 +36,7 @@
         MOVE #safe
     END
     
-    TYPE "Gata."
+    TYPE "Done."
     SIGNAL out.belt
     WAIT.EVENT, 5
     SIGNAL -out.belt

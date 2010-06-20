@@ -1,0 +1,53 @@
+.PROGRAM take.pen()
+    PARAMETER HAND.TIME = 0.5
+    TYPE "Taking the pen..."
+    SPEED 30 ALWAYS
+    OPEN
+    APPRO loc.pen, 100
+    MOVES loc.pen
+    CLOSEI
+    DEPARTS 100
+.END
+
+.PROGRAM put.pen.back()
+    TYPE "Putting the pen down..."
+    PARAMETER HAND.TIME = 0.3
+    SPEED 30 ALWAYS
+    APPRO loc.pen, 100
+    MOVES loc.pen
+    OPENI
+    DEPARTS 100
+    MOVE #safe
+    TYPE "Done."
+.END
+
+
+.PROGRAM drawing()
+    CALL take.pen()
+    CALL draw.rose(3,1,0.5 + 1e-3)
+    CALL put.pen.back()
+.END
+
+.PROGRAM draw.rose(n,d,loops)
+    GLOBAL loc.paper, p0
+    AUTO center, start, raza, t, pas.mm, pas.deg
+    raza = 90
+    pas.deg = 1
+    SET center = SHIFT(p0 BY 90, 140, 0)
+    SET start = SHIFT(center BY raza, 0, 0)
+    
+    SPEED 100 ALWAYS
+    
+    APPRO loc.paper:start, 10
+    MOVES loc.paper:start
+    TYPE "Drawing..."
+    BREAK
+    FOR t = 0 TO 360*d*loops STEP pas.deg
+        r = raza * COS(t * n/d)
+        MOVES loc.paper:SHIFT(center BY r*COS(t), r*SIN(t), 0)
+    END
+    MOVES loc.paper:start
+    BREAK
+    DEPARTS 10
+.END
+

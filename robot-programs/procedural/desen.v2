@@ -63,9 +63,7 @@
 .END
 
 
-
-
-.PROGRAM rose(k,d)
+.PROGRAM drawing(k,d)
     GLOBAL loc.foaie
     CALL vezi.foaia()
     IF DEFINED(loc.foaie) THEN
@@ -74,25 +72,5 @@
         CALL pune.pixul()
     END
 .END
-.PROGRAM deseneaza.rose(n,d)
-    GLOBAL loc.foaie, p0
-    AUTO centru, start, raza, t, pas.mm, pas.deg
-    raza = 90
-    pas.deg = 1
-    SET centru = SHIFT(p0 BY 90, 140, 0)
-    SET start = SHIFT(centru BY raza, 0, 0)
-    
-    SPEED 100 ALWAYS
-    
-    APPRO loc.foaie:start, 10
-    MOVES loc.foaie:start
-    BREAK
-    FOR t = 0 TO 360*d STEP pas.deg
-        r = raza * COS(t * n/d)
-        MOVES loc.foaie:SHIFT(centru BY r*COS(t), r*SIN(t), 0)
-    END
-    MOVES loc.foaie:start
-    BREAK
-    DEPARTS 10
-.END
+
 

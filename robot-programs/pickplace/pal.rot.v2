@@ -1,0 +1,79 @@
+.PROGRAM pal.rot()
+    ; Paletizare - cazul paletelor aliniate imperfect
+    
+    GLOBAL #safe, st, pal, pal.x
+    AUTO dx, dy, dz, ang, i, j, k, p, r, nr.piese
+    AUTO nl, nc, nn
+    AUTO pick, place
+    
+    nl = 3
+    nc = 2
+    nn = 2
+    nr.piese = nl*nc*nn
+    
+    ; Aducem pal.x la acelaşi nivel cu pal
+    SET pal.x = SHIFT(pal.x BY 0,0,DZ(pal)-DZ(pal.x))
+    
+    ; Calculăm distanţa între 2 piese
+    dx = DISTANCE(pal, pal.x) / (nl - 1)
+    dy = dx
+    dz = 15
+    TYPE "Distanta: ", dx
+    
+    ; Calculăm unghiul dintre paletă şi robot (RZ)
+    ang = ATAN2(DY(pal.x)-DY(pal), DX(pal.x)-DX(pal))
+    TYPE "Unghiul: ", ang
+    
+    SPEED 100 ALWAYS
+    OPEN
+    MOVE #safe
+    BREAK
+    
+    FOR p = 1 TO nr.piese
+        r = nr.piese-p+1
+        i = INT((p-1)/(nc*nn))
+        j = INT((p-1)/nn) MOD nc
+        k = (p-1) MOD nn
+        TYPE i, ", ", j, ", ", k
+        
+        SET pick = SHIFT(st BY 0,0,(r-1)*dz)
+        SET place = RZ(ang):TRANS(i*dx,j*dy,k*dz):RZ(-ang):pal
+        CALL pick.place(pick, place)
+    END
+    
+    MOVE #safe
+.END
+
+
+.PROGRAM pick.place(pick, place)
+    
+    AUTO z.pick, z.place
+    z.pick = 80
+    z.place = 80
+    
+    PARAMETER HAND.TIME = 0.2
+    OPEN
+    
+    APPRO pick, z.pick
+    BREAK
+    
+    SPEED 50
+    MOVES pick
+    CLOSEI
+    
+    SPEED 30
+    DEPARTS z.pick
+    BREAK
+    
+    APPRO place, z.place
+    BREAK
+    
+    SPEED 20
+    MOVES place
+    OPENI
+    
+    SPEED 50
+    DEPARTS z.place
+    BREAK
+    
+.END

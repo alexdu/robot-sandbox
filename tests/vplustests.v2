@@ -1,4 +1,4 @@
-.PROGRAM test()
+.PROGRAM vplustests()
     AUTO a, x, number
     AUTO DOUBLE x, y
     GLOBAL b, cucu

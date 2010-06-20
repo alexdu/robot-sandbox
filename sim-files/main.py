@@ -118,8 +118,36 @@ else:
     print "Editor is %s." % vplus._editor
     
 
+
+
+# relpath for Py2.5
+# source: http://mail.python.org/pipermail/python-list/2009-August/1215220.html
+def relpath(path, start=os.path.curdir):
+    """Return a relative version of a path"""
+
+    if not path:
+        raise ValueError("no path specified")
+    start_list = os.path.abspath(start).split(os.path.sep)
+    path_list = os.path.abspath(path).split(os.path.sep)
+    if start_list[0].lower() != path_list[0].lower():
+        return os.path.abspath(path)
+    # Work out how much of the filepath is shared by start and path.
+    for i in range(min(len(start_list), len(path_list))):
+        if start_list[i].lower() != path_list[i].lower():
+            break
+    else:
+        i += 1
+
+    rel_list = [os.path.pardir] * (len(start_list)-i) + path_list[i:]
+    if not rel_list:
+        return os.path.curdir
+    return os.path.join(*rel_list)
     
 
+try:
+    os.path.relpath
+except:
+    os.path.relpath = relpath
 
 #ipshell = IPShellEmbed()
 #ipshell() 

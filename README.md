@@ -19,9 +19,7 @@ Demos
 Towers of Hanoi
 ---------------
 
-    env hanoi
-    load hanoi
-    exec hanoi_main
+    demo hanoi
 
 ![Robot solving Towers of Hanoi][hanoi]
 
@@ -29,27 +27,15 @@ Towers of Hanoi
 Conveyor belt
 -------------
 
-    env belt
-    load belt
-    exec belt
+    demo belt
 
 ![Conveyor belt demo 1][belt1]
-
-Another conveyor belt example
------------------------------
-    env ex2005
-    load rez2005
-    exec rez2005
-
-![Conveyor belt demo 2][belt2]
 
 
 Robot drawing
 -------------
 ... using a ballpoint pen and paper
 
-    env desen
-    load desen
-    exec rose(3,2)
+    demo drawing
 
 ![Robot drawing a rose curve][draw-rose]

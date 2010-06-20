@@ -381,6 +381,8 @@ def Step():
     
     dryrun = switch["DRY.RUN"]
     if len(trajQueue) > 0:
+        ActuateGripper() 
+
         ts = trajQueue[0]
         try:
             ts.step(dryrun)

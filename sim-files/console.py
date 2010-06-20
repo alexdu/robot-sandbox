@@ -87,6 +87,8 @@ class ConsoleThread ( threading.Thread ):
         IPython.ipapi.get().expose_magic("zero", vplus._CM_ZERO)
         IPython.ipapi.get().expose_magic("reset", vplus._CM_RESET)
         IPython.ipapi.get().expose_magic("signal", vplus._CM_SIGNAL)
+        IPython.ipapi.get().expose_magic("demo", vplus._CM_DEMO)
+        IPython.ipapi.get().expose_magic("demos", vplus._CM_DEMO)
         
         vplus.completers_setup()
 
@@ -98,9 +100,10 @@ Type 'mc' to see a list of monitor commands.
 Use ! to invoke operating system commands (dir, ls, copy...)
 
 Quick Start:
-. env hanoi
-. load hanoi
-. exec hanoi_main
+. demo hanoi
+. demo belt
+. demo drawing
+. demo mistake
 
 """
         

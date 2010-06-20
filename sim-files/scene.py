@@ -307,7 +307,7 @@ odeSim.add(finger2,     categorybits=CB_ROBOT, collidebits=CB_PARTS|CB_FLOOR)
     
 def resetEnv():
     # caller should pause the simulation
-    print "firing reset event"
+    
     eventmanager.event(ENV_RESET)
     time.sleep(0.2)
         

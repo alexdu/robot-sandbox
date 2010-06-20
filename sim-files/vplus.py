@@ -413,10 +413,10 @@ class TRANS:
     b = TRANS(100,100,100,0,180,0)
     c = a*RZ(45) 
     """
-    def __init__(self, x=0, y=0, z=0, yaw=0, pitch=0, roll=0, HTM=0):
+    def __init__(self, x=0, y=0, z=0, yaw=0, pitch=0, roll=0, HTM=None):
         check_args([self,x,y,z,yaw,pitch,roll], ['TRANS'] + [numeric] * 6)
         
-        if type(HTM).__name__ == 'matrix':
+        if type(HTM) == matrix:
             (self.x, self.y, self.z, self.yaw, self.pitch, self.roll) = decompose(HTM)
         else:
             self.x = x
@@ -1117,8 +1117,6 @@ def WAIT_EVENT(unused, delay):
             raise CompModeDisabled
 
 
-safe = PPOINT(0,-90,180,0,0,0)
-
 
 def LAST(x):
     """
@@ -1306,7 +1304,8 @@ def print_code_line(frame):
     co = frame.f_code
     lineno = frame.f_lineno
     slineno = str(lineno).ljust(3)
-    file = co.co_filename
+    file = os.path.abspath(co.co_filename)
+    filerel = os.path.relpath(file)
     func = co.co_name
     global _spaces_last_line    
     try:
@@ -1317,12 +1316,12 @@ def print_code_line(frame):
             f.close()
         line = _code_tracing_cache[file][lineno-1]
         line = line.strip("\n")
-        print "%s%s[%s]:%s %s%s" % (get_color(func), file, func, slineno, line, tc.Normal)
-        _spaces_last_line = " " * (len(re.match("(\ *)", line).groups()[0]) + len(file) + len(func) + len(slineno) + 4)
+        print "%s%s[%s]:%s %s%s" % (get_color(func), filerel, func, slineno, line, tc.Normal)
+        _spaces_last_line = " " * (len(re.match("(\ *)", line).groups()[0]) + len(filerel) + len(func) + len(slineno) + 4)
     except:
         slineno = str(lineno).ljust(3)
-        print "%s%s[%s]:%s <%s:%s>%s" % (get_color(func), file, func, slineno, sys.exc_type.__name__, sys.exc_value, tc.Normal)
-        _spaces_last_line = " " * (len(file) + len(func) + len(slineno) + 4)
+        print "%s%s[%s]:%s <%s:%s>%s" % (get_color(func), filerel, func, slineno, sys.exc_type.__name__, sys.exc_value, tc.Normal)
+        _spaces_last_line = " " * (len(filerel) + len(func) + len(slineno) + 4)
     
 
 
@@ -1353,7 +1352,6 @@ def trace_calls(frame, event, arg):
         line_no = frame.f_lineno
         filename = co.co_filename
         func_name = co.co_name
-        #~ print filename + ":%d" % (line_no)
         if RobotSim.switch["TRACE"]:
             print_return(frame)
             print_new_and_changed_variables(func_name, frame.f_locals, frame.f_globals)
@@ -1452,7 +1450,23 @@ def completers_setup():
     ip.set_hook('complete_command', switch_completers, str_key = 'en')
     ip.set_hook('complete_command', switch_completers, str_key = 'dis')
     ip.set_hook('complete_command', see_completers, str_key = 'see')
+    ip.set_hook('complete_command', demo_completers, str_key = 'demo')
     
+
+def listFiles(dir):
+    files = []
+    basedir = dir
+    subdirlist = []
+    for item in os.listdir(dir):
+        fullitem = os.path.join(basedir, item)
+        relitem = os.path.relpath(fullitem)
+        if os.path.isfile(fullitem):
+            files.append(relitem)
+        else:
+            subdirlist.append(fullitem)
+    for subdir in subdirlist:
+        files.extend(listFiles(subdir))
+    return files
 
 
 def see_completers(self, event):
@@ -1471,16 +1485,28 @@ def see_completers(self, event):
     
 def load_completers(self, event):
     progfiles = []
-    files = os.listdir(".")
+    files = listFiles(".")
     for f in files:
         if f.lower().endswith(".v2"):
             progfiles.append(f[:-3])
     progfiles.sort()
     return progfiles
 
+def demo_completers(self, event):
+    demos = []
+    dirdemo = os.path.join(sys.basepath, "..", "robot-programs", "demos")
+    files = os.listdir(dirdemo)
+    for f in files:
+        if f.lower().endswith(".v2"):
+            demoname = f[:-3]
+            if os.path.isfile(os.path.join(dirdemo, demoname + ".v2")) and os.path.isfile(os.path.join(dirdemo, demoname + ".env")):
+                demos.append(demoname)
+    demos.sort()
+    return demos
+
 def env_completers(self, event):
     progfiles = []
-    files = os.listdir(".")
+    files = listFiles(".")
     for f in files:
         if f.lower().endswith(".env"):
             progfiles.append(f[:-4])
@@ -1584,7 +1610,7 @@ def _CM_DIR(self, arg):
     print "================"
     for v in programe:
         args = programDict[v][0]
-        file = programDict[v][1]
+        file = os.path.relpath(programDict[v][1])
         lineno = programDict[v][2]
         slineno = str(lineno).ljust(3)
         if len(args) > 0:
@@ -1597,7 +1623,7 @@ def _LOAD(file, reload=False):
 
     file = file.strip()
     if len(file) == 0:
-        print "Robot programs in current directory:"
+        print "Available robot programs:"
         for e in load_completers(None, None):
             print "  * ", e
         return
@@ -1611,10 +1637,11 @@ def _LOAD(file, reload=False):
     if not file.endswith(".v2"):
         raise Exception("Only V+ programs can be loaded (files ending in .v2)")
     
+    file = os.path.abspath(file)
     if not reload:
-        print "Loading %s ..." % file
+        print "Loading %s ..." % os.path.relpath(file)
     else:
-        print "Reloading %s ..." % file
+        print "Reloading %s ..." % os.path.relpath(file)
     code = translate_program(file)
     
     file_timestamps[file] = os.path.getmtime(file)
@@ -1926,16 +1953,21 @@ def _CM_SEE(self, prog):
     # mai intai vad daca e incarcat in memorie
     if prog in programDict:
         (file, lineno) = programDict[prog][1:3]
-        print "editing .PROGRAM %s() from file '%s:%d' ..." % (prog, file, lineno)
+        print "editing .PROGRAM %s() from file '%s:%d' ..." % (prog, os.path.relpath(file), lineno)
         _edit(file, lineno)
-    elif re.match("^.*\.[^.]{1,3}$", prog): # ceva cu extensie => probabil e un fisier
+        return
+
+    if os.path.isfile(prog + ".v2"):
+        prog = prog + ".v2"
+        
+    if re.match("^.*\.[^.]{1,3}$", prog): # ceva cu extensie => probabil e un fisier
         if os.path.isfile(prog):
-            print "editing file '%s' ..." % prog
+            print "editing file '%s' ..." % os.path.relpath(prog)
             _edit(prog)
         else:  # new file
             progname = prog[:-3].lower()
             print 
-            ans = raw_input("Create new file '%s'? [y/n] " % prog)
+            ans = raw_input("Create new file '%s'? [y/n] " % os.path.relpath(prog))
             if ans.lower() == 'y':
                 if prog.lower().endswith('.v2'):
                     template = vplus_program_template % progname
@@ -2183,7 +2215,7 @@ def _CM_LISTS(self, var):
 def check_no_prog_running(): 
     _flush_completed_jobs()
     if len(jobs.jobs_all) > 0:
-        print "A robot program is already running."
+        print "A robot program is running."
         print "Please stop the program first."
         print "  (hint: you may use either the 'COMP' button or the 'abort' command)."
         print 
@@ -2220,7 +2252,8 @@ def _CM_ENV(self, prog):
     
     print args
 
-    print "setting work environment (%s)..." % prog
+    prog = os.path.abspath(prog)
+    print "setting work environment (%s)..." % os.path.relpath(prog)
     print " "
 
     RobotSim.pauseTick = True
@@ -2228,7 +2261,7 @@ def _CM_ENV(self, prog):
         time.sleep(0.3)
         ip.runlines("_env_args = [" + args + "]")
         ip.runlines("resetEnv()")
-        ip.runlines("execfile('%s')" % prog)
+        ip.runlines("execfile(r'%s')" % prog)
         time.sleep(0.3)
     finally:
         RobotSim.pauseTick = False
@@ -2270,6 +2303,8 @@ def _CM_MC(self, var):
     print """
 Monitor commands:
 =================
+demo           # run a short demonstration
+
 env            # load an environment
 load           # load a file with robot program(s)
 see            # edit a robot program or a text file
@@ -2303,3 +2338,32 @@ e.g. here?
 """
 
 
+
+def _CM_DEMO(self, file):
+    """
+    Runs a demonstration program.
+    """
+
+    if not check_no_prog_running(): return
+
+    file = file.strip()
+    if len(file) == 0:
+        print "Available demos:"
+        for e in demo_completers(None, None):
+            print "  * ", e
+        return
+
+    dirdemo = os.path.join(sys.basepath, "..", "robot-programs", "demos")
+    env = os.path.join(dirdemo, file + ".env")
+    v2 = os.path.join(dirdemo, file + ".v2")
+    if os.path.isfile(env) and os.path.isfile(v2):
+        safe = PPOINT(0,-90,180,0,0,0)
+        SPEED(50, "MONITOR")
+        MOVE(safe)
+        BREAK()
+        _CM_ZERO(self, "")
+        _CM_ENV(self, env)
+        _CM_LOAD(self, v2)
+        _CM_EXEC(self, file)
+    else:
+        print "Inexistent demo: ", file

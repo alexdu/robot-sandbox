@@ -192,10 +192,7 @@ def INVERSE(a):
     
     """
     check_args(a, "TRANS")
-    t = a.HTM
-    t[0:3,3] = -t[0:3,3]
-    t[0:3,0:3] = t[0:3,0:3].T
-    return TRANS(HTM = t)
+    return TRANS(HTM = numpy.linalg.inv(a.HTM))
 
 def RX(ang):
     """

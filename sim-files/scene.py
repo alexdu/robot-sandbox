@@ -346,8 +346,8 @@ slider_finger2.lostop = -40E-3
 slider_finger2.histop = -10E-3
 slider_finger1.fudgefactor = 0
 slider_finger2.fudgefactor = 0
-slider_finger1.stopcfm = 1E-3
-slider_finger2.stopcfm = 1E-3
+slider_finger1.stopcfm = 3E-4
+slider_finger2.stopcfm = 3E-4
 slider_finger1.cfm = 1E-5
 slider_finger2.cfm = 1E-5
 

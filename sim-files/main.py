@@ -25,6 +25,9 @@ try:
 except:
     print "No profiling"
     pass
+    
+    
+
 
 print "robot-sandbox (development version) starting..."
 print " "
@@ -36,6 +39,12 @@ import pprint
 
 import sys
 import os
+
+try:
+    import affinity
+    affinity.set_process_affinity_mask(os.getpid(),1)
+except:
+    print "module affinity not found"
 
 print "cwd: ", os.getcwd()
 (path,file) = os.path.split(os.getcwd())

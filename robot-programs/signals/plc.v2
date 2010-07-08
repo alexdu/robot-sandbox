@@ -1,6 +1,6 @@
-.PROGRAM signal()
+.PROGRAM plc()
     
-    ; Laborator 5 - Comunicatie cu automatul programabil
+    ; Comunicaţie cu automatul programabil
     
     GLOBAL l_storage, nl_storage, pal, #safe
     AUTO pick, place, storage
@@ -23,16 +23,16 @@
     MOVET #safe, TRUE
     RIGHTY
     
-    SIGNAL -out.done_valid
-    SIGNAL -out.time_b2
-    SIGNAL -out.time_b1
-    SIGNAL -out.time_b0
+    SIGNAL (-out.done_valid)
+    SIGNAL (-out.time_b2)
+    SIGNAL (-out.time_b1)
+    SIGNAL (-out.time_b0)
     
     WHILE SIG(-in.start_valid) DO
         WAIT
     END
     
-    ; citesc numarul de piese dorit:
+    ; citesc numărul de piese dorit:
     n = 0
     IF SIG(in.nr_parts_b0) THEN
         n = n+1
@@ -41,7 +41,7 @@
         n = n+2
     END
     
-    ; alternativa: deoarece SIG(...) returneaza 0 sau -1,
+    ; alternativă: deoarece SIG(...) returnează 0 sau -1,
     ; n = ABS(2*SIG(in.nr_parts_b1) + SIG(in.nr_parts_b0))
     
     ; citesc tipul piesei:
@@ -51,7 +51,7 @@
         SET storage = l_storage
     END
     
-    ; execut operatia si cronometrez:
+    ; execut operaţia şi cronometrez:
     TIMER 1 = 0
     FOR p = 1 TO n
         r = nr - p + 1
@@ -63,52 +63,32 @@
     MOVE #safe
     BREAK
     
-    d = INT(TIMER(1))
+    d = TIMER(1)
     TYPE "Timpul necesar: ", d, " secunde."
     
-    ; daca a durat mai mult de 7 secunde, trimit 7.
+    ; dacă a durat mai mult de 7 secunde, trimit 7.
     IF d > 7 THEN
         d = 7
     END
     
-    ; decodific valoarea lui d (pe 3 biti):
-    IF d BAND 4 THEN         ; BAND = AND pe biti
+    ; decodific valoarea lui d (pe 3 biţi):
+    
+    d = INT(d)
+    
+    IF d BAND 4 THEN        ; BAND = AND pe biţi
         SIGNAL (out.time_b2)
     END
+    
     IF d BAND 2 THEN
         SIGNAL (out.time_b1)
     END
+    
     IF d BAND 1 THEN
         SIGNAL (out.time_b0)
     END
     
-    ; semnalele care indica valoarea lui d sunt valide:
+    ; semnalele care indică valoarea lui d sunt valide:
     SIGNAL (out.done_valid)
+    
 .END
 
-
-.PROGRAM pick.place(pick,place)
-    AUTO z.pick, z.place
-    
-    z.pick = 100
-    z.place = 100
-    
-    OPEN
-    APPRO pick, z.pick
-    BREAK
-    SPEED 30
-    MOVES pick
-    CLOSEI
-    SPEED 30
-    DEPARTS z.pick
-    BREAK
-    
-    APPRO place, z.place
-    BREAK
-    SPEED 30
-    MOVES place
-    OPENI
-    SPEED 30
-    DEPARTS z.place
-    BREAK
-.END

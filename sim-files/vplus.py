@@ -1145,6 +1145,121 @@ def BMASK(*bits):
     return val
 
 
+
+lundict = {}
+
+def ATTACH(lun = 0, mode = 0, device = ""):
+    if type(lun) == str:
+        device = lun
+        lun = 0
+        mode = 0
+    elif type(mode) == str:
+        device = mode
+        mode = 0
+    check_args([lun, mode, device], [numeric, numeric, "str"])
+    
+    lun = int(lun)
+    mode = int(mode)
+    
+    if mode & 4: # assign a LUN
+        for i in range(1,100):
+            if i not in lundict:
+                lun = i
+                break
+    device = device.upper()
+    if device in ["NFS" or "DISK"]:
+        lundict[lun] = "FILE"
+    elif device == "":
+        print "Attaching the robot. Not implemented."
+    else:
+        raise NotImplementedError
+    return lun
+
+def DETACH(lun):
+    lun = int(lun)
+    if lun in lundict:
+        del lundict[lun]
+    else:
+        raise Exception, "LUN %d was not attached." % lun
+
+def FOPEN(lun=0, mode=0, attr="", outside = ""):
+    raise NotImplementedError, "Use FOPENR or FOPENW for file I/O."
+
+def _checklunfile(lun):
+    if (lun not in lundict):
+        raise Exception, "LUN %d was not attached." % lun
+    # todo: check if lun is not attached to a file
+    
+def FOPENR(lun = 0, record_len = 0, mode = 0, outside = ""):
+    _checklunfile(lun)
+    if record_len:
+        raise NotImplementedError
+    if mode:
+        raise NotImplementedError
+    lundict[lun] = open(outside, 'r')
+    
+def FOPENW(lun = 0, record_len = 0, mode = 0, outside = ""):
+    _checklunfile(lun)
+    if record_len:
+        raise NotImplementedError
+    if mode:
+        raise NotImplementedError
+    lundict[lun] = open(outside, 'w')
+
+def FOPENA(lun = 0, record_len = 0, mode = 0, outside = ""):
+    _checklunfile(lun)
+    if record_len:
+        raise NotImplementedError
+    if mode:
+        raise NotImplementedError
+    lundict[lun] = open(outside, 'a')
+
+def FCLOSE(lun):
+    if lun in lundict:
+        try: 
+            lundict[lun].close()
+        except KeyError:  
+            raise Exception, "LUN %d is not an open file." % lun
+    else:
+        raise Exception, "LUN %d was not attached." % lun
+
+def FEMPTY(lun):
+    if lun in lundict:
+        try: 
+            lundict[lun].flush()
+        except KeyError:  
+            raise Exception, "LUN %d is not an open file." % lun
+    else:
+        raise Exception, "LUN %d was not attached." % lun
+
+def READ(lun, record_num=0, mode=0, num_vars=0):
+    if record_num:
+        raise NotImplementedError
+    if mode:
+        raise NotImplementedError
+
+    if lun in lundict:
+        try: 
+            line = lundict[lun].readline()
+        except KeyError:  
+            raise Exception, "LUN %d is not an open file." % lun
+
+        tokens = re.split("[, ]+", line)
+        output = []
+        for i in range(num_vars):
+            try:
+                tok = tokens[i]
+                try: output.append(int(tok))
+                except: output.append(float(tok))
+            except IndexError:
+                output.append(0)
+                
+        if num_vars == 1: output = output[0]
+        
+        return output
+    else:
+        raise Exception, "LUN %d was not attached." % lun
+    
 # comenzi monitor
 ############################################
 
@@ -2232,6 +2347,7 @@ def _CM_ENV(self, prog):
     
     ip = IPython.ipapi.get()
     prog = prog.strip()
+    prog_orig = prog
 
     if len(prog)==0:
         print "Available environments:"
@@ -2253,6 +2369,19 @@ def _CM_ENV(self, prog):
     print args
 
     prog = os.path.abspath(prog)
+    if not os.path.isfile(prog):
+        print "Environment file not found: %s" % os.path.relpath(prog)
+        print ""
+        similar = []
+        for e in env_completers(None, None):
+            if prog_orig in e:
+                similar.append(e)
+        if similar:
+            print "Environments with a similar name:"
+            for e in similar:
+                print "  * ", e
+        return
+        
     print "setting work environment (%s)..." % os.path.relpath(prog)
     print " "
 

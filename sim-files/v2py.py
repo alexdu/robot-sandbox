@@ -74,9 +74,22 @@ def convert_parse_tree(l):
         else:
             newl.append(e)
     return newl
-        
 
+def sttuple2src(st):
+    out = ""
+    for elem in st:
+        if type(elem) == tuple:
+            elem = sttuple2src(elem)
+        if type(elem) == str:
+            out += elem
+    return out
+    
+def extract_argument(args, index):
+    t = parser.expr(args).totuple()
+    return sttuple2src(t[1][1 + 2*index])
+    
 def find_params_passable_by_ref(args):
+    args = args.strip()
     pattern = (symbol.test, (symbol.or_test, (symbol.and_test, (symbol.not_test, (symbol.comparison, (symbol.expr, (symbol.xor_expr, (symbol.and_expr, (symbol.shift_expr, (symbol.arith_expr, (symbol.term, (symbol.factor, (symbol.power, (symbol.atom, (token.NAME, ['name'])))))))))))))))
     t = parser.expr(args).totuple()
     num_args = len(t[1]) // 2
@@ -161,11 +174,12 @@ def beautify_block(var, first = False):
     'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'DECOMPOSE', #'DELAY',
      'DEPART', 'DEPARTS', 
     'DETACH', 'DISABLE', 'DO', 'DRIVE', 'DRY.RUN', 'DURATION',
-    'ELSE', 'ELIF', 'ELSIF', 'ELSEIF', 'ENABLE', 'END', '.END', 'ERROR', 'ESTOP', 'EXECUTE', 'EXIT', 'FINE', 'FLIP', 'FOR', 
+    'ELSE', 'ELIF', 'ELSIF', 'ELSEIF', 'ENABLE', 'END', '.END', 'ERROR', 'ESTOP', 'EXECUTE', 'EXIT', 
+    'FINE', 'FLIP', 'FOR', 'FOPEN', 'FOPENR', 'FOPENW', 'FOPENA', 'FOPEND', 'FCLOSE', 'FEMPTY', 
     'GLOBAL', 'HERE', 'IF', 'JHERE', 'JMOVE', 
     'KILL', 'LEFTY', 'LOCAL', 'MC', 'MCS', 'MOVE', 'MOVES', 
     'MOVET', 'MOVEST', 'MULTIPLE', 'NEXT', 'NOFLIP', 'NONULL', 'NULL', 'OPEN', 'OPENI', 
-    'PARAMETER', 'PAUSE', '.PROGRAM', 'PROMPT', 
+    'PARAMETER', 'PAUSE', '.PROGRAM', 'PROMPT', 'READ', 
     'RELAX', 'RELAXI', 'RESET', 'RETURN', 'RETURNE', 'RIGHTY', 'ROBOT', 'RUNSIG', 
     'SEE', 'SELECT', 'SET', 'SIGNAL', 'SINGLE', 'SPEED',
     'STOP', 'SWITCH', 'TIME', 'TIMER', 'TOOL',
@@ -309,10 +323,10 @@ def translate_statement(var, indent):
     
     # APPRO a, b    => APPRO(a, b)
     # adica ceea ce in vplus nu are nevoie de paranteze, dar are parametri
-    vplus_functions = ['ACCEL', 'APPRO', 'APPROS', 'ATTACH', 
+    vplus_functions = ['ACCEL', 'APPRO', 'APPROS',  
     'DEPART', 'DEPARTS', 
     'DETACH', 'DISABLE', 'DRIVE',  'DURATION', # 'DX', 'DY', 'DZ', 
-    'ENABLE', 'EXECUTE', 
+    'ENABLE', 'EXECUTE', 'FCLOSE', 
     'JMOVE', 
     'KILL', 'MCS', 'MOVE', 'MOVES', 
     'MOVET', 'MOVEST', 
@@ -541,6 +555,42 @@ def translate_statement(var, indent):
         vs = ['return (', string.join(_program_args, ', '), ')']
     elif kw == "STOP":
         vs = ['return']
+    elif kw == "ATTACH":
+        m = re.match(r"\((.*)\)(.*)", rest.strip())
+        if m:
+            inside = m.groups()[0]            
+            lun = extract_argument(inside, 0)
+            try: mode = extract_argument(inside, 1)
+            except IndexError: mode = "0"
+            
+            lunout = find_params_passable_by_ref(lun)[0]
+            
+            vs = [lunout, " = (0 if int(", mode, ") & 4 else ",lunout, "); __ = None; ", lunout, ' = ATTACH (', string.join(m.groups(), ", "), "); assert(__ == None or not(int(", mode, ") & 4)), 'ATTACH: Could not assign a new value for LUN'"]
+        else:
+            vs = [translate_expression(var)]
+    elif kw in ["FOPEN", "FOPENR", "FOPENW", "FOPENA", "FOPEND"]:
+        m = re.match(r"\((.*)\)(.*)", rest.strip())
+        if m:
+            inside = m.groups()[0]
+            outside = "outside=(" + m.groups()[1].strip() + ")"
+            if inside.strip() == "":
+                args = outside
+            else:
+                args = inside + ", " + outside
+            vs = [kw, '(', args, ")"]
+        else:
+            vs = [translate_expression(var)]
+    elif kw == "READ":
+        m = re.match(r"\((.*)\)(.*)", rest.strip())
+        if m:
+            inside = m.groups()[0]
+            args = find_params_passable_by_ref(m.groups()[1])
+            arglen = "num_vars=" + str(len(args))
+            if "__" in args:
+                raise SyntaxError, "Some variables cannot be assigned by READ: %s" % m.groups()[1]
+            vs = [string.join(args, ", "), ' = READ(', inside, ", ", arglen, ')']
+        else:
+            vs = [translate_expression(var)]
     else:
         vs = [translate_expression(var)]
 

@@ -355,7 +355,7 @@ class TrajSegment_Cart:
         self.p2 = DK(ppend)
         self.m1 = cgkit.cgtypes.mat4(self.p1.HTM.flatten().tolist()[0])
         self.m2 = cgkit.cgtypes.mat4(self.p2.HTM.flatten().tolist()[0])
-        self.drel = (DISTANCE(self.p1, self.p2) + ang_distance(self.p1,self.p2)*10) / max_cartesian_speed
+        self.drel = (DISTANCE(self.p1, self.p2) + ang_distance(self.p1,self.p2)) / max_cartesian_speed
 
     def step(self, dryrun = False):
         if dryrun: 

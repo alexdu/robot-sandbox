@@ -39,6 +39,9 @@ programDict = {}          # p
 # vplus_progname -> [args, file, lineno, function]
 
 
+prefix_string = "sT_"
+prefix_ppoint = "pP_"
+
 def match_subtree(pattern, data, vars=None):
     #~ print pattern
     #~ print data
@@ -85,7 +88,7 @@ def sttuple2src(st):
     return out
     
 def extract_argument(args, index):
-    t = parser.expr(args).totuple()
+    t = parser.expr(args.strip()).totuple()
     return sttuple2src(t[1][1 + 2*index])
     
 def find_params_passable_by_ref(args):
@@ -173,7 +176,7 @@ def beautify_block(var, first = False):
     'APPRO', 'APPROS', 'ATTACH', 'AUTO', 'BELOW', 'BRAKE', 'BREAK', 'CALIBRATE', 'CALL', 
     'CASE', 'CLOSE', 'CLOSEI', 'COARSE', 'DECOMPOSE', #'DELAY',
      'DEPART', 'DEPARTS', 
-    'DETACH', 'DISABLE', 'DO', 'DRIVE', 'DRY.RUN', 'DURATION',
+    'DETACH', 'DISABLE', 'DO', 'DRIVE', 'DRY.RUN', 'DURATION', 'DISABLE', 'ENABLE', 
     'ELSE', 'ELIF', 'ELSIF', 'ELSEIF', 'ENABLE', 'END', '.END', 'ERROR', 'ESTOP', 'EXECUTE', 'EXIT', 
     'FINE', 'FLIP', 'FOR', 'FOPEN', 'FOPENR', 'FOPENW', 'FOPENA', 'FOPEND', 'FCLOSE', 'FEMPTY', 
     'GLOBAL', 'HERE', 'IF', 'JHERE', 'JMOVE', 
@@ -183,9 +186,8 @@ def beautify_block(var, first = False):
     'RELAX', 'RELAXI', 'RESET', 'RETURN', 'RETURNE', 'RIGHTY', 'ROBOT', 'RUNSIG', 
     'SEE', 'SELECT', 'SET', 'SIGNAL', 'SINGLE', 'SPEED',
     'STOP', 'SWITCH', 'TIME', 'TIMER', 'TOOL',
-    'TYPE', 'UNTIL', 'VALUE', 'WAIT', 'WAIT.EVENT', 'WHILE', 'WRITE']
-
-
+    'TYPE', 'UNTIL', 'VALUE', 'WAIT', 'WAIT.EVENT', 'WHILE', 'WRITE'] 
+    
     # cuvinte cheie care merg doar in expresii, nu sunt functii (nu urmeaza paranteza dupa ele)
     vplus_expr_keywords = ['ALWAYS', 'AND', 
     'BY', 'BAND', 'BOR', 'BXOR', 
@@ -194,9 +196,9 @@ def beautify_block(var, first = False):
     'HAND.TIME', 'HERE', 'IPS',
     'MMPS', 'MOD', 
     'NOT', 'NULL', 'OFF', 'ON', 
-    'OR', 'OF', 'PI', 'POWER', 
+    'OR', 'OF', 'PI', 'POWER', '#PDEST',
     'STEP', 'TERMINAL', 'THEN', 'TOOL', 
-    'TO', 'TRUE', "XOR"]
+    'TO', 'TRUE', "XOR"] + switches + params
     
     # daca dupa chestiile astea urmeaza paranteza, sunt functii (le scriu cu litere mari)
     # altfel, sunt variabile, le scriu cu litere mici
@@ -206,7 +208,7 @@ def beautify_block(var, first = False):
     'DISTANCE', 'DX', 'DY', 'DZ',
     'FRACT', 
     'FRAME', 'INRANGE', 'INT', 'INVERSE', 
-    'LAST', 'LEN', 'MAX', 'MIN',
+    'LAST', 'LEN', 'MAX', 'MIN', 'MANIP',
     'PARAMETER', 'POS', '#PPOINT', 'PPOINT', 'RANDOM', 
     'RX', 'RY', 'RZ', 
     'SHIFT', 'SIG', 'SIGN', 'SIN', 'SQR', 'SQRT', 'SWITCH',
@@ -330,18 +332,17 @@ def translate_statement(var, indent):
     'JMOVE', 
     'KILL', 'MCS', 'MOVE', 'MOVES', 
     'MOVET', 'MOVEST', 
-    'PAUSE', 'PROMPT', 
+    'PAUSE', 
     'RUNSIG', 
     'SIGNAL', 'SPEED',
     'TOOL', 
     'VAL']
 
     # OPENI => OPENI()
-    # adica chestii fara parametri, care nu pot sa apara in expresii
+    # adica chestii fara parametri, care nu pot sa apara in expresii (doar keyword)
     vplus_noarg_functions = ['ABORT', 'ABOVE', 'ALIGN', 
     'BELOW', 'BREAK', 'BRAKE', 'CALIBRATE',
     'CLOSE', 'CLOSEI', 'COARSE', 
-    'DEST', 
     'FINE', 'FLIP',
     'LEFTY', 
     'NOFLIP', 'OPEN', 'OPENI', 
@@ -591,6 +592,22 @@ def translate_statement(var, indent):
             vs = [string.join(args, ", "), ' = READ(', inside, ", ", arglen, ')']
         else:
             vs = [translate_expression(var)]
+    elif kw == "PROMPT":
+        rest = translate_expression(rest)
+        args = find_params_passable_by_ref(rest)
+        if "__" in args[1:]:
+            raise SyntaxError, "Some variables cannot be assigned by PROMPT: %s" % rest
+        if len(args) > 1:
+            init = string.join(args[1:], ", ") + " = "
+            for arg in args[1:]:
+                if arg.startswith(prefix_string):
+                    init += '"", '
+                else:
+                    init += '0, '
+            init = init[:-2] + "; "
+        else:
+            init = ""
+        vs = [init, string.join(args, ", "), ' = PROMPT(', rest, ')']
     else:
         vs = [translate_expression(var)]
 
@@ -617,10 +634,12 @@ def translate_expression(var):
 
 
 def translate_block(var):    
+    #print "block, before:", var
+
     var = var.replace(":", "|")
     var = var.replace("[]", "")
     var = var.replace("^B", "0b")
-    vs = re.split("([a-zA-Z\#\.][a-zA-Z0-9_\.]*)", var)
+    vs = re.split("([a-zA-Z\#\.\$][a-zA-Z0-9_\.]*)", var)
     newvs = []
 
     vs.append("")
@@ -628,12 +647,14 @@ def translate_block(var):
         if   s == 'BY'     : newvs.append(", ")
         elif s == 'HERE'   : newvs.append("HERE()")
         elif s == 'DEST'   : newvs.append("DEST()")
+        elif s == '#PDEST' : newvs.append("PDEST()")
+        elif s == '#PPOINT' : newvs.append("PPOINT")
         elif s == 'TOOL'   : newvs.append("TOOL()")
         elif s == 'IPS'    : newvs.append(', "IPS"')
         elif s == 'MMPS'   : newvs.append(', "MMPS"')
         elif s == 'ALWAYS' : newvs.append(', "ALWAYS"')
         elif s == 'MONITOR': newvs.append(', "MONITOR"')
-        elif s == 'HAND.TIME': newvs.append('"HAND.TIME"')
+        elif s in switches+params: newvs.append('"%s"' % s)
         elif s == 'MOD'    : newvs.append(" % ")
         elif s == 'AND'    : newvs.append(" and ")
         elif s == 'OR'    : newvs.append(" or ")
@@ -651,12 +672,15 @@ def translate_block(var):
     newvs = []
     # inlocuiesc punctul cu underscore
     for s in vs:
-        if re.match("^[a-zA-Z\#][a-zA-Z0-9\.\_\#]*(\[\])?$", s): # nume de variabila, cu . _ #
-            newvs.append(s.replace(".", "_").replace("#", ""))
+        if re.match("^[a-zA-Z\#\$][a-zA-Z0-9\.\_\#\$]*(\[\])?$", s): # nume de variabila, cu . _ #
+            news = s.replace(".", "O").replace("#", prefix_ppoint).replace("$", prefix_string)
+            newvs.append(news)
+            #print "replaced: '%s' -> '%s'" % (s, news)
         else:
             newvs.append(s)
     
     var = string.join(newvs, "")
+    #print "block, after:", var
     return var
 
 def split_keywords(line):

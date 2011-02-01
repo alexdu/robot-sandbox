@@ -1,0 +1,105 @@
+# Experimental support for drawing limb curves
+
+
+def DrawLimbEdgesMacro
+{
+    special|
+    \usetikzlibrary{through,shapes}
+    \def\CalcCylLimbAngle(##1,##2)(##3,##4)(##5,##6){
+        \pgfmathparse{-atan((1/2*(##3-##1)^2-1/2*(##5-##1)^2+1/2*(##4-##2)^2-1/2*(##6-##2)^2-1/2*sqrt(((##4-##2)^2+(##3-##1)^2+(2*##5-2*##1)*(##4-##2)+(##5-##1)^2-(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)*((##4-##2)^2+(##3-##1)^2-(2*##5-2*##1)*(##4-##2)+(##5-##1)^2+(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)))/((##3-##1)*(##5-##1)+(##4-##2)*(##6-##2)))}}
+
+        \def\CalcSphereRadius(##1,##2)(##3,##4)(##5,##6){
+\pgfmathparse{sqrt((1/sqrt(1+(1/2*(##3-##1)^2-1/2*(##5-##1)^2+1/2*(##4-##2)^2-1/2*(##6-##2)^2-1/2*sqrt(((##4-##2)^2+(##3-##1)^2+(2*##5-2*##1)*(##4-##2)+(##5-##1)^2-(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)*((##4-##2)^2+(##3-##1)^2-(2*##5-2*##1)*(##4-##2)+(##5-##1)^2+(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)))^2/((##3-##1)*(##5-##1)+(##4-##2)*(##6-##2))^2)*(##3-##1)-(1/2*(##3-##1)^2-1/2*(##5-##1)^2+1/2*(##4-##2)^2-1/2*(##6-##2)^2-1/2*sqrt(((##4-##2)^2+(##3-##1)^2+(2*##5-2*##1)*(##4-##2)+(##5-##1)^2-(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)*((##4-##2)^2+(##3-##1)^2-(2*##5-2*##1)*(##4-##2)+(##5-##1)^2+(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)))/((##3-##1)*(##5-##1)+(##4-##2)*(##6-##2))/sqrt(1+(1/2*(##3-##1)^2-1/2*(##5-##1)^2+1/2*(##4-##2)^2-1/2*(##6-##2)^2-1/2*sqrt(((##4-##2)^2+(##3-##1)^2+(2*##5-2*##1)*(##4-##2)+(##5-##1)^2-(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)*((##4-##2)^2+(##3-##1)^2-(2*##5-2*##1)*(##4-##2)+(##5-##1)^2+(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)))^2/((##3-##1)*(##5-##1)+(##4-##2)*(##6-##2))^2)*(##5-##1))^2+(1/sqrt(1+(1/2*(##3-##1)^2-1/2*(##5-##1)^2+1/2*(##4-##2)^2-1/2*(##6-##2)^2-1/2*sqrt(((##4-##2)^2+(##3-##1)^2+(2*##5-2*##1)*(##4-##2)+(##5-##1)^2-(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)*((##4-##2)^2+(##3-##1)^2-(2*##5-2*##1)*(##4-##2)+(##5-##1)^2+(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)))^2/((##3-##1)*(##5-##1)+(##4-##2)*(##6-##2))^2)*(##4-##2)-(1/2*(##3-##1)^2-1/2*(##5-##1)^2+1/2*(##4-##2)^2-1/2*(##6-##2)^2-1/2*sqrt(((##4-##2)^2+(##3-##1)^2+(2*##5-2*##1)*(##4-##2)+(##5-##1)^2-(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)*((##4-##2)^2+(##3-##1)^2-(2*##5-2*##1)*(##4-##2)+(##5-##1)^2+(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)))/((##3-##1)*(##5-##1)+(##4-##2)*(##6-##2))/sqrt(1+(1/2*(##3-##1)^2-1/2*(##5-##1)^2+1/2*(##4-##2)^2-1/2*(##6-##2)^2-1/2*sqrt(((##4-##2)^2+(##3-##1)^2+(2*##5-2*##1)*(##4-##2)+(##5-##1)^2-(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)*((##4-##2)^2+(##3-##1)^2-(2*##5-2*##1)*(##4-##2)+(##5-##1)^2+(2*##3-2*##1)*(##6-##2)+(##6-##2)^2)))^2/((##3-##1)*(##5-##1)+(##4-##2)*(##6-##2))^2)*(##6-##2))^2)}
+    }
+
+
+        \def\DrawCylLimbEdges(##1,##2)(##3,##4)(##5,##6){{
+            \CalcCylLimbAngle(##1,##2)(##3,##4)(##5,##6)
+            \edef\alpha{\pgfmathresult}
+            \pgfmathparse{cos(\alpha)}\edef\ca{\pgfmathresult}
+            \pgfmathparse{sin(\alpha)}\edef\sa{\pgfmathresult}
+            \draw (\ca, \sa, -0.5) -- (\ca, \sa, 0.5);
+            \draw (-\ca, -\sa, -0.5) -- (-\ca, -\sa, 0.5);
+        }}
+        
+        \def\DrawConeLimbEdges(##1,##2)(##3,##4)(##5,##6){{
+            \CalcCylLimbAngle(##1,##2)(##3,##4)(##5,##6)
+            \edef\alpha{\pgfmathresult}
+            \pgfmathparse{cos(\alpha)}\edef\ca{\pgfmathresult}
+            \pgfmathparse{sin(\alpha)}\edef\sa{\pgfmathresult}
+            \draw (\ca, \sa, 0) -- (0,0,1);
+            \draw (-\ca, -\sa, 0) -- (0,0,1);
+        }}
+
+
+        % For triangle meshes
+        \def\CalcTriangleSign(##1,##2)(##3,##4)(##5,##6){
+            \pgfmathparse{((##3*##6-##3*##2-##1*##6-##5*##4+##5*##2+##1*##4)>0) - 0.5}
+         }
+        \def\CheckLimbEdgeTeX[##1](##2,##3)(##4,##5)(##6,##7)(##8,##9){
+            \CalcTriangleSign(##2,##3)(##4,##5)(##6,##7)
+            \edef\TriangleSignA{\pgfmathresult}
+            \CalcTriangleSign(##2,##3)(##4,##5)(##8,##9)
+            \edef\TriangleSignB{\pgfmathresult}
+            \message{Checking limb edge ##1 (mesh=\SketchMeshName, instance=\SketchMeshID) ...}
+            \pgfmathtruncatemacro{\IsLimbEdge}{(\TriangleSignA * \TriangleSignB) > -0.01}
+            \ifnum\IsLimbEdge>0
+                \expandafter\def\csname Limb@\SketchMeshName @\SketchMeshID @##1\endcsname{draw limb}
+                \message{yes^^J}
+            \else
+                \expandafter\def\csname Limb@\SketchMeshName @\SketchMeshID @##1\endcsname{do not draw limb}
+                \message{no^^J}
+            \fi
+        }
+        \def\CheckLimbEdge[##1](##2,##3)(##4,##5)(##6,##7)(##8,##9){\directlua{
+            function CalcTriangleSign(xa,ya,xb,yb,xc,yc)
+                return xb*yc-xb*ya-xa*yc-xc*yb+xc*ya+xa*yb
+            end
+            a = CalcTriangleSign(##2,##3,##4,##5,##6,##7)
+            b = CalcTriangleSign(##2,##3,##4,##5,##8,##9)
+            %io.write("Checking limb edge ##1 (mesh=\SketchMeshName, instance=\SketchMeshID) ... ")
+            if a * b >= 0 then
+                print(LimbEdges[5])
+                %tex.print("\noexpand\\expandafter\noexpand\\def\noexpand\\csname Limb@\noexpand\\SketchMeshName @\noexpand\\SketchMeshID @##1\noexpand\\endcsname{}")
+                %print "yes"
+            else
+                %tex.print("\noexpand\\expandafter\noexpand\\def\noexpand\\csname Limb@\noexpand\\SketchMeshName @\noexpand\\SketchMeshID @##1\noexpand\\endcsname{none}")
+                %print "no"
+            end
+        }}
+        \directlua{
+            LimbEdges = {}
+            LimbEdges[5] = 7
+        }
+        \pgfkeysdef{/tikz/check limb edge}{
+            \gdef\SketchMeshEdge{##1 }
+            %\message{check limb edge [\SketchMeshID] ##1 ^^J}
+            \edef\MeshEdgeID{Limb@\SketchMeshName @\SketchMeshID @##1}
+            %\message{MeshEdgeID: \MeshEdgeID ^^J}
+            \tikzset{\csname \MeshEdgeID \endcsname}
+        }
+        
+        \def\CheckDrawLimbEdge<##1;##2>{\csname Limb@##1@\SketchMeshID @##2\endcsname}
+        
+        \pgfkeysdef{/tikz/mesh id}{\gdef\SketchMeshID{##1}}
+        \pgfkeysdef{/tikz/mesh name}{\gdef\SketchMeshName{##1}}
+        \pgfkeysdef{/tikz/draw limb}{\message{Drawing limb edge \SketchMeshEdge (mesh=\SketchMeshName, instance=\SketchMeshID) ^^J}}
+        \pgfkeysdef{/tikz/do not draw limb}{%\message{Skipping limb edge \SketchMeshEdge (mesh=\SketchMeshName, instance=\SketchMeshID) ^^J}
+            \pgfkeys{/tikz/draw=none}}
+
+        \tikzset{mesh id = none, mesh name = none}
+    |[lay=under]
+}
+
+
+def DrawLimbEdgesMacroWrapper
+<limb>
+    {DrawLimbEdgesMacro}
+<varlimb>
+    {DrawLimbEdgesMacro}
+<limbonly>
+    {DrawLimbEdgesMacro}
+<>
+    {special||}
+    
+{DrawLimbEdgesMacroWrapper}

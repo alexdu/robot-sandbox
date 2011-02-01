@@ -1,5 +1,23 @@
 
-#       scene.py#       #       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>#       #       This program is free software; you can redistribute it and/or modify#       it under the terms of the GNU General Public License as published by#       the Free Software Foundation; either version 2 of the License, or#       (at your option) any later version.#       #       This program is distributed in the hope that it will be useful,#       but WITHOUT ANY WARRANTY; without even the implied warranty of#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the#       GNU General Public License for more details.#       #       You should have received a copy of the GNU General Public License#       along with this program; if not, write to the Free Software#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,#       MA 02110-1301, USA.
+#       scene.py
+#       
+#       Copyright 2010 Alex Dumitrache <alex@cimr.pub.ro>
+#       
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#       
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#       
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
 
 from __future__ import division
 import math
@@ -107,7 +125,7 @@ link2 = worldObject("Robot Link 2")
 link3 = worldObject("Robot Link 3")
 link4 = worldObject("Robot Link 4")
 link5 = worldObject("Robot Link 5-6")
-link6 = Box("Gripper Mounting Support", lx = 50E-3, ly = 30E-3, lz = 30E-3, mass=0.1)
+link6 = Box("Gripper Mounting Support", lx = 60E-3, ly = 30E-3, lz = 30E-3, mass=0.1, material=matRobot)
 gripper = Box("Gripper", lx = 20E-3, ly = 30E-3, lz = 100E-3, mass=100, material=matGripper)
 finger1 = Box("Gripper Finger 1", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.1, material=matGripper)
 finger2 = Box("Gripper Finger 2", lx = 30E-3, ly = 30E-3, lz = 15E-3, mass=0.1, material=matGripper)
@@ -116,7 +134,10 @@ floor = Box("Floor", lx=1500E-3, ly=1500E-3, lz=50E-3, material=matFloor)
 floor.mass = 1
 floor.pos = (0,0,-25E-3)
 
-
+robot_joints = [link1,link2,link3,link4,link5,link6]
+for j in robot_joints:
+    j.orig_color = j.getMaterial().diffuse
+    j.setMaterial(GLMaterial(diffuse=j.orig_color))
 
 
 def setGripperForces(open, close):
@@ -192,9 +213,9 @@ def enforceRobotPos(J, grip_pos = -1):
     enforcePose(link4.manip, P)
     P = P * R.translation((295E-3 - 108E-3,0,0)) * R.rotation(j[4], (0,1,0))
     enforcePose(link5.manip, P)
-    P = P * R.translation((80E-3 + 20E-3,0,0)) * R.rotation(j[5], (1,0,0))
+    P = P * R.translation((80E-3 + 15E-3,0,0)) * R.rotation(j[5], (1,0,0))
     enforcePose(link6.manip, P)
-    P = P * R.translation((20E-3 + 15E-3,0,0))
+    P = P * R.translation((20E-3 + 20E-3,0,0))
     enforcePose(gripper.manip, P)
 
     enforcePose(floor.manip, R.translation((0,0,-25E-3)))
@@ -223,9 +244,9 @@ def changeRobotPos(J):
     changePose(link4.manip, P)
     P = P * R.translation((295E-3 - 108E-3,0,0)) * R.rotation(j[4], (0,1,0))
     changePose(link5.manip, P)
-    P = P * R.translation((80E-3 + 20E-3,0,0)) * R.rotation(j[5], (1,0,0))
+    P = P * R.translation((80E-3 + 15E-3,0,0)) * R.rotation(j[5], (1,0,0))
     changePose(link6.manip, P)
-    P = P * R.translation((20E-3 + 15E-3,0,0))
+    P = P * R.translation((20E-3 + 20E-3,0,0))
     changePose(gripper.manip, P)
 
 
@@ -234,6 +255,7 @@ def changeRobotPos(J):
 
 RobotSim.pauseTick = False
 
+prevPos = [0, 0, 0, 0, 0, 0]
 def tick():
     t0 = time.time()
     frameno = int(scene._timer.frame)
@@ -249,6 +271,7 @@ def tick():
         cam.fov = 40
         cam.pos = (2,1,1)
         cam.target = (0,0,0.2)
+        cam.keepitsafe = True
         
         #~ _ip = IPython.ipapi.get()
         #~ _ip.runlines("env hanoi")
@@ -270,7 +293,16 @@ def tick():
     
     RobotSim.Step()
 
-
+    global prevPos
+    speed = [RobotSim.currentJointPos[i] - prevPos[i] for i in range(6)]
+    for i,s in enumerate(speed):
+        k = numpy.arctan(0.2*abs(speed[i]))*2/pi
+        if not RobotSim.switch['COLOR.SPEED']: k = 0
+        #print k
+        #print vec4(1,0,0,0) * k + robot_joints[i].orig_color * (1-k)
+        robot_joints[i].getMaterial().diffuse = vec4(1,0,0,0) * k + robot_joints[i].orig_color * (1-k)
+    prevPos = copy(RobotSim.currentJointPos)    
+    
     if frameno % 5 == 0:
         vplus.fileChangePoll()
 
@@ -361,11 +393,22 @@ for obj in scene.walkWorld():
     obj.keepitsafe = True
 
 
+snapshotIndex = 0
+def onKeyPress(K):
+    if K.key.lower() == 's':
+        global snapshotIndex
+        snap = "snapshot%d" % snapshotIndex
+        print "saving %s.sk..." % snap
+        toSketch(snap)
+        snapshotIndex += 1
+eventmanager.connect(KEY_PRESS, onKeyPress)
 
 
+Globals(background=(0.9,0.95,1))
+
+execfile("toSketch.py")
 
 execfile("console.py")
-
 
 
 

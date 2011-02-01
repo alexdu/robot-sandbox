@@ -1,0 +1,80 @@
+def sphere_mesh
+{
+    sweep [style,e_xtrastyle] { segments, rotate(360 / segments, [0,0,1]) }
+      sweep { segments, rotate(180 / segments, [1,0,0]) } 
+        (0, 0, -1)
+}
+def sphere_limb
+{
+    special|{
+        \CalcSphereRadius#1#2#3
+        \edef\radius{\pgfmathresult}
+        \draw [shift={#1}] circle(\radius);
+    }|[lay=over](o)(x)(y)(z)
+}
+
+def sphere_arc
+{
+    special|{
+        \CalcSphereRadius#1#2#3
+        \edef\radius{\pgfmathresult}
+        \edef\smallradius{0.8 * \radius}
+        \draw [shift={#1}] (-70:\smallradius) arc (-70:-10:\smallradius);
+    }|[lay=over](o)(x)(y)(z)
+}
+
+def sphere_interior
+{
+    put{scale(interior_scale)}
+    {
+        sweep [style,e_xtrastyle,noline] { segments, rotate(360 / segments, [0,0,1]) }
+          sweep { segments, rotate(180 / segments, [1,0,0]) } 
+            (0, 0, -1)
+    }
+}
+
+def sphere_equator
+{
+    sweep [style,e_xtrastyle,nofill] { 50, rotate(360 / 50, [0,0,1]) } 
+            (1,0,0)
+}
+
+
+
+def sphere
+<varsphere>
+{
+    def segu 50
+    def segv 50
+    
+    sweep [style,e_xtrastyle,noline] { segu, rotate(360 / segu, [0,0,1]) }
+        sweep { segv, rotate(180 / segv, [0,1,0]) } 
+        (0,0,-0.995)
+
+    repeat {segments/2, rotate(360 / segments, [0,0,1]) }
+        sweep [style,e_xtrastyle,nofill] { 50, rotate(360 / 50, [0,1,0]) } 
+        (0,0,-1)
+
+    sweep [style,e_xtrastyle] { 50, rotate(360 / 50, [0,0,1]) } 
+            (1,0,0)
+}
+<mathsphere>
+{
+    {sphere_limb}
+    {sphere_arc}
+}
+<equator>
+{
+    {sphere_limb}
+    {sphere_equator}
+    {sphere_interior}
+}
+<limb>
+{
+    {sphere_mesh}
+    {sphere_limb}
+}
+<>
+{
+    {sphere_mesh}
+}

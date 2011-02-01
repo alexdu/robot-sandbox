@@ -1,0 +1,30 @@
+def coordsys
+<rgb>
+{
+    line[arrows=->, draw=red, style=thick](o)(x)
+    line[arrows=->, draw=green, style=thick](o)(y)
+    line[arrows=->, draw=blue, style=thick](o)(z)
+}
+<dashed_hidden>
+{
+    line[arrows=<->, style=thick](x)(o)(y)
+    line[arrows=->, style=thick](o)(z)
+    line[arrows=<->, draw=black, style=dashed, lay=over](x)(o)(y)
+    line[arrows=->, draw=black, style=dashed, lay=over](o)(z)
+} 
+<>
+{
+    line[arrows=<->, style=thick](x)(o)(y)
+    line[arrows=->, style=thick](o)(z)
+} 
+
+
+special|
+        \def\coordsys{
+            \draw [red,->] (0,0)--(1,0);
+            \draw [green,->] (0,0)--(0,1);
+            \draw [blue,->] (0,0)--(0,0,1);
+        }
+       |[lay=under]
+
+

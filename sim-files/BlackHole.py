@@ -59,10 +59,12 @@ class BlackHole:
             self.t += 1/RobotSim.fps
             (r,g,b,a) = self.material.diffuse
             self.material.diffuse = (r,g,b, 0.2 + 0.6*cos(pi*self.freq*self.t)**2)
+            self.sensingArea.visible = True
         else:
             self.t = 0
             (r,g,b,a) = self.material.diffuse
             self.material.diffuse = (r,g,b,0)
+            self.sensingArea.visible = False
                 
         # empty trash 
         for o in self.gomi:

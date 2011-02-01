@@ -204,7 +204,7 @@ def addPlusMinus(guiapp, text, i):
     wm.label.style["font-size"] = 14
     wl.label.style["font-size"] = 14
 
-    wl.label.style["color"] = (255,255,255)
+    wl.label.style["color"] = (0,0,0)
     wm.label.style["color"] = (255,255,255)
     wp.label.style["color"] = (255,255,255)
 

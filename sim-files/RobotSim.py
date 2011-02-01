@@ -28,6 +28,7 @@ from geom import *
 import threading
 import cgkit
 import time
+import v2py
 from pprint import pprint
 import IPython
 
@@ -65,6 +66,11 @@ switch["TRACE"] = False
 switch["DRY.RUN"] = False
 switch["GUI"] = True
 switch["CP"] = True
+switch["COLOR.SPEED"] = False
+switch["DEBUG"] = False
+
+v2py.switches = switch.keys()
+v2py.params = param.keys()
 
 timers = {}
 def init_timers():
@@ -107,9 +113,9 @@ def checkJointLimits(J):
 
     for i in range(0,6):
         if J[i] < lim_min[i]:
-            raise IKError, "Joint %d: lower limit exceeded" % (i+1)
+            raise IKError, "Joint %d: lower limit exceeded (%g,%g)" % (i+1, J[i], lim_min[i])
         if J[i] > lim_max[i]:
-            raise IKError, "Joint %d: upper limit exceeded" % (i+1)
+            raise IKError, "Joint %d: upper limit exceeded (%g,%g)" % (i+1, J[i], lim_max[i])
     
 def DK(J):
     """Cinematica directa
@@ -186,7 +192,7 @@ def IK(loc, ppoint = True):
 
         R36 = R03i * loc[0:3, 0:3];
         (j4,j5,j6) = mat2ypr(R36)
-
+        
         J[0] = j1 * 180/pi
         J[1] = j2 * 180/pi
         J[2] = j3 * 180/pi
@@ -194,11 +200,11 @@ def IK(loc, ppoint = True):
         J[4] = j5
         J[5] = j6
 
-
+        
         if flip:
-            J[3] = J[3] + 180;
+            J[3] = J[3] + (180 if J[3] < 0 else -180);
             J[4] = -J[4];
-            J[5] = J[5] + 180;
+            J[5] = J[5] + (180 if J[5] < 0 else -180);
 
     except ValueError:
         raise IKError, "No solution"
@@ -595,3 +601,39 @@ def AlignMCP():
     except IKError:
         ex = sys.exc_info()[1]
         return "IKError: " + str(ex)
+
+
+def findAxisAngle(A,B):
+    a = cgkit.cgtypes.mat4(A.HTM.flatten().tolist()[0])
+    b = cgkit.cgtypes.mat4(B.HTM.flatten().tolist()[0])
+    qa = cgkit.cgtypes.quat(a)
+    qb = cgkit.cgtypes.quat(b)
+    qdif = qa.inverse() * qb
+    angle,axis = qdif.toAngleAxis()
+    return axis,angle
+
+
+def Jacobian(jpos):
+    try: jpos = jpos.J
+    except: pass
+    ppos = DK(jpos) * INVERSE(tool_trans) * TRANS(0,0,-80)
+
+    J = numpy.zeros((6,6))
+
+    dj = 1e-5
+    for j in range(6):
+        jposj = copy(jpos)
+        jposj[j] += dj
+        #print j
+        #print jposj
+        ppos2 = DK(jposj) * INVERSE(tool_trans) * TRANS(0,0,-80)
+        #print "ppos2:", ppos2
+        vx = ppos2.x - ppos.x
+        vy = ppos2.y - ppos.y
+        vz = ppos2.z - ppos.z
+        axis,angle = findAxisAngle(ppos, ppos2)
+        #print "aa:", axis, angle * 180/pi
+        wx,wy,wz = axis * angle * (180/pi)
+        J[:,j] = [vx, vy, vz, wx, wy, wz]
+    J = J / dj
+    return J

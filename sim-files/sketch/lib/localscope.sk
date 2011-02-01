@@ -1,0 +1,70 @@
+# localscope.sk
+#
+# For matching Sketch and TikZ coordinate systems
+
+# Usage:
+
+# 1) Matching coordinate transform matrix
+
+% special|\begin{scope}
+%    \SetCoordOXYZ#1#2#3#4
+%
+%    ... TikZ code here, in the Sketch's local reference frame
+%
+% \end{scope}|(o)(x)(y)(z)
+
+# 2) Matching canvas transform matrix
+
+% special|\begin{scope}
+%    \SetCanvasOXYZ#1#2#3#4
+%
+%    ... TikZ code here, in the Sketch's local reference frame
+%
+% \end{scope}|(o)(x)(y)(z)
+
+# 3) Matching only the XYZ vectors
+
+% special|\begin{scope}
+%    \SetVectorsOXYZ#1#2#3#4
+%
+%    ... TikZ code here, in the Sketch's local reference frame
+%
+% \end{scope}|(o)(x)(y)(z)
+
+
+special|\usetikzlibrary{calc}
+        % Subroutine for \SetCoordOXYZ and \SetCanvasOXYZ
+        % Sets the X-Y transformation matrix and then computes the Z vector
+        \def\SetCoordOXYmatrix(##1,##2)(##3,##4)(##5,##6)(##7,##8){
+            \pgftransformcm{##3-##1}{##4-##2}{##5-##1}{##6-##2}{\pgfpoint{##1cm}{##2cm}}}
+
+        % Subroutine for \SetCoordOXYZ and \SetCanvasOXYZ
+        % Recomputes and sets the Z vector. Ugly formula, but seems to work :)
+        \def\SetCoordZVector(##1,##2)(##3,##4)(##5,##6)(##7,##8){
+            \pgfsetzvec{\pgfpoint{-1/(##5*##4-##5*##2-##1*##4-##6*##3+##6*##1+##2*##3)*
+                 (##6*##7+##1*##8-##5*##8+##5*##2-##6*##1-##2*##7)*1cm}%
+                 {(##1*##8-##1*##4-##2*##7-##8*##3+##7*##4+##2*##3)/
+                 (##5*##4-##5*##2-##1*##4-##6*##3+##6*##1+##2*##3)*1cm}}}
+
+        % Sets the TikZ XYZ vectors so that they match the Sketch ones
+        % Input: Sketch's OXYZ vectors transformed to 2D
+        \def\SetVectorsOXYZ(##1,##2)(##3,##4)(##5,##6)(##7,##8){
+            \pgfsetxvec{\pgfpoint{##3cm-##1cm}{##4cm-##2cm}}
+            \pgfsetyvec{\pgfpoint{##5cm-##1cm}{##6cm-##2cm}}
+            \pgfsetzvec{\pgfpoint{##7cm-##1cm}{##8cm-##2cm}}
+            \pgftransformshift{\pgfpoint{##1cm}{##2cm}}}
+        
+        % Sets the TikZ coordinate transformation matrix and the Z vector 
+        % so that they match the Sketch OXYZ vectors
+        \def\SetCoordOXYZ(##1,##2)(##3,##4)(##5,##6)(##7,##8){
+            \SetCoordOXYmatrix(##1,##2)(##3,##4)(##5,##6)(##7,##8)
+            \SetCoordZVector(##1,##2)(##3,##4)(##5,##6)(##7,##8)}
+
+        % Sets the TikZ canvas transformation matrix and the Z vector 
+        % so that they match the Sketch OXYZ vectors
+        \def\SetCanvasOXYZ(##1,##2)(##3,##4)(##5,##6)(##7,##8){
+            \pgflowlevel{\SetCoordOXYmatrix(##1,##2)(##3,##4)(##5,##6)(##7,##8)}
+            \SetCoordZVector(##1,##2)(##3,##4)(##5,##6)(##7,##8)}
+        
+        |[lay=under]
+

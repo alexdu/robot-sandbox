@@ -39,6 +39,7 @@
     END
 .END
 
+
 .PROGRAM deseneaza.cerc()
     GLOBAL loc.foaie, p0
     AUTO centru, start, raza, t, pas.mm, pas.deg
@@ -63,14 +64,50 @@
 .END
 
 
-.PROGRAM drawing(k,d)
+.PROGRAM picasso()
     GLOBAL loc.foaie
     CALL vezi.foaia()
     IF DEFINED(loc.foaie) THEN
         CALL ia.pixul()
-        CALL deseneaza.rose(k,d)
+        CALL deseneaza()
         CALL pune.pixul()
     END
+.END
+
+.PROGRAM deseneaza()
+    AUTO lun, p, n, m, zup, x, y, i, j
+    GLOBAL loc.foaie, p0
+    zup = 5             ; înălţimea la care pixul se deplasează în aer
+    ATTACH (lun, 4) "NFS"
+    FOPENR (lun) "t.txt"
+    
+    TYPE "Desenez..."
+    SPEED 100 ALWAYS
+    APPROS loc.foaie:p0, 50
+    BREAK
+    
+    READ (lun) n
+    FOR i = 1 TO n
+        READ (lun) m
+        IF m > 1 THEN
+            READ (lun) x, y
+            SET p = loc.foaie:SHIFT(p0 BY x,y,0)
+            SPEED 70
+            APPROS p, zup
+            MOVES p
+            BREAK
+            ; Nu am \cods{DURATION} $\Rightarrow$ se desenează cu viteză maximă
+            FOR j = 2 TO m
+                READ (lun) x, y
+                SET p = loc.foaie:SHIFT(p0 BY x,y,0)
+                MOVES p
+            END
+            BREAK
+            DEPARTS zup
+        END
+    END
+    FCLOSE (lun)
+    DETACH (lun)
 .END
 
 

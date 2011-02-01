@@ -3,5 +3,7 @@
 *.tcl -crlf
 *tcl* -crlf
 *.msg -crlf
+*.py -crlf
+
 
 

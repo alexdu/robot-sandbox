@@ -1,0 +1,24 @@
+#def gray<>
+#input{lib/defaults.sk}
+#{
+#def interior_scale 0.98
+#input{lib/objects.sk}
+
+
+def grip
+{
+    put{rotate(180, [Y]) * scale(22.4 / 1.2) * translate([0,0,-1])}
+    {
+        put{translate([0,0,-1.1-0.25]) * scale([0.5,0.5,1.5])}{cylinder}
+        put{scale([1,2,1])}{box}
+        put{translate([0,-0.7,1]) * scale([1,0.2,1])}{box}
+        put{translate([0,0.7,1]) * scale([1,0.2,1])}{box}
+    }
+}
+
+#}
+#global { 
+#    camera view((-2,-1,0.9), (0,0,0), [Z]) * rotate(90+180, [Z]) * scale(0.04)
+#    language tikz 
+#}
+

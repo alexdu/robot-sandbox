@@ -22,6 +22,7 @@
 
 from __future__ import division
 from numpy import matrix, mat
+from numpy.linalg import *
 from math import pi
 from geom import *
 import math
@@ -192,7 +193,7 @@ def INVERSE(a):
     
     """
     check_args(a, "TRANS")
-    return TRANS(HTM = numpy.linalg.inv(a.HTM))
+    return TRANS(HTM = inv(a.HTM))
 
 def RX(ang):
     """
@@ -329,9 +330,9 @@ def FRAME(a,b,c,d):
     z = numpy.cross(x.T, y_tmp.T).T
     y = numpy.cross(z.T, x.T).T
     
-    x = x / numpy.linalg.norm(x)
-    y = y / numpy.linalg.norm(y)
-    z = z / numpy.linalg.norm(z)
+    x = x / norm(x)
+    y = y / norm(y)
+    z = z / norm(z)
     
     return TRANS(HTM = numpy.vstack([numpy.hstack([x,y,z,d.POS]), \
                                               mat((0,0,0,1))]))
@@ -973,6 +974,37 @@ def DEPARTS(h):
     check_args(h, numeric)
     MOVES(DEST() * TRANS(0, 0, -h))
 
+def find_switch_or_param(name, switch=True):
+    name = name.upper().strip().replace("_", ".")
+    if name == "":
+        raise Exception, "Empty switch/parameter name."
+    dic = RobotSim.switch if switch else RobotSim.param
+    if name not in dic:
+        for n in dic.keys():
+            if n.startswith(name):
+                print n
+                return n
+        if switch:
+            raise Exception, "Unknown switch: " + name
+        else:
+            raise Exception, "Unknown parameter: " + name
+    return name
+    
+def ENABLE(switch_name):
+    name = find_switch_or_param(switch_name)
+    RobotSim.switch[name] = True
+    RobotSim.debug = RobotSim.switch["DEBUG"]
+def DISABLE(switch_name):
+    name = find_switch_or_param(switch_name)
+    RobotSim.switch[name] = False
+    RobotSim.debug = RobotSim.switch["DEBUG"]
+def SWITCH(switch_name, value = None):
+    name = find_switch_or_param(switch_name)
+    if value is not None:
+        RobotSim.switch[name] = bool(value)
+        RobotSim.debug = RobotSim.switch["DEBUG"]
+    return -1 if RobotSim.switch[name] else 0
+    
 def PARAMETER(param_name, value = None):
     """
     PROGRAM INSTRUCTION and MONITOR COMMAND
@@ -988,14 +1020,11 @@ def PARAMETER(param_name, value = None):
     PARAMETER HAND.TIME = 100
     """
     
-    if value == None:
-        check_args([param_name], ["str"])
-        param_name = param_name.replace("_", ".")
-        return RobotSim.param[param_name.upper()]
-    else:
-        check_args([param_name, value], ["str", numeric])
-        param_name = param_name.replace("_", ".")
-        RobotSim.param[param_name.upper()] = value
+    check_args([param_name], ["str"])
+    name = find_switch_or_param(param_name, switch=False)
+    if value is not None:
+        RobotSim.param[name] = value
+    return RobotSim.param[name]
 
 def TOOL(t = None):
     """
@@ -1260,6 +1289,46 @@ def READ(lun, record_num=0, mode=0, num_vars=0):
     else:
         raise Exception, "LUN %d was not attached." % lun
     
+def PROMPT(*vars):
+    msg = ""
+    num_args = len(vars)
+    if type(vars[0]) == str:
+        msg = vars[0]
+        vars = vars[1:]
+
+    print msg, 
+    
+    global _prompting, _prompt_line
+    _prompting = True
+    
+    while _prompting:
+        time.sleep(0.1)
+    
+    line = _prompt_line
+    
+
+    output = []
+    try: string_output = (type(vars[0]) == str)
+    except IndexError: string_output = True
+    if string_output:
+        output.append(line)
+        output.extend([""] * (len(vars)-1))
+    else:
+        tokens = re.split("[, ]+", line)
+        for i in range(len(vars)):
+            try:
+                tok = tokens[i]
+                try: output.append(int(tok))
+                except: output.append(float(tok))
+            except IndexError:
+                output.append(0)
+                
+    print num_args, len(vars)
+    if num_args > len(vars):
+        output.insert(0, msg)
+    if num_args == 1: output = output[0]
+    return output
+
 # comenzi monitor
 ############################################
 
@@ -1549,9 +1618,24 @@ def exec_end():
 
     #~ _ip = IPython.ipapi.get()
     #~ _ip.runlines("Quit")
+
+_prompting = False
+_prompt_line = ""
+
+def input_prefilter(self, line):
+    global _prompting, _prompt_line
+    if _prompting:
+        #print "prefilter prompting:", line
+        _prompt_line = line
+        _prompting = False
+        return ""
+
+    #print "prefilter:", line
+    return line
+    #~ line = line.replace('$', prefix_string)
+    #~ print "prefi:", line
+    #~ return '%' + line
     
-
-
 def completers_setup():
     ip = IPython.ipapi.get()
     ip.set_hook('complete_command', load_completers, str_key = 'load')
@@ -1566,7 +1650,7 @@ def completers_setup():
     ip.set_hook('complete_command', switch_completers, str_key = 'dis')
     ip.set_hook('complete_command', see_completers, str_key = 'see')
     ip.set_hook('complete_command', demo_completers, str_key = 'demo')
-    
+    ip.set_hook('input_prefilter', input_prefilter)
 
 def listFiles(dir):
     files = []
@@ -1876,7 +1960,7 @@ def _CM_HERE(self, var):
     if mSingleVar:
         cmd = var + " = HERE()"
     elif mPPoint:
-        var = mPPoint.groups()[0]
+        var = prefix_ppoint + mPPoint.groups()[0]
         cmd = var + " = PHERE()"
     elif mBaseTransform:
         bs = mBaseTransform.groups()[0]
@@ -1888,8 +1972,7 @@ def _CM_HERE(self, var):
 
     if RobotSim.debug:
         print "(debug) " + cmd    
-    ip.runlines(cmd + "\r\n" \
-        + var)
+    ip.runlines(cmd + "\r\n" + var)
 
 
     
@@ -1938,11 +2021,14 @@ def _CM_PARAM(self, var):
 
     """
     if len(var) == 0:
-        print RobotSim.param
+        pprint(RobotSim.param)
     else:
-        (name, value) = split_at_equal_sign(var)
-        RobotSim.param[name.upper().strip()] = eval(value)
-        
+        if "=" in var:
+            name, value = split_at_equal_sign(var)
+            PARAMETER(name, eval(value))
+        else:
+            print PARAMETER(var)
+            
 
 def _CM_ENABLE(self, var):
     """
@@ -1954,7 +2040,7 @@ def _CM_ENABLE(self, var):
     enable power
 
     """
-    RobotSim.switch[var.upper()] = True
+    ENABLE(var)
 
 
 
@@ -1968,7 +2054,7 @@ def _CM_DISABLE(self, var):
     disable power
 
     """
-    RobotSim.switch[var.upper()] = False
+    DISABLE(var)
 
 def _CM_SWITCH(self, var):
     """
@@ -1977,9 +2063,9 @@ def _CM_SWITCH(self, var):
 
     """
     if len(var) == 0:
-        print RobotSim.switch
+        pprint(RobotSim.switch)
     else:
-        print RobotSim.switch[var.upper()]
+        print "ON" if SWITCH(var) else "OFF"
 
 def _CM_CALIBRATE(self, var):
     """
@@ -2260,7 +2346,9 @@ def _CM_LISTL(self, var):
             value = globalVplusNames[var]
             if type(value).__name__ == 'instance':
                 if value.__class__.__name__ == 'PPOINT':
-                        print "%10s =" % ("#" + var), value
+                    if var.startswith(prefix_ppoint):
+                        var = var[len(prefix_ppoint):]
+                    print "%10s =" % ("#" + var), value
     print ""
     print "Tool transformation:"
     print "             ", TOOL()
@@ -2274,7 +2362,7 @@ def _CM_LISTR(self, var):
     if len(var) > 0:
         ip = IPython.ipapi.get()
         var = translate_expression(var)
-        ip.runlines("pprint.pprint([" + var + "])")
+        ip.runlines("pprint([" + var + "])")
         return
 
     _build_dictionary()
@@ -2309,7 +2397,7 @@ def _CM_LISTS(self, var):
     if len(var) > 0:
         ip = IPython.ipapi.get()
         var = translate_expression(var)
-        ip.runlines("pprint.pprint([" + var + "])")
+        ip.runlines("pprint([" + var + "])")
         return
 
     _build_dictionary()
@@ -2323,7 +2411,9 @@ def _CM_LISTS(self, var):
         if var[0] != "_" and var.lower() == var:
             value = globalVplusNames[var]
             if type(value).__name__ == 'str':
-                    print "%10s = " % var, value
+                if var.startswith(prefix_string):
+                    var = var[len(prefix_string):]
+                    print "%10s = " % ('$' + var), value
 
 
 
@@ -2398,6 +2488,7 @@ def _CM_ENV(self, prog):
     print 
     
 def _CM_DO(self, var):
+    #print "do:", var
     if not check_no_prog_running(): return
     if not RobotSim.comp_mode:
         print "COMP mode disabled."
@@ -2496,3 +2587,7 @@ def _CM_DEMO(self, file):
         _CM_EXEC(self, file)
     else:
         print "Inexistent demo: ", file
+
+def MANIP(j):
+    J = RobotSim.Jacobian(j)
+    return math.sqrt(abs(det(J * J.T)))

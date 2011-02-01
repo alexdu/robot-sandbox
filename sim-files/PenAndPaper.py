@@ -54,11 +54,11 @@ class Paper:
                 c = col.contacts[0]
                 (pos, normal, depth, geom1, geom2) = c.getContactGeomParams()
 
-                if time.time() - self.last_pen_event > 0.5:
+                if time.time() - self.last_pen_event > 0.1:
                     self.polylines.append(Polyline(pts=[], color=(0,0,0.5)))
                     #print "Pen down"
                 
-                if (vec3(pos) - vec3(self.last_point)).length() > 3e-3:
+                if (vec3(pos) - vec3(self.last_point)).length() > 1e-3:
                     posz = [pos[0], pos[1], self.worldObj.pos[2] + self.worldObj.lz/2 + 0.5e-3]
                     self.polylines[-1].addNewPoint(posz)
                     self.last_point = pos

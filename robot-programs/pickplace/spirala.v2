@@ -8,7 +8,7 @@
     PARAMETER HAND.TIME = 0.2
     
     OPEN
-    MOVE safe
+    MOVE #safe
     BREAK
     
     FOR p = 1 TO n
@@ -21,7 +21,7 @@
         SET place = SHIFT(c BY 0, 0, h*i):RZ(total.ang * i / (n-1))
         CALL pick.place(pick, place)
     END
-    MOVE safe
+    MOVE #safe
     
 .END
 

@@ -1,0 +1,90 @@
+def cone_generatrix put{rotate(90,[1,0,0])}
+{
+    repeat{segments, rotate(360/segments,[0,1,0])}
+        line[style,e_xtrastyle,nofill](1,0)(0,1)
+}
+
+def cone_interior
+<generatrix>
+{
+    put{rotate(90,[1,0,0]) then rotate(180/20, [0,0,1])}
+    {
+        def n 20   
+        sweep[style,e_xtrastyle,noline]{n<>, rotate(360/n,[0,1,0])}
+            line[style,e_xtrastyle,noline](1,0)(0,1)
+    }
+    {cone_generatrix}
+}
+<>
+{
+    put{rotate(90,[1,0,0])}
+    {
+        def n 20   
+        sweep[style,e_xtrastyle,noline]{n<>, rotate(360/n,[0,1,0])}
+            line[style,e_xtrastyle,noline](1,0)(0,1)
+    }
+}
+
+def cone_circle
+{
+    def n 50
+    sweep [style,e_xtrastyle] { 50, rotate(360 / 50, [0,0,1]) }
+            (1,0,0)
+}
+
+
+def cone_nolimb
+<wireframe>
+{
+    put {scale(interior_scale)}{cone_interior}
+    {cone_circle}    
+    {cone_generatrix}
+}
+<>
+{
+    put {scale(interior_scale)}{cone_interior}
+    {cone_circle}    
+}
+
+
+
+
+
+
+
+
+
+def cone
+<limb>
+{
+    {cone_nolimb}
+    special|\begin{scope}\SetCoordOXYZ#4#2#3#1\DrawConeLimbEdges#4#2#3\end{scope}|[lay=in](z)(x)(y)(o)
+}
+<varlimb>
+{
+    {cone_nolimb}
+    put{rotate(limb_angle, [Z]) * rotate(90,[1,0,0])}
+    {
+        put{rotate(-limb_angle_off, [Y])}
+            line[style,e_xtrastyle,nofill](1,0)(0,1)
+
+        put{rotate(180 + limb_angle_off, [Y])}
+            line[style,e_xtrastyle,nofill](1,0)(0,1)
+    }
+
+    special|
+    {
+        \CalcCylLimbAngle#1#2#3 
+        \edef\alpha{\pgfmathresult}
+        \newcount{\alphar}
+        \pgfmathsetcount{\alphar}{round(\alpha) + 360 * (\alpha < 0)}
+        \message{^^Jsketch-lib cone: def limb_angle \the\alphar ^^J^^J}
+    }
+    |[lay=in](o)(x)(y)(z)
+
+}
+<>
+    {cone_nolimb}
+
+
+

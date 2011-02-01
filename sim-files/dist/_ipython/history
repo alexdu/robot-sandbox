@@ -1,175 +1,3 @@
-load hanoi
-see_completers(0,0)
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env belt
-cgkit.__file__
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env belt
-cgkit.__file__
-env belt
-odeSim.world.setAutoDisable
-odeSim.world.setAutoDisableFlag
-exec belt
-load belt
-exec belt
-see pick.place
-env hanoi
-load hanoi
-exec hanoi_main
-env hanoi
-see hanoi.
-see hanoi_main
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env belt
-cgkit.__file__
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env belt
-cgkit.__file__
-env belt
-odeSim.world.setAutoDisable
-odeSim.world.setAutoDisableFlag
-exec belt
-load belt
-exec belt
-see pick.place
-env hanoi
-load hanoi
-exec hanoi_main
-env hanoi
-see hanoi.
-see hanoi_main
-load hanoi
-see_completers(0,0)
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env belt
-cgkit.__file__
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
-env desen
-load desen
-exec desen
-exec cerc
-env belt
-load belt
-exec belt
-see belt
-see pick.place
-env belt
-exec belt
 env belt
 cgkit.__file__
 env belt
@@ -998,3 +826,175 @@ exec rez
 env ex2005
 load rez
 exec rez
+mc
+demo
+demo mistak
+demo mistake
+os
+os.path.realpath
+%psate
+%paste
+def relpath(path, start=curdir):
+    """Return a relative version of a path"""
+    if not path:
+        raise ValueError("no path specified")
+    start_list = abspath(start).split(sep)
+    path_list = abspath(path).split(sep)
+    if start_list[0].lower() != path_list[0].lower():
+        unc_path, rest = splitunc(path)
+        unc_start, rest = splitunc(start)
+        if bool(unc_path) ^ bool(unc_start):
+            raise ValueError("Cannot mix UNC and non-UNC paths (%s and
+%s)"
+                                                                %
+(path, start))
+        else:
+            raise ValueError("path is on drive %s, start on drive %s"
+                                                % (path_list[0],
+start_list[0]))
+    # Work out how much of the filepath is shared by start and path.
+    for i in range(min(len(start_list), len(path_list))):
+        if start_list[i].lower() != path_list[i].lower():
+            break
+    else:
+        i += 1
+    rel_list = [pardir] * (len(start_list)-i) + path_list[i:]
+    if not rel_list:
+        return curdir
+    return join(*rel_list)
+os.path.relpath
+demo
+demo mistak
+demo mistake
+os.path.curdir
+Quit
+demo mistake
+os.path.sep
+demo mistake
+os.path.pardir
+demo mistake
+r"\"
+print r"\"
+print r'\'
+print(r'\')
+print(r"\")
+print(r"\\")
+print(r"c:\dsa")
+print("c:\dsa")
+print("c:\nsa")
+print(r"c:\nsa")
+print("c:\nsa")
+print(r"c:\nsa")
+os.path.pathsep
+os.path.sep
+print os.path.sep
+print os.path.relpath
+print os.path.relpath(r"c:\spanac")
+print os.path.relpath(r"y:\spanac")
+print os.path.relpath(r"y:\robot-sandbox\spanac")
+os.path.abspath
+os.path.abspath("fs")
+print os.path.abspath("fs")
+os.path.abspath("c:\\x\\x")
+print os.path.abspath("c:\\x\\x")
+print os.path.abspath("c:\\x\\..\\x")
+demo mistake
+env demos\mistake
+demo mistake
+demo hanoi
+demo drawing
+demo belt
+demo mistake
+cd pickplace/
+dir
+ls
+env stive
+load spirala
+exec spirala
+cd
+cd /?
+cd?
+cd
+cd .
+cd
+cd /?
+pwd
+cd /?
+cd?
+demo mistake
+cd demos
+ls
+load hanoi
+cd ..
+ls
+cd pickplace/
+cd
+load
+cd ..
+cd robot-programs/
+load
+load pickplace\casuta.v2
+load
+cd pickplace/
+load
+cd --
+_ip.IP.home_dir
+env
+demo
+load
+cd
+env
+demo
+load
+cd
+env
+pwd
+cd
+pwd
+cd
+pwd
+cd
+_ip.IP.home_dir
+cd
+pwd
+cd
+pwd
+cd
+pwd
+cd
+cd ~
+cd
+ls
+cd de
+cd demos/
+cd
+dir
+ls
+pwd
+cd demos
+pwd
+cd
+ls
+cd pickplace/
+ls
+cd
+cd pickplace
+env pal
+env
+env pp
+env stive
+load spirala
+exec spirala
+see hello
+see hello.v2
+y
+exec hello
+demo
+demo hanoi
+demo
+demo mistake
+demo
+demo mistake
+demo hanoi
+see hanoi
+demo hanoi

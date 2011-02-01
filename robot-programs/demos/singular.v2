@@ -1,0 +1,208 @@
+.PROGRAM singular()
+    TYPE "=================================="
+    TYPE "Demo: Six-Axis Robot Singularities"
+    TYPE "=================================="
+    
+    SPEED 30 ALWAYS
+    TOOL NULL
+    CLOSEI
+    
+    ENABLE COLOR.SPEED
+    
+    WHILE TRUE DO
+        TYPE ""
+        TYPE "Select a software signal:"
+        TYPE "-------------------------"
+        TYPE "2001 = Wrist singularity"
+        TYPE "2002 = Elbow singularity"
+        TYPE "2003 = Shoulder singularity"
+        TYPE "2004 = Alignment singularity"
+        TYPE "2005 = Quit"
+        SIGNAL -2001, -2002, -2003, -2004, -2005
+        WAIT SIG(2001) OR SIG(2002) OR SIG(2003) OR SIG(2004) OR SIG(2005)
+        choice = SIG(2001) + 2*SIG(2002) + 3*SIG(2003) + 4*SIG(2004) + 5*SIG(2005)
+        WAIT.EVENT, 0.1
+        SIGNAL -2001, -2002, -2003, -2004, -2005
+        
+        CASE ABS(choice) OF
+        VALUE 1:
+            CALL wrist()
+        VALUE 2:
+            CALL elbow()
+        VALUE 3:
+            CALL shoulder()
+        VALUE 4:
+            CALL align()
+        ANY
+            EXIT
+        END
+    END
+    
+    DISABLE COLOR.SPEED
+    
+    TYPE "Demo completed."
+.END
+
+.PROGRAM shoulder()
+    SET #safe = #PPOINT(0,-90,180,0,0,0)
+    SET c = TRANS(82,300,800,0,90,0)
+    SET d = TRANS(82,-300,800,0,90,0)
+    FLIP
+    MOVE #safe
+    BREAK
+    
+    TYPE ""
+    TYPE "Shoulder singularity"
+    TYPE "--------------------"
+    
+    TYPE "High speeds at J1 and J4 (and, to a lesser extent, at J5 and J6)"
+    MOVE c
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    SPEED 10
+    MOVES d
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    SPEED 10
+    MOVES c
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    MOVE #safe
+    BREAK
+.END
+
+
+.PROGRAM align()
+    SET #safe = #PPOINT(0,-90,180,0,0,0)
+    SET #a = PPOINT(0, -152.6024370869431, 201.84851401374712, 0.0, -49.246076926803966, 0)
+    SET #b = PPOINT(90, -152.6024370869431, 201.84851401374712, 0.0, -49.246076926803966, -90)
+    SET c = TRANS(5,300,850,0,0,0)
+    SET d = TRANS(5,-300,850,0,0,0)
+    FLIP
+    MOVE #safe
+    BREAK
+    
+    TYPE ""
+    TYPE "Alignment singularity"
+    TYPE "---------------------"
+    
+    TYPE "Moving J1 and J6 => end-effector remains still"
+    MOVE #a
+    BREAK
+    WAIT.EVENT, 0.5
+    
+    MOVE #b
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    MOVE #a
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    TYPE "High speeds at J1 and J6 while keeping constant end-effector speed"
+    MOVE c
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    SPEED 10
+    MOVES d
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    SPEED 10
+    MOVES c
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    MOVE #safe
+    BREAK
+.END
+
+
+.PROGRAM wrist()
+    SET #safe = #PPOINT(0,-90,180,0,0,0)
+    SET a = #PPOINT(0,-90,180,180,0,-180)
+    SET b = TRANS(450,150,697,0,90,0)
+    SET c = TRANS(450,-150,697,0,90,0)
+    
+    MOVE #safe
+    BREAK
+    
+    TYPE ""
+    TYPE "Wrist singularity"
+    TYPE "-----------------"
+    
+    TYPE "Moving J4 and J6 => end-effector remains still"
+    
+    MOVE(a)
+    BREAK
+    WAIT.EVENT, 0.5
+    
+    MOVE #safe
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    TYPE "High speeds at J4 and J6 while keeping constant end-effector speed"
+    MOVE b
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    SPEED 10
+    MOVES c
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    SPEED 10
+    MOVES b
+    BREAK
+    
+    WAIT.EVENT, 1
+    
+    MOVE #safe
+    BREAK
+.END
+
+
+.PROGRAM elbow()
+    SET #safe = #PPOINT(0,-90,180,0,0,0)
+    SET a = TRANS(500,0,450,0,90,0)
+    SET b = TRANS(721,0,450,0,90,0)
+    
+    MOVE #safe
+    BREAK
+    
+    TYPE ""
+    TYPE "Elbow singularity"
+    TYPE "-----------------"
+    
+    FLIP
+    MOVE a
+    BREAK
+    WAIT.EVENT, 1
+    
+    TYPE "Robot is extending to workspace boundary"
+    
+    SPEED 10
+    MOVES b
+    BREAK
+    WAIT.EVENT, 1
+    
+    
+    MOVE #safe
+    BREAK
+.END
+

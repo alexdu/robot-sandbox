@@ -1,0 +1,113 @@
+.PROGRAM belt2()
+    
+    ; Exemplu de utilizare a unei benzi conveioare
+    
+    ; Variabile globale (definite în prealabil)
+    GLOBAL pick.a, pick.b, pal.a, pal.b, #safe
+    GLOBAL dx, dy, d, h
+    
+    ; Variabile locale
+    AUTO pick, place  ; Punctele robot locale 'pick' şi 'place'
+    AUTO a, b         ; Numărul de piese A şi B
+    AUTO nl, nc, nn   ; Numărul de linii/coloane/nivele
+    
+    ; Adresele semnalelor de intrare / ieşire
+    AUTO in.s1, in.s2, in.stop
+    AUTO out.banda, out.o1, out.o2
+    
+    in.s1 = 1001      ; Iniţializarea adreselor pentru semnalele de I/O
+    in.s2 = 1002
+    in.stop = 1003
+    out.banda = 1
+    out.o1 = 11
+    out.o2 = 12
+    
+    SIGNAL -out.banda ; Resetarea semnalelor de ieşire
+    SIGNAL -out.o1
+    SIGNAL -out.o2
+    
+    nl = 3            ; Iniţializare număr de linii/coloane/nivele
+    nc = 2
+    nn = 2
+    
+    SPEED 90 ALWAYS   ; Viteza generală de lucru
+    
+    PARAMETER HAND.TIME = 0.7  ; Timpul de aşteptare pentru
+    ; acţionarea gripper-ului
+    
+    OPEN              ; Aplicaţia începe cu robotul în \cods{\#safe},
+    MOVE #safe        ; cu gripper-ul deschis
+    BREAK
+    
+    a = 0             ; Iniţializarea contorilor pentru piesele A si B
+    b = 0             ; Contorii încep de la 0 pentru simplificarea formulelor.
+    
+    ; Bucla principală
+    WHILE NOT SIG(in.stop) DO ; Ciclul se repetă cât timp
+        ; semnalul 'in.stop' este inactiv
+        
+        SIGNAL out.banda                   ; Pornesc banda
+        
+        TIMER 1 = 0                        ; Astept fie să se activeze S2
+        WAIT SIG(in.s2) OR TIMER(1) > 30   ; fie să treacă 30 secunde
+        
+        SIGNAL -out.banda                  ; Opresc banda
+        
+        IF TIMER(1) > 30 THEN              ; Timeout?
+            TYPE "Pe banda nu exista piese."
+            EXIT                           ; Se iese din bucla principală
+        END
+        
+        IF SIG(in.s1) THEN                 ; Piesa de tip A
+            SET pick = pick.a
+            i = INT(a/nc) MOD nl           ; Ordinea: N-L-C
+            j = a MOD nc                   ; (este corect şi N-C-L)
+            k = INT(a / (nl*nc))
+            SET place = SHIFT(pal.a BY j*dx, -i*dy, k*h)
+            CALL pick.place(pick, place)
+            a = a + 1
+        ELSE                               ; Piesa de tip B
+            SET pick = pick.b
+            SET place = SHIFT(pal.b BY b*d, 0, 0):RZ(90 * (b MOD 2))
+            CALL pick.place(pick, place)
+            b = b + 1
+        END
+        IF a == nl*nn*nc THEN
+            SIGNAL out.o1                 ; Golire paletă A
+            WAIT.EVENT , 5
+            SIGNAL -out.o1
+            a = 0
+        END
+        IF b == 5 THEN
+            SIGNAL out.o2                 ; Golire paletă B
+            WAIT.EVENT , 5
+            SIGNAL -out.o2
+            b = 0
+        END
+    END                                   ; Sfârşit bucla principală
+    
+    SIGNAL -out.banda                     ; Oprire bandă
+    MOVE #safe                            ; Întoarcere în #safe
+.END
+
+.PROGRAM pick.place(pick,place)
+    AUTO z.pick, z.place
+    
+    z.pick = 100
+    z.place = 100
+    
+    OPEN
+    APPRO pick, z.pick
+    SPEED 50
+    MOVES pick
+    CLOSEI
+    SPEED 50
+    DEPARTS z.pick
+    
+    APPRO place, z.place
+    SPEED 50
+    MOVES place
+    OPENI
+    SPEED 50
+    DEPARTS z.place
+.END

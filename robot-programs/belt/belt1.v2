@@ -1,4 +1,4 @@
-.PROGRAM belt()
+.PROGRAM belt1()
     
     ; Conveyor belt test
     

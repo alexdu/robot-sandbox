@@ -1931,25 +1931,25 @@ def _CM_HERE(self, var):
         return
         
     var = var.lower()
-    var = var.replace(".", "_")
+    var = var.replace(".", "O")
     
     reSingleVar = """
         ^
         [a-z]?        # start with lowercase letter
-        [a-z0-9_]*    # may contain letter, digit or underscore
+        [a-z0-9_O]*   # may contain letter, digit, underscore or point (O)
         $
         """
     rePPoint = """
         ^
         \#                    # start with #
-        ([a-z]?[a-z0-9_]*)    # following variable name
+        ([a-z]?[a-z0-9_O]*)   # following variable name
         $
         """
     reBaseTransform = """
         ^
         (.*)                  # base (expression)
         :                     # colon operator
-        ([a-z]?[a-z0-9_]*)    # variable
+        ([a-z]?[a-z0-9_O]*)   # variable
         $
         """
     
@@ -2245,7 +2245,7 @@ for _k in _K:
             if _v.__class__.__name__ in ['TRANS', 'PPOINT']:
                 _vars.append(_k)
         elif type(_v).__name__ in ['str', 'int', 'float']:
-            if _k.lower() == _k:
+            if varname_py2v(_k).lower() == varname_py2v(_k):
                 _vars.append(_k)
 
 for _k in _vars:
@@ -2253,7 +2253,7 @@ for _k in _vars:
 
 for _k in vplus.__dict__.keys():
     if _k[0] != '_': 
-        if _k.upper() == _k:
+        if varname_py2v(_k).upper() == varname_py2v(_k):
             globalVplusNames[_k] = eval(_k)
 
 globalVplusNames["CALL"] = callDict()
@@ -2261,6 +2261,11 @@ globalVplusNames["CALL"] = callDict()
     
     ip = IPython.ipapi.get()
     ip.runlines(code)
+
+
+def varname_py2v(var):
+    var = var.replace("O", ".").replace(prefix_string, "$").replace(prefix_ppoint, "#")
+    return var
 
 
 def _CM_RESET(self, var):
@@ -2294,7 +2299,8 @@ def _CM_ZERO(self, var):
     TOOL(NULL)
     
     for var in names:
-        if var[0] != "_" and var.lower() == var:
+        vvar = varname_py2v(var);
+        if var[0] != "_" and vvar.lower() == vvar:
             value = globalVplusNames[var]
             if type(value).__name__ == 'instance':
                 if value.__class__.__name__ in ['TRANS', 'PPOINT']:
@@ -2333,22 +2339,24 @@ def _CM_LISTL(self, var):
     print "Transformations:"
     print
     for var in names:
-        if var[0] != "_" and var.lower() == var:
+        vvar = varname_py2v(var);
+        if var[0] != "_" and vvar.lower() == vvar:
             value = globalVplusNames[var]
             if type(value).__name__ == 'instance':
                 if value.__class__.__name__ == 'TRANS':
-                    print "%10s = " % var, value
+                    print "%10s = " % vvar, value
     print
     print "Precision points:"
     print
     for var in names:
-        if var[0] != "_" and var.lower() == var:
+        vvar = varname_py2v(var);
+        if var[0] != "_" and vvar.lower() == vvar:
             value = globalVplusNames[var]
             if type(value).__name__ == 'instance':
                 if value.__class__.__name__ == 'PPOINT':
                     if var.startswith(prefix_ppoint):
                         var = var[len(prefix_ppoint):]
-                    print "%10s =" % ("#" + var), value
+                    print "%10s =" % vvar, value
     print ""
     print "Tool transformation:"
     print "             ", TOOL()
@@ -2375,18 +2383,21 @@ def _CM_LISTR(self, var):
     print "Reals:"
     print
     for var in names:
-        if var[0] != "_" and var.lower() == var:
+        vvar = varname_py2v(var);
+        print var, vvar
+        if var[0] != "_" and vvar.lower() == vvar:
             value = globalVplusNames[var]
             if type(value).__name__ == 'float':
-                    print "%10s = " % var, value
+                    print "%10s = " % vvar, value
     print
     print "Integers:"
     print
     for var in names:
-        if var[0] != "_" and var.lower() == var:
+        vvar = varname_py2v(var);
+        if var[0] != "_" and vvar.lower() == vvar:
             value = globalVplusNames[var]
             if type(value).__name__ == 'int':
-                    print "%10s = " % var, value
+                    print "%10s = " % vvar, value
             
 def _CM_LISTS(self, var):
     """
@@ -2408,12 +2419,12 @@ def _CM_LISTS(self, var):
     print "================="
     print ""
     for var in names:
-        if var[0] != "_" and var.lower() == var:
+        if var[0] != "_" and varname_py2v(var).lower() == var:
             value = globalVplusNames[var]
             if type(value).__name__ == 'str':
                 if var.startswith(prefix_string):
                     var = var[len(prefix_string):]
-                    print "%10s = " % ('$' + var), value
+                    print "%10s = " % vvar, value
 
 
 

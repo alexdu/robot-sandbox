@@ -79,7 +79,7 @@
     GLOBAL loc.foaie, p0
     zup = 5             ; înălţimea la care pixul se deplasează în aer
     ATTACH (lun, 4) "NFS"
-    FOPENR (lun) "t.txt"
+    FOPENR (lun) "desen.txt"
     
     TYPE "Desenez..."
     SPEED 100 ALWAYS
@@ -96,7 +96,7 @@
             APPROS p, zup
             MOVES p
             BREAK
-            ; Nu am \cods{DURATION} $\Rightarrow$ se desenează cu viteză maximă
+            ; Nu am DURATION => se desenează cu viteză maximă
             FOR j = 2 TO m
                 READ (lun) x, y
                 SET p = loc.foaie:SHIFT(p0 BY x,y,0)

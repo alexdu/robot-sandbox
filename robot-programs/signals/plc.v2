@@ -92,3 +92,37 @@
     
 .END
 
+
+
+.PROGRAM pick.place(pick, place)
+    
+    AUTO z.pick, z.place
+    z.pick = 80
+    z.place = 80
+    
+    PARAMETER HAND.TIME = 0.2
+    OPEN
+    
+    APPRO pick, z.pick
+    BREAK
+    
+    SPEED 50
+    MOVES pick
+    CLOSEI
+    
+    SPEED 30
+    DEPARTS z.pick
+    BREAK
+    
+    APPRO place, z.place
+    BREAK
+    
+    SPEED 20
+    MOVES place
+    OPENI
+    
+    SPEED 50
+    DEPARTS z.place
+    BREAK
+    
+.END

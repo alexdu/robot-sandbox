@@ -1,7 +1,3 @@
-env belt
-cgkit.__file__
-env belt
-odeSim.world.setAutoDisable
 odeSim.world.setAutoDisableFlag
 exec belt
 load belt
@@ -998,3 +994,6 @@ demo mistake
 demo hanoi
 see hanoi
 demo hanoi
+demo
+demo singular
+see singular

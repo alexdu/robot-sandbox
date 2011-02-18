@@ -14,7 +14,7 @@ screenshots and demos
 Six-axis robot singularities
 ----------------------------
 
-<iframe src="http://player.vimeo.com/video/20095999" width="600" height="400" frameborder="0"></iframe><p><a href="http://vimeo.com/20095999">Six-axis robot singularities</a> from <a href="http://vimeo.com/alexdu">a1ex</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
+<object width="640" height="448"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=20095999&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=00ADEF&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=20095999&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=00ADEF&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="640" height="448"></embed></object><p><a href="http://vimeo.com/20095999">Six-axis robot singularities</a> from <a href="http://vimeo.com/alexdu">a1ex</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
 
 Towers of Hanoi
 ---------------

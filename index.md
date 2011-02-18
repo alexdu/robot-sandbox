@@ -8,6 +8,9 @@ robot-sandbox
 
 [Screenshots and demos](demos.html)
 -----------------------------------
+
+<iframe src="http://player.vimeo.com/video/20095999" width="400" height="300" frameborder="0"></iframe><p><a href="http://vimeo.com/20095999">Six-axis robot singularities</a> from <a href="http://vimeo.com/alexdu">a1ex</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
+
 [belt1]: thumb-conveyor-belt-1.jpg
 [belt2]: thumb-conveyor-belt-2.jpg
 [draw-rose]: thumb-robot-drawing-rose.jpg

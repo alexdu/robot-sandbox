@@ -22,5 +22,4 @@ Dependencies:
 * pyode
 * pyopengl
 * numpy
-* cellulose
 
